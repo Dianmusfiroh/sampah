@@ -44,8 +44,8 @@ class Report extends Controller
         foreach ($single as $s ){
             $idUser= $s->id_user;
         $keranjang = DB::select(DB::raw("SELECT COUNT(id_user) as qty  FROM t_keranjang where id_user = '$idUser' GROUP BY id_user "));
-        $data =$keranjang[0]->qty;
-        dump($data);
+        // $data =$keranjang[0]->qty;
+        // dump($data);
         // $hasil = '';
         // if (isset($keranjang)){
         //         $hasil = $s->qty+$keranjang->qty;
@@ -53,7 +53,7 @@ class Report extends Controller
         //     }
         }
 
-        die;
+        // die;
 
         $akunA = DB::select(DB::raw('select u.*,s.*, current_date() as tgl_sekarang,datediff(u.tgl_expired, current_date()) as selisih from t_user u, t_setting s WHERE u.produk_id IN (175,198) AND s.id_user= u.id_user'));
         foreach($akunA as $item){

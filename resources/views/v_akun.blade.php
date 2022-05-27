@@ -1,6 +1,6 @@
 <h1>{{ $label }}</h1>
 
-<header class="card card-body mb-4">
+{{--  <header class="card card-body mb-4">
     <div class="row gx-10">
         <div class="col-lg-6 col-md-10 me-auto">
             <p>KET</p>
@@ -22,7 +22,7 @@
             </select>
         </div>
     </div>
-</header>
+</header>  --}}
 {{--  @dump($akun)  --}}
 <div class="card mb-4">
 

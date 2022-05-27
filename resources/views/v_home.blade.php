@@ -61,21 +61,9 @@
             </article>
         </div>
     </div>
+
     <div class="col-lg-3">
-        <div class="card card-body mb-4">
-            <article class="icontext">
-                <span class="icon icon-sm rounded-circle bg-success-light"><i
-                        class="text-success material-icons md-local_shipping"></i></span>
-                <div class="text">
-                    <h6 class="mb-1 card-title">Pendapatan Transaksi</h6>
-                    <h4>@currency($totalTransaksiRP)</h4>
-                    <span class="text-sm"> Jumlah Order  </span>
-                </div>
-            </article>
-    </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="card card-body mb-4">
+        <div class="card card-body mb-5">
             <article class="icontext">
                 <span class="icon icon-sm rounded-circle bg-success-light"><i
                         class="text-success material-icons md-local_shipping"></i></span>
@@ -93,12 +81,25 @@
                 <span class="icon icon-sm rounded-circle bg-success-light"><i
                         class="text-success material-icons md-local_shipping"></i></span>
                 <div class="text">
-                    <h6 class="mb-1 card-title">Total Transaksi Selesai</h6>
+                    <h6 class="mb-1 card-title">Transaksi Selesai</h6>
                     <span>{{$totalTransaksiSelesai}}</span>
                     <span class="text-sm"> Jumlah Order  </span>
                 </div>
             </article>
         </div>
+    </div>
+    <div class="col-lg-3 ">
+        <div class="card card-body mb-4">
+            <article class="icontext">
+                <span class="icon icon-sm rounded-circle bg-success-light"><i
+                        class="text-success material-icons md-local_shipping"></i></span>
+                <div class="text">
+                    <h5 class="mb-1 card-title">Nominal Transaksi</h5>
+                    <h4>@currency($totalTransaksiRP)</h4>
+                    {{--  <span class="text-sm"> Jumlah Order  </span>  --}}
+                </div>
+            </article>
+    </div>
     </div>
     <div class="col-lg-3">
         <div class="card card-body mb-4">
@@ -210,7 +211,7 @@
                                 {{--  <a href="http://api.whatsapp.com/send?phone=62{{ $item->no_hp }}&text=Hallo {{ $item->nama_toko }}%20Owner%20Dari%20Booth%20{{ $item->nama_lengkap }}%20Berikut%20Tagihan%20pembayaran%20BPOS%20Anda%20Untuk%20Bulan%20{{$strBulan}}-{{$item->tahun}}%20Sebesar%20Rp.%20{{$item->jumlah_bayar}}%0A%0ASilahkan%20Lakukan%20Pembayaran%20Ke%20Rekening%20Berikut:%0A@foreach($adminBank as $admin){{$admin->nama_bank}}%20{{$admin->no_rekening}}%0A @endforeach%0A%0A%0Aa.n%20klikdigital%20indonesia%0A%0AUntuk%20Bukti%20Transaksi%20Bisa%20Dilihat%20Di%20Link%20Berikut%0A{{ route( $model.'.downloadPdf', $item->id_biodata) }}"
                                 target="_blank"  class="btn btn-sm btn-md">Send  --}}
 
-                            <a href="http://api.whatsapp.com/send?phone=62{{ $item->no_hp }}&text=Hallo" target="_blank" title="{{ $item->nama_lengkap }}" alamat="{{$item->alamat}}"  ><i class=" material-icons md-send"></i></a>
+                            <a href="http://api.whatsapp.com/send?phone=62{{ $item->no_hp }}&text=Hallo%20{{$item->nama_lengkap}}%20Akun%20WBS-Link%20anda%20Akan%20segera%20habis%20masa%20berlakunya" target="_blank" title="{{ $item->nama_lengkap }}" alamat="{{$item->alamat}}"  ><i class=" material-icons md-send"></i></a>
                             </td>
                             @endforeach
 
