@@ -6,23 +6,37 @@
                 <span class="text">Dashboard</span>
             </a>
         </li>
-        <li class="menu-item @if(Request::segment(1) == 'user'): {{'active'}} @endif">
+        <li class="menu-item @if(Request::segment(1) == 'user'): {{'active'}} @endif ">
             <a class="menu-link" href="{{ url('akun') }}">
-                <i class="icon material-icons  md-format_list_bulleted"></i>
-                <span class="text">List User</span>
+                <i class="icon material-icons  md-supervised_user_circle"></i>
+                <span class="text">User</span>
             </a>
+            {{--  <div class="submenu">
+                <a href="{{ url('report') }}">List Uer</a>
+                <a href="page-sellers-list.html"></a>
+                <a href="page-seller-detail.html">Laporan Member Aktif/Tidak</a>
+            </div>  --}}
         </li>
-        <li class="menu-item @if(Request::segment(1) == 'user'): {{'active'}} @endif">
+        <li class="menu-item @if(Request::segment(1) == 'user'): {{'active'}} @endif has-submenu">
             <a class="menu-link" href="{{ url('report') }}">
                 <i class="icon material-icons  md-report"></i>
                 <span class="text">Report</span>
             </a>
+            <div class="submenu">
+                <a href="{{ url('report') }}">Produk Terbaik</a>
+                <a href="{{url('produkTerbaik')}}">Penjualan Terbaik</a>
+                <a href="page-seller-detail.html">Laporan Member Aktif/Tidak</a>
+            </div>
         </li>
-        <li class="menu-item @if(Request::segment(1) == 'user'): {{'active'}} @endif">
-            <a class="menu-link" href="{{ url('statistik') }}">
+        <li class="menu-item @if(Request::segment(1) == 'user'): {{'active'}} @endif has-submenu">
+            <a class="menu-link" href="">
                 <i class="icon material-icons  md-pie_chart"></i>
                 <span class="text">Statistik</span>
             </a>
+            <div class="submenu">
+                <a href="{{ url('statistik') }}">Statistik Barang</a>
+                <a href="{{ url('statistikMember') }}">Statistik Member</a>
+            </div>
         </li>
         <li class="menu-item @if(Request::segment(1) == 'user'): {{'active'}} @endif">
             <a class="menu-link" href="{{ url('akun') }}">

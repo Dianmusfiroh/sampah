@@ -10,7 +10,7 @@ class StatistikController extends Controller
 {
     public function index(Request $request){
         $Month = Carbon::now()->format('m');
-        $Month = Carbon::now()->format('m');
+        // $Month = Carbon::now()->format('m');
 
         $orderTR =  DB::table('t_order')
                 ->whereMonth('tgl_order', $Month)
@@ -25,10 +25,22 @@ class StatistikController extends Controller
         // @dump($multiOrderTR);
         // die();
         $data = [
-            'view' => 'v_statistik',
+            'view' => 'statistik.v_statistik',
             'data' =>
             [
                 'label' => 'Statistik'
+            ]
+        ];
+        return backend($request,$data);
+    }
+
+    public function statistikMember(Request $request)
+    {
+        $data = [
+            'view' => 'statistik.v_statistikMember',
+            'data' =>
+            [
+                'label' => 'Statistik Member'
             ]
         ];
         return backend($request,$data);

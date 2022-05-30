@@ -13,6 +13,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "livewire/livewire": "^2.10",
+        "maatwebsite/excel": "^3.1",
         "realrashid/sweet-alert": "^5.0"
     },
     "require-dev": {
@@ -31,15 +32,15 @@
             "Database\\Seeders\\": "database/seeders/"
         }
     },
-    "autoload":{
+    "autoload": {
         "psr-4": {
             "App\\": "app/"
         },
-        "classmap":[
+        "classmap": [
             "database/seeders",
             "database/factories"
         ],
-        "files":[
+        "files": [
             "app/Helper/helpers.php"
         ]
     },

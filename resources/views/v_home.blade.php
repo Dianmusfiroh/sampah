@@ -10,10 +10,11 @@
             <article class="icontext">
                 <span class="icon icon-sm rounded-circle bg-primary-light"><i
                         class="text-primary material-icons md-supervised_user_circle"></i></span>
-                <div class="text">
+                <div class="text" href="{{ url('akun') }}">
+                    <a href="{{ url('akun') }}" >
                     <h6 class="mb-1 card-title">User</h6>
-                    <span>{{ $user->count() }}</span>
-                    <span class="text-sm"> Total Jumlah User   </span>
+                    <h3>{{ $user->count() }}</h3>
+                    <span class="text-sm"> Total Jumlah User   </span></a>
                 </div>
             </article>
         </div>
@@ -22,8 +23,8 @@
         <div class="card card-body mb-4">
             <article class="icontext">
                 <span class="icon icon-sm rounded-circle bg-info-light"><i class="text-info material-icons md-verified_user"></i></span>
-                <div class="text"  href="{{ url('akun') }}">
-                    <a href="{{ url('akun') }}" >
+                <div class="text"  href="{{ url('userAktif') }}">
+                    <a href="{{ url('userAktif') }}" >
                     <h6 class="mb-1 card-title">User Aktif</h6>
                     <h3>@foreach ($userA as $item )
                         {{ $item->total}}
@@ -225,6 +226,8 @@
 </div>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<script src="{{ asset('backend/assets/js/vendors/chart.js')}}"></script>
+
 <script>
     $("#myTable").DataTable({
                     "autoWidth": false,

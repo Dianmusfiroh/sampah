@@ -37,7 +37,10 @@ Route::get('/seller', [SellerController::class, 'index']);
 Route::resource('akun', AkunController::class);
 Route::resource('report', Report::class);
 Route::resource('statistik', StatistikController::class);
+Route::get('statistikMember', [StatistikController::class,'statistikMember'])->name('statistikMember');
 Route::get('updateStatus',[AkunController::class,'updateStatus'])->name('updateStatus');
+Route::get('userAktif',[AkunController::class,'userAktif'])->name('userAktif');
+Route::get('produkTerbaik',[Report::class,'topProduk'])->name('topProduk');
 
 Route::post('/login', [LoginController::class, 'log']);
 Route::get('/logout', [LoginController::class, 'logout']);

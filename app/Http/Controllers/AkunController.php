@@ -21,7 +21,7 @@ class AkunController extends Controller
         $now = Carbon::now();
         $addBulan = $now->addMonth();
         $akunA = DB::select(DB::raw('select u.*,s.*, current_date() as tgl_sekarang,datediff(u.tgl_expired, current_date()) as selisih from t_user u, t_setting s WHERE u.produk_id IN (175,198) AND s.id_user= u.id_user'));
-         
+
         foreach($akunA as $item){
             $order = DB::table('t_order')->where('id_user',$item->id_user)->count('order_id');
          }
@@ -29,7 +29,7 @@ class AkunController extends Controller
 
         $modul = $this->modul;
         $data = [
-            'view' => 'v_akun',
+            'view' => 'user.v_akun',
             'data' =>
             [
                 'label' => 'Akun',
@@ -42,9 +42,25 @@ class AkunController extends Controller
         ];
         return backend($request,$data,$modul);
     }
+    public function userAktif(Request $request){
+
+
+        $modul = $this->modul;
+        $data = [
+            'view' => 'user.v_akunAktif',
+            'data' =>
+            [
+                'label' => 'Akun Aktif',
+                'modul' => 'akun',
+                'akunA'=>  DB::select(DB::raw('select u.*,s.*, current_date() as tgl_sekarang from t_user u ,t_setting s WHERE u.id_user = s.id_user AND u.produk_id IN (175,198) and u.tgl_expired >= CURRENT_DATE()')),
+                // 'akunA'=>  DB::select(DB::raw('select u.*,s.*, current_date() as tgl_sekarang,datediff(u.tgl_expired, current_date()) as selisih from t_user u, t_setting s WHERE u.produk_id = 175 && 198 AND s.id_user= u.id_user')),
+            ]
+        ];
+        return backend($request,$data,$modul);
+    }
     public function show(Request $request, $id_user){
         // dd($id_user);
-        
+        $now = Carbon::now()->format('y-m-d') ;
         $year = Carbon::now();
 
         $order = DB::table('t_order')
@@ -63,11 +79,32 @@ class AkunController extends Controller
         ->sum('totalbayar');
         $totalbayar =$tborder+$tbmultiOrder;
         // dd($produk);
-      
+    //     $akun =   DB::table('t_user')
+    //     ->Join('t_setting','t_user.id_user','=','t_setting.id_user')
+    // // // ->join('t_multi_order','t_user.id_user','=','t_multi_order.id_user')
+    //     ->select('t_user.*','t_setting.nama_toko')
+    //     ->where('t_user.id_user','=',$id_user)
+    //     // ->whereIn('tgl_expired','>',$now)
+
+    //     ->get();
+    //     foreach($akun AS $item){
+    //         if (Str::slug($item->nama_toko) == true) {
+    //            echo "ada";
+    //         } else {
+    //             echo "no";
+    //         }
+
+    //     }
+    //     die();
+        // @if ({{Str::slug($item->nama_toko)}} == true)
+        // ada
+        // @else ({{Str::slug($item->nama_toko)}} == false)
+        //     tidak
+        // @endif
         // }
         $modul = $this->modul;
         $data = [
-            'view' => 'v_akundetail',
+            'view' => 'user.v_akundetail',
             'data' =>
             [
                 'label' => 'Akun',
@@ -79,12 +116,16 @@ class AkunController extends Controller
                 'produk' => DB::table('t_produk')
                             ->join('t_produk_link','t_produk.id_produk','=','t_produk_link.id_produk')
                             ->where('t_produk.id_user',$id_user)->get(),
-                'akun' => DB::table('t_user')
-                        ->Join('t_setting','t_user.id_user','=','t_setting.id_user')
-                        // ->join('t_multi_order','t_user.id_user','=','t_multi_order.id_user')
-                        ->select('t_user.*','t_setting.nama_toko')
-                        ->where('t_user.id_user','=',$id_user)
-                        ->get()
+                // 'akun' =>  DB::select('select u.*,s.*, current_date() as tgl_sekarang from t_user u ,t_setting s WHERE u.id_user = s.id_user  AND u.user_id = "$id_user" AND u.produk_id IN (175,198) and u.tgl_expired >= CURRENT_DATE()')
+
+                'akun' =>   DB::table('t_user')
+                            ->Join('t_setting','t_user.id_user','=','t_setting.id_user')
+                        // // ->join('t_multi_order','t_user.id_user','=','t_multi_order.id_user')
+                            ->select('t_user.*','t_setting.nama_toko')
+                            ->where('t_user.id_user','=',$id_user)
+                            // ->whereIn('tgl_expired','>',$now)
+
+                            ->get()
             ]
         ];
         return backend($request,$data,$modul);
