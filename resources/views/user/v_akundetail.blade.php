@@ -47,11 +47,11 @@
                         <h5 class="text">{{$item->is_created}}</h5>
                         <p class="mb-0 text-muted">Tanggal Expire:</p>
                         @if (($item->tgl_expired > $now) && ($item->tgl_expired < $addWeek))
-                            expire
-                        {{--  <h5 class="badge rounded-pill alert-warning">{{$item->tgl_expired}}</h5>  --}}
+                            {{--  expire  --}}
+                        <h5 class="badge rounded-pill alert-warning">{{$item->tgl_expired}}</h5>
                         @else
-                        tidak
-                        {{--  <h5 class="text-success">{{$item->tgl_expired}}</h5>  --}}
+                        {{--  tidak  --}}
+                        <h5 class="text-success">{{$item->tgl_expired}}</h5>
                         @endif
                         {{--  if (($item->tgl_expired >= $now) && ($item->tgl_expired <= $addWeek)){
                             echo "Current date is between two dates";
