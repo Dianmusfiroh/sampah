@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class StatistikController extends Controller
 {
@@ -36,11 +37,32 @@ class StatistikController extends Controller
 
     public function statistikMember(Request $request)
     {
+        $jenis = DB::select('SELECT  COUNT(id_kategori_bisnis) as jumlah,id_kategori_bisnis,prov FROM t_setting GROUP BY prov , id_kategori_bisnis');
+        $member = DB::select('SELECT COUNT(id_user) as jumlah,prov FROM t_setting GROUP BY prov');
+        // $prov =  Http::get('https://pro.rajaongkir.com/api/province');
+        // $dataProv = $prov->json();
+        // dd($dataProv);
+        $chrtMember = '';
+        $chrtJenis = '';
+        foreach ($jenis as $item) {
+            $chrtJenis .= $item->jumlah.',';
+
+
+        }
+        foreach ($member as $item) {
+            $chrtMember .= $item->jumlah.',';
+        }
+        // print_r($chrtMember);
+        // die;
+
         $data = [
             'view' => 'statistik.v_statistikMember',
             'data' =>
             [
-                'label' => 'Statistik Member'
+                'label' => 'Statistik Member',
+                'chrtMember' => $chrtMember ,
+                'chrtJenis' => $chrtJenis
+
             ]
         ];
         return backend($request,$data);

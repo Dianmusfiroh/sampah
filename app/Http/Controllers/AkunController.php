@@ -58,9 +58,10 @@ class AkunController extends Controller
         ];
         return backend($request,$data,$modul);
     }
-    public function show(Request $request, $id_user){
-        // dd($id_user);
-        $now = Carbon::now()->format('y-m-d') ;
+    public function show(Request $request, $id_user ){
+        // // dd($);
+        // die();
+        $now = Carbon::now()->format('Y-m-d') ;
         $year = Carbon::now();
 
         $order = DB::table('t_order')
@@ -78,14 +79,21 @@ class AkunController extends Controller
         ->where ('id_user','=',$id_user)
         ->sum('totalbayar');
         $totalbayar =$tborder+$tbmultiOrder;
-        // dd($produk);
-    //     $akun =   DB::table('t_user')
-    //     ->Join('t_setting','t_user.id_user','=','t_setting.id_user')
-    // // // ->join('t_multi_order','t_user.id_user','=','t_multi_order.id_user')
-    //     ->select('t_user.*','t_setting.nama_toko')
-    //     ->where('t_user.id_user','=',$id_user)
-    //     // ->whereIn('tgl_expired','>',$now)
+        $akun =   DB::table('t_user')
+            ->Join('t_setting','t_user.id_user','=','t_setting.id_user')
+        // // ->join('t_multi_order','t_user.id_user','=','t_multi_order.id_user')
+            ->select('t_user.*','t_setting.nama_toko')
+            ->where('t_user.id_user','=',$id_user)
+            // ->whereIn('tgl_expired','>',$now)
+            ->get();
+            // echo $akun[0]->user_id;die;
+            // foreach ($akun as $item){
+                $json = file_get_contents('https://wbslink.id/apiv2/user/getExpired?_key=WbsLinkV00&user_id='.$akun[0]->user_id.'&product_id='.$akun[0]->produk_id.'');
+            // }
 
+
+        // dd($produk);
+    //
     //     ->get();
     //     foreach($akun AS $item){
     //         if (Str::slug($item->nama_toko) == true) {
@@ -109,9 +117,10 @@ class AkunController extends Controller
             [
                 'label' => 'Akun',
                 'modul' => 'akun',
+                'exp' => $json,
                 'transaksi' =>$total,
                 'totalbayar' =>$totalbayar,
-                'now' => Carbon::now()->format('y-m-d'),
+                'now' => Carbon::now()->format('Y-m-d'),
                 'addWeek' => $year->addWeek()->format('y-m-d'),
                 'produk' => DB::table('t_produk')
                             ->join('t_produk_link','t_produk.id_produk','=','t_produk_link.id_produk')

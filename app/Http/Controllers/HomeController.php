@@ -13,9 +13,13 @@ class HomeController extends Controller
 {
     public function index(Request $request){
         $year = Carbon::now();
-        $now = Carbon::now()->format('y-m-d');
-
         $addWeek = $year->addWeek()->format('y-m-d');
+
+        $now = Carbon::now()->format('y-m-d');
+        $akun=  DB::table('t_user')
+                            ->join('t_setting','t_user.id_user','=','t_setting.id_user')
+                            ->select('t_user.*','t_setting.*')->get();
+        $json = file_get_contents('https://wbslink.id/apiv2/user/getExpired?_key=WbsLinkV00&user_id='.$akun[0]->user_id.'&product_id='.$akun[0]->produk_id.'');
 
         $day = Carbon::now()->format('d');
         $Month = Carbon::now()->format('m');
@@ -35,6 +39,7 @@ class HomeController extends Controller
         $chrtExp = '';
         $orderUser = '';
         foreach ($userExp as $item) {
+            $chrtExp .= $item->jumlah.',';
             $chrtExp .= $item->jumlah.',';
         }
         foreach ($user as $item) {

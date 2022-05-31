@@ -46,25 +46,23 @@
                         <p class="mb-0 text-muted">Tanggal Daftar:</p>
                         <h5 class="text">{{$item->is_created}}</h5>
                         <p class="mb-0 text-muted">Tanggal Expire:</p>
-                        @if (($item->tgl_expired > $now) && ($item->tgl_expired < $addWeek))
-                            {{--  expire  --}}
-                        <h5 class="badge rounded-pill alert-warning">{{$item->tgl_expired}}</h5>
-                        @else
-                        {{--  tidak  --}}
-                        <h5 class="text-success">{{$item->tgl_expired}}</h5>
-                        @endif
-                        {{--  if (($item->tgl_expired >= $now) && ($item->tgl_expired <= $addWeek)){
-                            echo "Current date is between two dates";
-                          }else{
-                            echo "Current date is not between two dates";
-                          }  --}}
+                        <h5>
+                            @if ($exp >= $now)
+                            <span class="badge rounded-pill alert-success">{{$exp}}</span>
+                            @elseif(($exp >= $now) && ($exp <= $addWeek))
+                            <span class="badge rounded-pill alert-warning">{{$exp}}</span>
+                            @elseif($exp <= $now)
+                                <span class="badge rounded-pill alert-danger">{{$exp}}</span>
+                            @endif
+                    </h5>
+
                     </article>
                 </div>
                 <!--  col.// -->
                 <div class="col-sm-6 col-lg-4 col-xl-3">
                     <h6>Contacts</h6>
                     <p>
-                       {{$item->nama_lengkap }} <br />
+                        {{$item->nama_lengkap }} <br />
                         {{$item->email }} <br />
                         {{$item->no_hp}}
                     </p>
