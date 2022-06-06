@@ -6,16 +6,16 @@
                 <span class="text">Dashboard</span>
             </a>
         </li>
-        <li class="menu-item @if(Request::segment(1) == 'user'): {{'active'}} @endif ">
+        <li class="menu-item @if(Request::segment(1) == 'user'): {{'active'}} @endif has-submenu">
             <a class="menu-link" href="{{ url('akun') }}">
                 <i class="icon material-icons  md-supervised_user_circle"></i>
                 <span class="text">User</span>
             </a>
-            {{--  <div class="submenu">
-                <a href="{{ url('report') }}">List Uer</a>
-                <a href="page-sellers-list.html"></a>
-                <a href="page-seller-detail.html">Laporan Member Aktif/Tidak</a>
-            </div>  --}}
+            <div class="submenu">
+                <a href="{{ url('akun') }}">List Member</a>
+                <a href="">Member Tidak perpanjang</a>
+                {{--  <a href="page-seller-detail.html">Laporan Member Aktif/Tidak</a>  --}}
+            </div>
         </li>
         <li class="menu-item @if(Request::segment(1) == 'user'): {{'active'}} @endif has-submenu">
             <a class="menu-link" href="{{ url('report') }}">
@@ -23,9 +23,8 @@
                 <span class="text">Report</span>
             </a>
             <div class="submenu">
-                <a href="{{ url('report') }}">Produk Terbaik</a>
-                <a href="{{url('produkTerbaik')}}">Penjualan Terbaik</a>
-                <a href="page-seller-detail.html">Laporan Member Aktif/Tidak</a>
+                <a href="{{ url('report') }}">Produk/Penjualan Terbaik</a>
+                <a href="{{url('reportAkun')}}">Laporan Member Aktif/Tidak</a>
             </div>
         </li>
         <li class="menu-item @if(Request::segment(1) == 'user'): {{'active'}} @endif has-submenu">

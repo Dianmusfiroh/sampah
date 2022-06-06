@@ -25,7 +25,14 @@ $app = new Illuminate\Foundation\Application(
 | incoming requests to this application from both the web and CLI.
 |
 */
+// $app->withFacades(
+//     $app->register(Laravolt\Indonesia\ServiceProvider::class);
 
+
+// // class aliases
+// class_alias(Laravolt\Indonesia\Facade::class, 'Indonesia');
+// );
+// $app->withEloquent();
 $app->singleton(
     Illuminate\Contracts\Http\Kernel::class,
     App\Http\Kernel::class

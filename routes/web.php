@@ -41,6 +41,7 @@ Route::get('statistikMember', [StatistikController::class,'statistikMember'])->n
 Route::get('updateStatus',[AkunController::class,'updateStatus'])->name('updateStatus');
 Route::get('userAktif',[AkunController::class,'userAktif'])->name('userAktif');
 Route::get('produkTerbaik',[Report::class,'topProduk'])->name('topProduk');
+Route::get('reportAkun',[Report::class,'reportAkun'])->name('reportAkun');
 
 Route::post('/login', [LoginController::class, 'log']);
 Route::get('/logout', [LoginController::class, 'logout']);
