@@ -38,6 +38,12 @@
             </div>
         </li>
         <li class="menu-item @if(Request::segment(1) == 'user'): {{'active'}} @endif">
+            <a class="menu-link" href="{{ url('logUser') }}">
+                <i class="icon material-icons  md-admin_panel_settings"></i>
+                <span class="text">Log Activity User</span>
+            </a>
+        </li>
+        <li class="menu-item @if(Request::segment(1) == 'user'): {{'active'}} @endif">
             <a class="menu-link" href="{{ url('akun') }}">
                 <i class="icon material-icons  md-admin_panel_settings"></i>
                 <span class="text">Setting</span>

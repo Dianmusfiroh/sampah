@@ -9,6 +9,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\Report;
 use App\Http\Controllers\AkunController;
+use App\Http\Controllers\LoguserController;
 use App\Http\Controllers\StatistikController;
 
 /*
@@ -35,6 +36,7 @@ Route::get('/product', [ProductController::class, 'index']);
 Route::get('/order', [OrderController::class, 'index']);
 Route::get('/seller', [SellerController::class, 'index']);
 Route::resource('akun', AkunController::class);
+Route::resource('logUser', LoguserController::class);
 Route::resource('report', Report::class);
 Route::resource('statistik', StatistikController::class);
 Route::get('statistikMember', [StatistikController::class,'statistikMember'])->name('statistikMember');

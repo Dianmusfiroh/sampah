@@ -59,11 +59,27 @@ class AkunController extends Controller
         return backend($request,$data,$modul);
     }
     public function show(Request $request, $id_user ){
-        // // dd($);
-        // die();
         $now = Carbon::now()->format('Y-m-d') ;
         $year = Carbon::now();
-
+        //pendapatan perbulan
+        $pendapatanbulan = DB::select("SELECT t.kodebulan,t.bulan , SUM(t.total) AS total FROM (SELECT a.kodebulan,a.bulan , a.total AS total FROM (SELECT month(tgl_selesai) as kodebulan, monthname(tgl_selesai) AS bulan, totalbayar AS total FROM `t_order` WHERE year(tgl_selesai) = year(now()) AND id_user = $id_user AND order_status = '4' ) AS a UNION ALL SELECT month(tgl_selesai) as kodebulan, monthname(tgl_selesai) AS bulan ,totalbayar AS total FROM `t_multi_order` WHERE  year(tgl_selesai) = year(now())  AND id_user = $id_user AND order_status = '4' ) AS t GROUP by bulan ORDER by kodebulan ASC");
+        $bulan = '';
+        $totalpendapatan = '';
+        foreach ($pendapatanbulan as $item){
+            $bulan .= "'".$item->bulan."'".",";
+            $totalpendapatan .= $item->total.',';
+        }
+        //END pendapatan perbulan
+        //top produk Perbulan
+        $produkTOP = DB::select("SELECT t.id_user, t.id_produk,p.nama_produk ,sum(total) as total from ( SELECT a.id_user,a.id_produk , COUNT(a.id_produk) as total FROM (SELECT k.id_user, k.id_produk FROM `t_keranjang` k JOIN t_multi_order mo WHERE k.kode_keranjang = mo.kode_keranjang AND k.id_user = $id_user AND mo.order_status='4' AND month(mo.tgl_selesai)=month(now()) AND year(mo.tgl_selesai)=year(now()) )AS a GROUP BY a.id_produk UNION ALL SELECT id_user,id_produk,COUNT(id_produk) AS total FROM `t_order` WHERE id_user = $id_user AND order_status ='4' AND month(tgl_selesai)=month(now()) AND year(tgl_selesai)=year(now()) GROUP BY id_produk) AS t JOIN t_produk p WHERE p.id_produk = t.id_produk GROUP BY t.id_produk ORDER BY total DESC limit 5");
+        $produk = '';
+        $totalproduk = '';
+        foreach ($produkTOP as $item){
+            $produk .= "'".$item->nama_produk."'".",";
+            $totalproduk .= $item->total.',';
+        }
+        // SELECT t.id_user, t.id_produk,p.nama_produk ,sum(total) as total from ( SELECT a.id_user,a.id_produk , COUNT(a.id_produk) as total FROM (SELECT k.id_user, k.id_produk FROM `t_keranjang` k JOIN t_multi_order mo WHERE k.kode_keranjang = mo.kode_keranjang AND k.id_user = 32 AND mo.order_status='4' ) AS a GROUP BY a.id_produk UNION ALL SELECT id_user,id_produk,COUNT(id_produk) AS total FROM `t_order` WHERE id_user = 32 AND order_status ='4' GROUP BY id_produk) AS t JOIN t_produk p WHERE p.id_produk = t.id_produk GROUP BY t.id_produk ORDER BY total DESC limit 5
+        //end top produk perbulan
         $order = DB::table('t_order')
             ->select('order_id')
             ->where('id_user','=',$id_user)
@@ -81,36 +97,12 @@ class AkunController extends Controller
         $totalbayar =$tborder+$tbmultiOrder;
         $akun =   DB::table('t_user')
             ->Join('t_setting','t_user.id_user','=','t_setting.id_user')
-        // // ->join('t_multi_order','t_user.id_user','=','t_multi_order.id_user')
             ->select('t_user.*','t_setting.nama_toko')
             ->where('t_user.id_user','=',$id_user)
-            // ->whereIn('tgl_expired','>',$now)
             ->get();
-            // echo $akun[0]->user_id;die;
-            // foreach ($akun as $item){
                 $json = file_get_contents('https://wbslink.id/apiv2/user/getExpired?_key=WbsLinkV00&user_id='.$akun[0]->user_id.'&product_id='.$akun[0]->produk_id.'');
-            // }
 
-
-        // dd($produk);
-    //
-    //     ->get();
-    //     foreach($akun AS $item){
-    //         if (Str::slug($item->nama_toko) == true) {
-    //            echo "ada";
-    //         } else {
-    //             echo "no";
-    //         }
-
-    //     }
-    //     die();
-        // @if ({{Str::slug($item->nama_toko)}} == true)
-        // ada
-        // @else ({{Str::slug($item->nama_toko)}} == false)
-        //     tidak
-        // @endif
-        // }
-        $modul = $this->modul;
+                $modul = $this->modul;
         $data = [
             'view' => 'user.v_akundetail',
             'data' =>
@@ -123,35 +115,20 @@ class AkunController extends Controller
                 'now' => Carbon::now()->format('Y-m-d'),
                 'addWeek' => $year->addWeek()->format('y-m-d'),
                 'produk' => DB::table('t_produk')
-                            ->join('t_produk_link','t_produk.id_produk','=','t_produk_link.id_produk')
+                            ->join('t_setting','t_produk.id_user','=','t_setting.id_user')
                             ->where('t_produk.id_user',$id_user)->get(),
-                // 'akun' =>  DB::select('select u.*,s.*, current_date() as tgl_sekarang from t_user u ,t_setting s WHERE u.id_user = s.id_user  AND u.user_id = "$id_user" AND u.produk_id IN (175,198) and u.tgl_expired >= CURRENT_DATE()')
-
+                'totalpendapatan' => $totalpendapatan,
+                'bulan' => $bulan,
+                'produkNama' => $produk,
+                'produkTotal' => $totalproduk,
                 'akun' =>   DB::table('t_user')
                             ->Join('t_setting','t_user.id_user','=','t_setting.id_user')
-                        // // ->join('t_multi_order','t_user.id_user','=','t_multi_order.id_user')
-                            ->select('t_user.*','t_setting.nama_toko')
+                            ->select('t_user.*','t_setting.*')
                             ->where('t_user.id_user','=',$id_user)
-                            // ->whereIn('tgl_expired','>',$now)
-
                             ->get()
             ]
         ];
         return backend($request,$data,$modul);
-        // $user= tUser::find($id_user);
-        // // dd($user);
-        // if (request()->wantsJson()) {
-
-        //     return response()->json([
-        //         'data' => $user,
-        //     ]);
-        // }
-
-        // return view('v_akundetail', compact('user'));
-
-        // $id_user;
-        // DB::SELECT('DELETE e.*,u.*,b.*,pv.*, pu.*, pl.*, p.*, o.*, kl.*, k.*, s.* FROM `t_expedisi` e, t_user u, t_bank b, t_produk_varian pv, t_produk_ukuran pu, t_produk_link pl, t_produk p, t_order o, t_kurir_lokal kl, t_kupon k, t_setting s WHERE u.id_user= "$id_user"');
-        // // DELETE e.*,u.*,b.*,pv.*, pu.*, pl.*, p.*, o.*, kl.*, k.*, s.* FROM `t_expedisi` e, t_user u, t_bank b, t_produk_varian pv, t_produk_ukuran pu, t_produk_link pl, t_produk p, t_order o, t_kurir_lokal kl, t_kupon k, t_setting s WHERE u.id_user=40
     }
     public function updateStatus(Request $request)
     {
@@ -161,7 +138,6 @@ class AkunController extends Controller
         $user->save();
     }
     public function destroy($id_user){
-        // $id_user;
         $user = DB::table('t_user')->where ('id_user','=',$id_user)->delete();
         $expedisi = DB::table('t_expedisi')->where ('id_user','=',$id_user)->delete();
         $bank = DB::table('t_bank')->where ('id_user','=',$id_user)->delete();
@@ -174,22 +150,7 @@ class AkunController extends Controller
         $setting = DB::table('t_setting')->where ('id_user','=',$id_user)->delete();
         $kurir_lokal = DB::table('t_kurir_lokal')->where ('id_user','=',$id_user)->delete();
 
-        // // // $hps = DB::table('t_user')
-        // ->join('t_expedisi','t_user.id_user','=','t_expedisi.id_user')
-        // ->join('t_bank','t_user.id_user','=','t_bank.id_user')
-        // ->join('t_produk_varian','t_user.id_user','=','t_produk_varian.id_user')
-        // ->join('t_produk_ukuran','t_user.id_user','=','t_produk_ukuran.id_user')
-        // ->join('t_produk_link','t_user.id_user','=','t_produk_link.id_user')
-        // ->join('t_produk','t_user.id_user','=','t_produk.id_user')
-        // ->join('t_order','t_user.id_user','=','t_order.id_user')
-        // ->join('t_kupon','t_user.id_user','=','t_kupon.id_user')
-        // ->join('t_setting','t_user.id_user','=','t_setting.id_user')
-        // ->join('t_kurir_lokal','t_user.id_user','=','t_kurir_lokal.id_user')
-        // $detail = DB::select(DB::raw("DELETE e.*,u.*,b.*,pv.*, pu.*, pl.*, p.*, o.*, kl.*, k.*, s.* FROM `t_expedisi` e, t_user u, t_bank b, t_produk_varian pv, t_produk_ukuran pu, t_produk_link pl, t_produk p, t_order o, t_kurir_lokal kl,t_kupon k, t_setting s WHERE u.id_user=$id_user"));
-
-        // $hapus = DB::SELECT('DELETE e.*,u.*,b.*,pv.*, pu.*, pl.*, p.*, o.*, kl.*, k.*, s.* FROM `t_expedisi` e, t_user u, t_bank b, t_produk_varian pv, t_produk_ukuran pu, t_produk_link pl, t_produk p, t_order o, t_kurir_lokal kl, t_kupon k, t_setting s WHERE u.id_user=$id_user');
         return redirect('akun/');
 
-        // DELETE e.*,u.*,b.*,pv.*, pu.*, pl.*, p.*, o.*, kl.*, k.*, s.* FROM `t_expedisi` e, t_user u, t_bank b, t_produk_varian pv, t_produk_ukuran pu, t_produk_link pl, t_produk p, t_order o, t_kurir_lokal kl, t_kupon k, t_setting s WHERE u.id_user=40
     }
 }

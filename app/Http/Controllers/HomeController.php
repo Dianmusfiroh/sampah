@@ -19,10 +19,11 @@ class HomeController extends Controller
         $akun=  DB::table('t_user')
                             ->join('t_setting','t_user.id_user','=','t_setting.id_user')
                             ->select('t_user.*','t_setting.*')->get();
-        $json = file_get_contents('https://wbslink.id/apiv2/user/getExpired?_key=WbsLinkV00&user_id='.$akun[0]->user_id.'&product_id='.$akun[0]->produk_id.'');
+        // $json = file_get_contents('https://wbslink.id/apiv2/user/getExpired?_key=WbsLinkV00&user_id='.$akun[0]->user_id.'&product_id='.$akun[0]->produk_id.'');
 
         $day = Carbon::now()->format('d');
         $Month = Carbon::now()->format('m');
+
         // $order = DB::select(DB::raw('SELECT COUNT(id_order) AS jumlah, tgl_order FROM t_order WHERE year(tgl_order)= year(NOW()) GROUP BY month(tgl_order)'));
         $user = DB::select(DB::raw('SELECT COUNT(id_user) AS jumlah, is_created FROM t_user WHERE year(is_created)= year(NOW())  GROUP BY month(is_created)'));
         $userExp = DB::select(DB::raw('SELECT COUNT(id_user) AS jumlah, tgl_expired FROM t_user WHERE year(tgl_expired)= year(NOW())  GROUP BY month(tgl_expired)'));
@@ -45,7 +46,11 @@ class HomeController extends Controller
         foreach ($user as $item) {
             $orderUser .= $item->jumlah.',';
         }
-
+        $akun =   DB::table('t_user')
+        ->Join('t_setting','t_user.id_user','=','t_setting.id_user')
+        ->select('t_user.*','t_setting.nama_toko')
+        ->get();
+            // $json = file_get_contents('https://wbslink.id/apiv2/user/getExpired?_key=WbsLinkV00&user_id='.$item[0]->user_id.'&product_id='.$item[0]->produk_id.'');
         $data = [
             'view' => 'v_home',
             'data' =>
@@ -65,9 +70,8 @@ class HomeController extends Controller
                             ->whereBetween('t_user.tgl_expired', ["$now", "$addWeek"])->get(),
                 'produk'=> Produk::all(),
                 'chartUser' => $orderUser ,
-                'bestSeller'=> DB::select(DB::raw('SELECT COUNT(id_produk) AS jumlah, id_user,id_produk, nama_produk AS produk, tgl_order
-                FROM   t_order WHERE year(tgl_order) = year(NOW()) AND month(tgl_order) = month(NOW())
-                GROUP  BY id_produk ORDER BY COUNT(id_produk) DESC LIMIT 5')),
+                // 'exp' => $json,
+                'bestSeller'=> DB::select(DB::raw('SELECT p.id_user,t.id_produk ,p.nama_produk,p.gambar ,sum(total) as jumlah, pl.link from ( SELECT a.id_produk , COUNT(a.id_produk) as total FROM (SELECT k.id_user, k.id_produk FROM t_keranjang k JOIN t_multi_order mo WHERE k.kode_keranjang = mo.kode_keranjang AND month(tgl_selesai)=month(now()) AND year(tgl_selesai)= year(now())) AS a GROUP BY a.id_produk UNION ALL SELECT id_produk,COUNT(id_produk) AS total FROM t_order o WHERE month(o.tgl_selesai)= month(now()) AND year(o.tgl_selesai) =year(now()) GROUP BY id_produk) AS t JOIN t_produk p JOIN t_produk_link pl WHERE pl.id_produk = t.id_produk AND p.id_produk = t.id_produk GROUP BY t.id_produk ORDER BY total DESC limit 5')),
                 'chart'=> $chrtExp
                 ]
             ];

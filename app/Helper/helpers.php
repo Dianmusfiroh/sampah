@@ -28,6 +28,10 @@ function gabunganOrder($request){
 
     // }
 }
+function linkToko()
+{
+    # code...
+}
 // function islogtrue(Request $request){
 // 	if(($request->session()->has('id'))):
 // 		return redirect('template');

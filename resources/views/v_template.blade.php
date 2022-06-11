@@ -15,7 +15,7 @@
     <!-- Favicon -->
     <link rel="stylesheet" type="text/css" href="{{asset('DataTables/datatables.css')}}"/>
 
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('backend/assets/imgs/theme/favicon.svg')}}" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('backend/assets/imgs/theme/ICON LOGO.png')}}" />
     <!-- Template CSS -->
     <link href="{{ asset('backend/assets/css/main.css?v=1.0')}}" rel="stylesheet" type="text/css" />
 </head>
@@ -24,11 +24,10 @@
     <div class="screen-overlay"></div>
     <aside class="navbar-aside" id="offcanvas_aside">
         <div class="aside-top">
-            <a href="beranda" class="brand-wrap">
-                {{--  <!-- <img src="backend/assets/imgs/theme/logo.svg" class="logo" alt="Nest Dashboard" /> -->  --}}
-                <p align="center">
-                    <h4>WBSLINK ADMIN</h4>
-                </p>
+            <a href="beranda" class="brand-wrap col-nav">
+            <div>
+                <img src="{{ asset('backend/assets/imgs/theme/Logo WBSLINK.png')}}" class="logo"  />
+            </div>
             </a>
             <div>
                 <button class="btn btn-icon btn-aside-minimize"><i

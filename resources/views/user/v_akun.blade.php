@@ -1,29 +1,5 @@
 <h1>{{ $label }}</h1>
 
-{{--  <header class="card card-body mb-4">
-    <div class="row gx-10">
-        <div class="col-lg-6 col-md-10 me-auto">
-            <p>KET</p>
-           <table>
-               <tr>
-                   <th width="40%"><span class="badge rounded-pill alert-success"> </span> : Berlangganan</th>
-                   <th width="30%"><span class="badge rounded-pill alert-danger"> </span> : Expired </th>
-                   <th ><span class="badge rounded-pill alert-warning"> </span> : 7 Hari Sebelum Expired</th>
-               </tr>
-           </table>
-
-
-        </div>
-        <div class="col-lg-2 col-6 col-md-3">
-            <select class="form-select">
-                <option>Latest added</option>
-                <option>Cheap first</option>
-                <option>Most viewed</option>
-            </select>
-        </div>
-    </div>
-</header>  --}}
-{{--  @dump($akun)  --}}
 <div class="card mb-4">
 
     <!-- card-header end// -->
@@ -35,15 +11,13 @@
                         <th>No</th>
                         <th>Nama Toko</th>
                         <th  width="50%">Nama Lengkap</th>
-                        {{--  <th>Tanggal Expired</th>  --}}
                         <th>Email</th>
                         <th>No Hp</th>
-                        <th>Total Transaksi</th>
+                        {{--  <th>Total Transaksi</th>  --}}
                         <th width="20%" class="text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {{--  @dump($now->addMonth())  --}}
                     @foreach ($akunA as $key => $item   )
                         <tr>
                             <td>
@@ -63,22 +37,9 @@
                             <td >
                                 <a href="{{ route( 'akun.show', $item->id_user) }}">
                                     <h6>{{ $item->nama_lengkap }}</h6></a></td>
-                            {{--  <td>
-                                <a href="{{ route( 'akun.show', $item->id_user) }}">
-
-                                @if ( $item->selisih  > 7 )
-                                <span class="badge rounded-pill alert-success">{{$item->tgl_expired}}</span>
-
-                                @elseif($item->selisih  < 1)
-                                <span class="badge rounded-pill alert-danger">{{$item->tgl_expired}}</span>
-                                @elseif($item->selisih  < 7)
-                                    <span class="badge rounded-pill alert-warning">{{$item->tgl_expired}}</span>
-                                @endif
-                                </a>
-                            </td>  --}}
                             <td>{{ $item->email }}</td>
                             <td>{{ $item->no_hp }}</td>
-                            <td></td>
+                            {{--  <td></td>  --}}
                             <td class="text-end">
                                 <div class="row align-items-start form-check form-switch">
                                     <div class="col ">
@@ -94,10 +55,6 @@
                                             </a>
                                     </div>
                                 </div>
-
-                                {{--  <a href="{{ route( 'akun.destroy', $item->id_user) }} "  class="material-icons md-delete_outline">
-                                    </a>  --}}
-
                             </td>
                         </tr>
                     @endforeach

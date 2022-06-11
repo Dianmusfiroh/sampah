@@ -20,16 +20,16 @@ class Report extends Controller
         $this->modul = 'akun';
     }
     public function index(Request $request){
-        $now = Carbon::now();
-        $addBulan = $now->addMonth();
+        $now = Carbon::now()->format('y-m-d');
+
+        // $addBulan = $now->addMonth();
         //query for data top produk
         // SELECT id_produk ,sum(total) as total from (
         //     SELECT a.id_produk ,a.nama_produk, COUNT(*) as total FROM (SELECT k.id_user, k.id_produk, p.nama_produk FROM `t_keranjang` k JOIN t_multi_order mo JOIN t_produk p WHERE k.kode_keranjang = mo.kode_keranjang AND k.id_produk = p.id_produk) AS a GROUP BY a.id_produk
         //     UNION ALL
         //     SELECT p.nama_produk,o.id_produk,COUNT(*) AS total FROM `t_order` o JOIN t_produk p WHERE p.id_produk = o.id_produk GROUP BY id_produk) AS t GROUP BY t.id_produk ORDER BY total DESC
-            $penjualanToko = DB::select("SELECT a.id_user,s.nama_toko,s.logo_toko, SUM(a.total) AS total FROM (SELECT id_user,COUNT(id_user) as total FROM `t_keranjang` GROUP BY id_user UNION ALL SELECT o.id_user, COUNT(o.id_user) FROM t_order o GROUP BY o.id_user ) AS a JOIN t_setting s WHERE a.id_user = s.id_user GROUP BY a.id_user ORDER BY total DESC LIMIT 5");
-            $produk = DB::select(DB::raw("SELECT t.id_produk,p.nama_produk,p.gambar ,sum(total) as total, pl.link from ( SELECT a.id_produk , COUNT(a.id_produk) as total FROM (SELECT k.id_user, k.id_produk FROM `t_keranjang` k JOIN t_multi_order mo WHERE k.kode_keranjang = mo.kode_keranjang ) AS a GROUP BY a.id_produk UNION ALL SELECT id_produk,COUNT(id_produk) AS total FROM `t_order` o GROUP BY id_produk) AS t JOIN t_produk p JOIN t_produk_link pl WHERE pl.id_produk = t.id_produk AND p.id_produk = t.id_produk GROUP BY t.id_produk ORDER BY total DESC limit 5"));
-
+            $penjualanToko = DB::select("SELECT a.id_user ,s.nama_toko ,s.logo_toko, a.tgl_selesai , a.total FROM(SELECT  k.id_user, mo.tgl_selesai,  COUNT(k.id_produk) AS total FROM `t_keranjang` k , t_multi_order mo WHERE  k.kode_keranjang = mo.kode_keranjang AND k.id_user = 241 AND mo.order_status ='4' AND month(mo.tgl_selesai) = month(now()) AND year(mo.tgl_selesai) = year(now()) UNION ALL SELECT o.id_user, o.tgl_selesai,  COUNT(o.id_user) AS total FROM t_order o WHERE month(o.tgl_selesai) = month(now()) AND year(o.tgl_selesai) = year(now())) AS a , t_setting s WHERE a.id_user = s.id_user GROUP BY a.id_user ORDER BY total DESC LIMIT 5");
+            $produktotal = DB::select(DB::raw("SELECT t.id_produk,p.nama_produk,p.gambar ,sum(total) as total, pl.link from ( SELECT a.id_produk , COUNT(a.id_produk) as total FROM (SELECT k.id_user, k.id_produk FROM `t_keranjang` k JOIN t_multi_order mo WHERE k.kode_keranjang = mo.kode_keranjang AND month(tgl_selesai)=month(now()) AND year(tgl_selesai)= year(now())) AS a GROUP BY a.id_produk UNION ALL SELECT id_produk,COUNT(id_produk) AS total FROM `t_order` o WHERE month(o.tgl_selesai)= month(now()) AND year(o.tgl_selesai) =year(now()) GROUP BY id_produk) AS t JOIN t_produk p JOIN t_produk_link pl WHERE pl.id_produk = t.id_produk AND p.id_produk = t.id_produk GROUP BY t.id_produk ORDER BY total DESC limit 5"));
         $mu = DB::select("SELECT COUNT(id_user) as qty , id_user FROM t_keranjang  GROUP BY id_user ");
 
 
@@ -49,12 +49,11 @@ class Report extends Controller
                 'label' => 'Report',
                 'modul' => 'report',
                 'now' =>$now,
-                'produk' => $produk,
+                'produk' => $produktotal,
                 'penjualanToko' =>$penjualanToko,
 
                 // 'totalOrder' =>gabunganOrder($id_user),
                 'akunA'=>  DB::select(DB::raw('select u.*,s.*, current_date() as tgl_sekarang,datediff(u.tgl_expired, current_date()) as selisih from t_user u, t_setting s WHERE u.produk_id IN (175,198) AND s.id_user= u.id_user')),
-                'addBulan' =>$addBulan,
             ]
         ];
         return backend($request,$data,$modul);

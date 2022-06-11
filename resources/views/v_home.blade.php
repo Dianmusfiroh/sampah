@@ -13,6 +13,7 @@
                 <div class="text" href="{{ url('akun') }}">
                     <a href="{{ url('akun') }}" >
                     <h6 class="mb-1 card-title">User</h6>
+                    {{--  <h3>{{ $exp }}</h3>  --}}
                     <h3>{{ $user->count() }}</h3>
                     <span class="text-sm"> Total Jumlah User   </span></a>
                 </div>
@@ -129,7 +130,7 @@
         <div class="col-xl-4 col-lg-12">
                 <div class="card mb-4">
                     <article class="card-body">
-                        <h5 class="card-title">Best Produk This Month</h5>
+                        <h5 class="card-title">Produk Terbaik Bulan Ini</h5>
                         <div class="new-member-list">
                             <div class="table-responsive">
                                 <div class="table-responsive">
@@ -142,7 +143,7 @@
                                             @foreach($bestSeller as $key => $item)
                                             <tr>
                                                 <td>{{++$key}}</td>
-                                                <td><a href="{{ route( 'akun.show', $item->id_user) }}">{{$item->produk}}</a></td>
+                                                <td><a href="{{ route( 'akun.show', $item->id_user) }}">{{$item->nama_produk}}</a></td>
                                                 <td>{{$item->jumlah}}</td>
                                             </tr>
                                             @endforeach

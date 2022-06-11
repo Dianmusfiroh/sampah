@@ -6,14 +6,16 @@
         <div class="card-header bg-brand-2" style="height: 150px"></div>
         <div class="card-body">
             <div class="row">
+                @foreach ($akun as $item )
+
                 <div class="col-xl col-lg flex-grow-0" style="flex-basis: 230px">
                     <div class="img-thumbnail shadow w-100 bg-white position-relative text-center" style="height: 190px; width: 200px; margin-top: -120px">
-                        <img src="{{asset('backend/assets/imgs/people/profile.png')}}" class="center-xy img-fluid" alt="Logo Brand" />
+                        {{--  <img src="{{asset('backend/assets/imgs/people/profile.png')}}" class="center-xy img-fluid" alt="Logo Brand" />  --}}
+                        <img src="https://wbslink.id/assets/image/toko/{{$item->logo_toko}}" class="center-xy img-fluid" alt="Logo Brand" />
                     </div>
                 </div>
                 <!--  col.// -->
                 <div class="col-xl col-lg">
-                    @foreach ($akun as $item )
                     <h3>{{$item->nama_toko}}</h3>
                     <h5><span>({{$item->nama_lengkap}})</span></h5>
                     <p></p>
@@ -89,25 +91,59 @@
 
         <!--  card-body.// -->
     </div>
+    <div class="row">
+        <div class="col-xl-8 col-lg-12">
+            <div class="card mb-4">
+                <article class="card-body">
+                    <h5 class="card-title">Total Pendapatan Perbulan</h5>
+                    <canvas id="myChart3" height="120px"></canvas>
+                </article>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-12">
+            <div class="card mb-4">
+                <article class="card-body">
+                    <h5 class="card-title">Produk Terlaris</h5>
+                    <canvas id="myChartProduk" height="217"></canvas>
+                </article>
+            </div>
+        </div>
+    </div>
+
     <div class="card mb-4">
         <div class="card-body">
-            <h3 class="card-title">Products by seller ({{$produk->count()}})</h3>
-
+            <div class="row gx-3">
+                <div class="col-lg-4 col-md-6 me-auto">
+                    <h3 class="card-title">Products by seller ({{$produk->count()}})</h3>
+                </div>
+            </div>
             <div class="row">
                 @foreach($produk as $item)
 
-                <div class="col-xl-3 col-lg-3 col-md-6">
+                <div class="col-xl-2 col-lg-3 col-md-5">
 
                     <div class="card card-product-grid">
 
-                        <a href="#" class="img-wrap"> <img src="{{asset('backend/assets/imgs/items/1.jpg')}}" alt="Product" /> </a>
+                        <a href="https://wbslink.id/@if (preg_match("/_/",$item->nama_toko)){{$item->nama_toko}}@else{{Str::slug($item->nama_toko)}}@endif/{{$item->id_produk}}/{{Str::slug($item->nama_produk)}}" target="_blank" class="img-wrap img-card"> <img src="https://wbslink.id/assets/image/produk/{{$item->gambar}}"  /> </a>
+
                         <div class="info-wrap">
-                            <a href="{{$item->link}}" target="_blank" class="title">{{$item->nama_produk}}</a>
-                            <div class="price mt-1">@currency($item->harga_jual)</div>
-                            <!-- price-wrap.// -->
+
+                            <a href="https://wbslink.id/@if (preg_match("/_/",$item->nama_toko)){{$item->nama_toko}}@else{{Str::slug($item->nama_toko)}}@endif/{{$item->id_produk}}/{{Str::slug($item->nama_produk)}}" target="_blank" class="title" <abbr title="{{$item->nama_produk}}">
+                                {{ str_limit($item->nama_produk, 14, '...') }}
+                            </a>
+
+                            <div class="price mt-1">
+                                @currency($item->harga_jual)
+                            </div>
+                            {{--  <div class="dropdown float-end">
+                                @if ($item->status == 'aktif')
+                                <span class="badge rounded-pill alert-success">{{$item->is_active}}</span>
+                                @elseif($item->status == 'deleted')
+                                    <span class="badge rounded-pill alert-danger">{{$item->is_active}}</span>
+                                @endif
+                            </div>  --}}
 
                         </div>
-
                     </div>
 
                     <!-- card-product  end// -->
@@ -123,3 +159,83 @@
 
     </div>
 </section>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<script src="{{ asset('backend/assets/js/vendors/chart.js')}}"></script>
+
+<script>
+    var totalpendapatan = [@php echo $totalpendapatan @endphp];
+    var bulan = [@php echo $bulan @endphp];
+
+    if ($('#myChart3').length) {
+        var ctx = document.getElementById("myChart3");
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: bulan,
+                datasets: [ {
+                        label: 'Total Pendapatan',
+                        tension: 0.3,
+                        fill: true,
+                        backgroundColor: 'rgba(44, 120, 220, 0.2)',
+                        borderColor: 'rgba(44, 120, 220)',
+                        data: totalpendapatan
+                    }
+                ]
+            },
+            options: {
+           // indexAxis: 'y',
+                plugins: {
+                    legend: {
+                        labels: {
+                            usePointStyle: true,
+                        },
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    var produkNama = [@php echo $produkNama @endphp];
+    var produkTotal = [@php echo $produkTotal @endphp];
+
+    console.log(bulan)
+    if ($('#myChartProduk').length) {
+        var ctx = document.getElementById("myChartProduk");
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: produkNama,
+                datasets: [{
+                        label: 'Produk',
+                        backgroundColor: "#5897fb",
+                        barThickness: 10,
+                        data: produkTotal
+                    },
+
+
+                ]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        labels: {
+                            usePointStyle: true,
+                        },
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+</script>

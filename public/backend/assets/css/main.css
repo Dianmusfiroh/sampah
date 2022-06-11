@@ -434,6 +434,11 @@ table .form-check {
     border: 3px solid #fff;
 }
 
+.img-card {
+    width: 148px;
+    height: 148px;
+}
+
 .img-xs,
 .img-sm,
 .img-md,
@@ -3830,9 +3835,9 @@ body.offcanvas-active {
 }
 
 .navbar-aside .aside-top .logo {
-    max-width: 120px;
+    max-width: 210px;
     margin-top: 5px;
-    min-width: 120px;
+    min-width: 210px;
 }
 
 .main-header {
