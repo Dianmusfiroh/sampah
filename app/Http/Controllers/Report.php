@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\UserFilterExport;
 use App\Exports\UsersExpireExport;
 use App\Exports\UsersExport;
 use App\Models\Order;
@@ -15,9 +16,11 @@ use Maatwebsite\Excel\Facades\Excel;
 class Report extends Controller
 {
     protected $modul;
+    protected $date;
     function __construct()
     {
         $this->modul = 'akun';
+        $this->date = 'date';
     }
     public function index(Request $request){
         $now = Carbon::now()->format('y-m-d');
@@ -97,38 +100,73 @@ class Report extends Controller
         $export = new UsersExport();
         return Excel::download($export,'Laporan User Aktif.xlsx');
     }
-    public function cetakTidakAktif_pdf()
+    public function cetakTidakAktif_pdf(Request $request)
     {
 
-        $now = Carbon::now()->format('y-m-d');
 
-        // $userExp = DB::table('t_user')
-        // ->join('t_setting','t_setting.id_user','=','t_user.id_user')
-        // ->where('t_user.tgl_expired','<=',$now,)
-        // // ->select(where t_user.id_user = 31")
-        // ->whereIn('t_user.produk_id',['198','175'])
-        // ->get();
         $expired = new UsersExpireExport();
-
-
-        // $pdf   = PDF::loadview('v_reportUserTidakAktif', compact('userExp'))->setPaper('a4', 'landscape');
-        // return $pdf->download('Laporan User Tidak Aktif.PDF');
         return Excel::download($expired,'Laporan User Tidak Aktif.xlsx');
 
     }
     public function reportAkun(request $request)
     {
+        $tanggal_awal = date('Y-m-t',strtotime($request->tanggal_awal));
+        $tanggal_akhir = date('Y-m-t',strtotime($request->tanggal_akhir));
         $modul = $this->modul;
         $data = [
             'view' => 'report.v_reportAkun',
             'data' =>
             [
-                'label' => 'Report',
+                'label' => 'Report Member',
                 'modul' => 'report',
                 'akunA'=>  DB::select(DB::raw('select u.*,s.*, current_date() as tgl_sekarang,datediff(u.tgl_expired, current_date()) as selisih from t_user u, t_setting s WHERE u.produk_id IN (175,198) AND s.id_user= u.id_user')),
-
+                'user'  => DB::table('t_user')
+                ->join('t_setting','t_setting.id_user','=','t_user.id_user')
+                ->whereBetween('t_user.tgl_expired',[$tanggal_awal,$tanggal_akhir])
+                ->whereIn('t_user.produk_id',['198','175'])
+                ->get(),
             ]
         ];
         return backend($request,$data,$modul);
     }
+    public function storeAkun(request $request)
+    {
+        // $tanggal_awal = date('Y-m-t',strtotime('2022-06-13'));
+        // $tanggal_akhir = date('Y-m-t',strtotime('2022-06-14'));
+        // $userExp = DB::table('t_user')
+        //             ->join('t_setting','t_setting.id_user','=','t_user.id_user')
+        //             ->whereDate('t_user.tgl_expired','=>','2022-06-13')
+        //             ->whereDate('t_user.tgl_expired','<=','2022-06-13')
+        //             ->whereIn('t_user.produk_id',['198','175'])
+        //             ->get();
+        $now = Carbon::now()->format('y-m-d');
+
+        $tanggal_awal = date($request->tanggal_awal);
+        $tanggal_akhir = date($request->tanggal_akhir);
+        $user  = DB::table('t_user')
+        ->join('t_setting','t_setting.id_user','=','t_user.id_user')
+        ->whereBetween('t_user.tgl_expired',[$tanggal_awal,$tanggal_akhir])
+        ->whereIn('t_user.produk_id',['198','175'])
+        ->get();
+        $tgl = '';
+        foreach ($user as $u){
+            $tgl .= $u->tgl_expired;
+            echo $tgl;
+        }
+        die();
+
+        // return view('report.v_reportUserFilter', [
+        //     $user  = DB::table('t_user')
+        //     ->join('t_setting','t_setting.id_user','=','t_user.id_user')
+        //     ->whereBetween('t_user.tgl_expired',[$tanggal_awal,$tanggal_akhir])
+        //     ->whereIn('t_user.produk_id',['198','175'])
+        //     ->get()
+
+        // ]);
+        // return Excel::download($user,'Laporan User .xlsx');
+
+        // return Excel::download($userExp,'Laporan User ($tanggal_awal-$tanggal_akhir).xlsx');
+
+
+            }
 }

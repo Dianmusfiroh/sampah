@@ -38,7 +38,7 @@
     <div class="col-lg-7">
         <div class="card mb-4">
             <article class="card-body">
-                <h5 class="card-title">Top Seles By Toko</h5>
+                <h5 class="card-title">Top Seles By Produk</h5>
                 <div class="new-member-list">
                     @foreach ($produk as $item )
                     <a href="{{$item->link}}" target="_blank" class="title">

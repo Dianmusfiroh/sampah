@@ -202,9 +202,10 @@ input:focus::-moz-placeholder {
     overflow: hidden;
 }
 
-.hidden {
+
+/* .hidden {
     display: none;
-}
+} */
 
 .clear {
     clear: both;
@@ -291,6 +292,13 @@ input[type=number]:focus,
 
 hr {
     color: #a6acb3 !important;
+}
+
+th {
+    background: #e0e0e0 !important;
+    padding: 10px 0;
+    font-weight: 600;
+    width: 20%;
 }
 
 table {
@@ -618,7 +626,10 @@ button {
 }
 
 b {
-    font-weight: 500;
+    font-weight: 1000;
+    font-family: "Quicksand", sans-serif;
+    color: #495057;
+    font-size: 14px;
 }
 
 .card-title {
@@ -1483,6 +1494,10 @@ textarea.form-control {
 .verti-timeline {
     border-left: 2px dashed #e1e1e1;
     margin: 0 10px;
+}
+
+.view {
+    display: none;
 }
 
 .verti-timeline .event-list {
@@ -3769,6 +3784,11 @@ ul.row-sm {
 
 .mr-200 {
     margin-right: 200px !important;
+}
+
+.output {
+    margin: 0 auto;
+    padding: 1em;
 }
 
 body {

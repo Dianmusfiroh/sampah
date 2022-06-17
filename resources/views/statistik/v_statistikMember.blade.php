@@ -23,12 +23,14 @@
 
 
         var chrtMember = [@php echo $chrtMember @endphp];
-        var prov = [@php echo $prov @endphp];
+        var prov = [1,2,3,4];
+        {{--  var prov = [@php echo $prov @endphp];  --}}
+        console.log(prov);
         let text = "";
-        {{--  for (let i = 0; i < prov.length; i++) {
+        for (let i = 0; i < prov.length; i++) {
         text += prov[i] ;
         }
-        console.log(prov);
+        console.log(text);
         let province ;
         if (prov == '0'){
             province = 'tidak memilih';
@@ -36,7 +38,7 @@
             province = 'Bali';
         }else {
         };
-        console.log(province);  --}}
+        console.log(province);
 
 {{--
         if(prov = '0'){

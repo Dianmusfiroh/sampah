@@ -108,9 +108,8 @@ class StatistikController extends Controller
             };
 
         };
-        dd($prov);
+        // dd($prov);
 
-die;
 
         $data = [
             'view' => 'statistik.v_statistikMember',

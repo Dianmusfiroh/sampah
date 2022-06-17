@@ -38,13 +38,13 @@ Route::get('/seller', [SellerController::class, 'index']);
 Route::resource('akun', AkunController::class);
 Route::resource('logUser', LoguserController::class);
 Route::resource('report', Report::class);
-Route::resource('statistik', StatistikController::class);
 Route::get('statistikMember', [StatistikController::class,'statistikMember'])->name('statistikMember');
+Route::resource('statistik', StatistikController::class);
+Route::post('storeAkun', [Report::class,'storeAkun'])->name('storeAkun');
 Route::get('updateStatus',[AkunController::class,'updateStatus'])->name('updateStatus');
 Route::get('userAktif',[AkunController::class,'userAktif'])->name('userAktif');
 Route::get('produkTerbaik',[Report::class,'topProduk'])->name('topProduk');
 Route::get('reportAkun',[Report::class,'reportAkun'])->name('reportAkun');
-
 Route::post('/login', [LoginController::class, 'log']);
 Route::get('/logout', [LoginController::class, 'logout']);
 Route::get('/cetakUserAktif', [Report::class, 'cetakAktif_pdf'])->name('cetakAktif');

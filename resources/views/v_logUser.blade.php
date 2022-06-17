@@ -13,7 +13,6 @@
                         <th  width="30%">Nama Lengkap</th>
                         <th>Aksi</th>
                         {{--  <th>Total Transaksi</th>  --}}
-                        <th width="20%" class="text-center">Order Id</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,8 +34,7 @@
                             <td >
                                 <a href="{{ route( 'akun.show', $item->id_user) }}">
                                     <h6>{{ $item->nama_lengkap }}</h6></a></td>
-                            <td>{{ $item->aksi }}</td>
-                            <td>{{ $logPensanan[0]['order_id'] }}</td>
+                            <td class="mb-0 title">Melakukan <b>{{ $item->aksi }}</b> Transaksi <b>{{ $logPensanan[0]['order_id'] }}</b></td>
                             {{--  <td class="text-end">
                                 <div class="row align-items-start form-check form-switch">
                                     <div class="col ">

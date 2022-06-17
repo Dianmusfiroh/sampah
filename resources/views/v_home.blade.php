@@ -41,7 +41,7 @@
                 <span class="icon icon-sm rounded-circle bg-warning-light"><i
                         class="text-warning material-icons md-qr_code"></i></span>
                 <div class="text">
-                    <h6 class="mb-1 card-title">User Terdaftar </h6>
+                    <h6 class="mb-1 card-title">Pendaftaran </h6>
                     <span> {{$userToDay}}</span>
 
                     <span class="text-sm"> User Terdaftar Hari Ini </span>
@@ -49,7 +49,7 @@
             </article>
         </div>
     </div>
-    <div class="col-lg-3">
+    {{--  <div class="col-lg-3">
         <div class="card card-body mb-4">
             <article class="icontext">
                 <span class="icon icon-sm rounded-circle bg-warning-light"><i
@@ -62,7 +62,7 @@
                 </div>
             </article>
         </div>
-    </div>
+    </div>  --}}
 
     <div class="col-lg-3">
         <div class="card card-body mb-5">

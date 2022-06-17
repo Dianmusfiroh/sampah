@@ -26,6 +26,7 @@ class LoguserController extends Controller
         $nama_toko = $item->nama_toko;
         }
         // dd($logPensanan);
+        // dd($logPensanan);
         $log2 = DB::table('t_setting')
                 ->select('t_setting.*')
                 ->where('id_user')->get();
