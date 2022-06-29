@@ -632,6 +632,21 @@ b {
     font-size: 14px;
 }
 
+#myTable tr .sorting_asc {
+    padding-right: 0px;
+    margin-right: 0px;
+    height: 20px;
+    transform: translatex(0px) translatey(0px);
+    margin-left: 0px;
+}
+
+
+/* Sorting asc */
+
+.main-wrap .content-main .card .card-body .table-responsive #myTable_wrapper #myTable thead tr .sorting_asc {
+    width: 120px !important;
+}
+
 .card-title {
     color: #383e50 !important;
 }

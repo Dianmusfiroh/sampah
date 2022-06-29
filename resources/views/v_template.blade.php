@@ -13,11 +13,17 @@
     <meta property="og:url" content="" />
     <meta property="og:image" content="" />
     <!-- Favicon -->
-    <link rel="stylesheet" type="text/css" href="{{asset('DataTables/datatables.css')}}"/>
+
+    {{--  <link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"/>  --}}
+
+    {{--  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.22/datatables.min.css"/>  --}}
+
 
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('backend/assets/imgs/theme/ICON LOGO.png')}}" />
     <!-- Template CSS -->
     <link href="{{ asset('backend/assets/css/main.css?v=1.0')}}" rel="stylesheet" type="text/css" />
+    <link href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
+    {{--  <link rel="stylesheet" type="text/css" href="{{asset('DataTables/datatables.css')}}"/>  --}}
 </head>
 
 <body>

@@ -25,10 +25,7 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="mb-4 ">
-                                
-                                <button type="submit" class="btn btn-md btn-primary end-text">Expired</button>
-                                <button type="submit" class="btn btn-md btn-primary end-text">Active</button>
-
+                                <button type="submit" class="btn btn-md btn-primary end-text">Print</button>
                             </div>
                         </div>
                     </div>

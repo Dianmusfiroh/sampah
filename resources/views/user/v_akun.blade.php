@@ -5,10 +5,10 @@
     <!-- card-header end// -->
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-hover" id="myTable">
+            <table class="table table-hover" id="myTable" style="width:100%">
                 <thead>
                     <tr>
-                        <th>No</th>
+                        <th width="10%">No</th>
                         <th>Nama Toko</th>
                         <th  width="50%">Nama Lengkap</th>
                         <th>Email</th>
@@ -69,7 +69,14 @@
 </div>
 @include('script.delete')
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+{{--  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js"></script>  --}}
 <script type="text/javascript" src="DataTables/datatables.min.js"></script>
+<script>
+    $("#myTable").DataTable({
+                    "autoWidth": false,
+                    "responsive": true
+                });
+</script>
 <script>
     $(function() {
     $('.form-check-input').change(function() {
@@ -83,17 +90,12 @@
             url: '{{ route('updateStatus') }}',
             data: {'is_active': is_active, 'id_user': id_user},
             success: function(data){
-                console.log(url)
+                console.log(is_active)
             }
         });
     })
     })
 </script>
 
-<script>
-    $("#myTable").DataTable({
-                    "autoWidth": false,
-                    "responsive": true
-                });
-</script>
+
 

@@ -11,8 +11,78 @@ class StatistikController extends Controller
 {
     public function index(Request $request){
         $Month = Carbon::now()->format('m');
-        // $Month = Carbon::now()->format('m');
+        setlocale(LC_TIME, 'id_ID');
+        \Carbon\Carbon::setLocale('id');
 
+    //week
+        $weekTotal = DB::select('SELECT count(a.total) AS total, a.tgl_order FROM ( SELECT tgl_order AS total, tgl_order, YEARWEEK(tgl_order) FROM `t_multi_order` WHERE YEARWEEK(tgl_order) = YEARWEEK(NOW()) AND month(tgl_order) = month(now()) UNION ALL SELECT tgl_order as total, tgl_order, YEARWEEK(tgl_order) FROM `t_order` WHERE YEARWEEK(tgl_order) = YEARWEEK(NOW()) AND month(tgl_order) = month(now())) AS a GROUP by day(a.tgl_order)');
+        $weekSelesai = DB::select('SELECT count(a.total) AS total, a.tgl_order FROM ( SELECT tgl_order AS total, tgl_order, YEARWEEK(tgl_order) FROM `t_multi_order` WHERE order_status = 4 AND YEARWEEK(tgl_order) = YEARWEEK(NOW()) AND month(tgl_order) = month(now()) UNION ALL SELECT tgl_order as total, tgl_order, YEARWEEK(tgl_order) FROM `t_order` WHERE order_status = 4 AND YEARWEEK(tgl_order) = YEARWEEK(NOW()) AND month(tgl_order) = month(now())) AS a GROUP by day(a.tgl_order)');
+        $weekTerkirim = DB::select('SELECT count(a.total) AS total, a.tgl_order FROM ( SELECT tgl_order AS total, tgl_order, YEARWEEK(tgl_order) FROM `t_multi_order` WHERE order_status = 3 AND YEARWEEK(tgl_order) = YEARWEEK(NOW()) AND month(tgl_order) = month(now()) UNION ALL SELECT tgl_order as total, tgl_order, YEARWEEK(tgl_order) FROM `t_order` WHERE order_status = 3 AND YEARWEEK(tgl_order) = YEARWEEK(NOW()) AND month(tgl_order) = month(now())) AS a GROUP by day(a.tgl_order)');
+        $chrtWeekSelesai = '';
+        $chrtWeekTerkirim = '';
+        $chrtWeekTotal = '';
+        $namaHariSelesai = '';
+        $namaHariTotal = '';
+        $namaHariTerkirim = '';
+        foreach ($weekTotal as $item){
+            $chrtWeekTotal .= $item->total.',';
+            $namaHariTotal .= '"'.Carbon::parse($item->tgl_order)->isoFormat('dddd').'"'.',';
+        }
+        foreach ($weekSelesai as $item){
+            $chrtWeekSelesai .= $item->total.',';
+            $namaHariSelesai .= '"'.Carbon::parse($item->tgl_order)->isoFormat('dddd').'"'.',';
+        }
+        foreach ($weekTerkirim as $item){
+            $chrtWeekTerkirim .= $item->total.',';
+            $namaHariTerkirim .= '"'.Carbon::parse($item->tgl_order)->isoFormat('dddd').'"'.',';
+        }
+        //month
+        $bulanSelesai = DB::select('SELECT COUNT(a.total) AS total, a.bulan ,a.namabulan FROM (SELECT id_order AS total, monthname(tgl_order) AS namabulan,month(tgl_order) AS bulan FROM `t_multi_order` WHERE order_status="4" AND month(tgl_order) = month(tgl_order) AND year(tgl_order)= year(tgl_order) UNION SELECT id_order AS total, monthname(tgl_order) AS namabulan,month(tgl_order) AS bulan FROM `t_order` WHERE order_status="4" AND month(tgl_order) = month(tgl_order) AND year(tgl_order)= year(tgl_order) )AS a GROUP BY bulan');
+        $bulanProses = DB::select('SELECT COUNT(a.total) AS total, a.bulan ,a.namabulan FROM (SELECT id_order AS total, month(tgl_order) AS bulan , monthname(tgl_order) AS namabulan FROM `t_multi_order` WHERE order_status="3" AND month(tgl_order) = month(tgl_order) AND year(tgl_order)= year(tgl_order) UNION SELECT id_order AS total, month(tgl_order) AS bulan, monthname(tgl_order) AS namabulan FROM `t_order` WHERE order_status="3" AND month(tgl_order) = month(tgl_order) AND year(tgl_order)= year(tgl_order) )AS a GROUP BY bulan');
+        $bulanPemesanan = DB::select('SELECT COUNT(a.total) AS total, a.bulan ,a.namabulan FROM (SELECT id_order AS total, month(tgl_order) AS bulan, monthname(tgl_order) AS namabulan FROM `t_multi_order` WHERE   month(tgl_order) = month(tgl_order) AND year(tgl_order)= year(tgl_order) UNION SELECT id_order AS total, month(tgl_order) AS bulan , monthname(tgl_order) AS namabulan FROM `t_order` WHERE month(tgl_order) = month(tgl_order)  AND year(tgl_order)= year(tgl_order) )AS a GROUP BY bulan');
+        $namaBulan = '';
+        $chrtSelesai = '';
+        $chrtProses = '';
+        $chrtPemesanan = '';
+        $prosesBulan = '';
+        $pemesananBulan = '';
+        foreach ($bulanSelesai as $item) {
+            $chrtSelesai .= $item->total.',';
+            $namaBulan .= '"'.$item->namabulan.'"'.',';
+        }
+        foreach ($bulanProses as $item) {
+            $chrtProses .= $item->total.',';
+            $prosesBulan .= '"'.$item->namabulan.'"'.',';
+
+        }
+        foreach ($bulanPemesanan as $item) {
+            $chrtPemesanan .= $item->total.',';
+            $pemesananBulan .= '"'.$item->namabulan.'"'.',';
+
+        }
+
+        //year
+        $tahunSelesai = DB::select('SELECT count(a.total) AS total, a.tahun AS tahun FROM (SELECT id_order AS total, year(tgl_order) AS tahun FROM `t_order` WHERE order_status="4" UNION ALL SELECT id_order AS total, year(tgl_order) FROM `t_multi_order` WHERE order_status="4" )AS a GROUP BY a.tahun');
+        $tahunProses = DB::select('SELECT count(a.total) AS total, a.tahun AS tahun FROM (SELECT id_order AS total, year(tgl_order) AS tahun FROM `t_order` WHERE order_status="3" UNION ALL SELECT id_order AS total, year(tgl_order) FROM `t_multi_order` WHERE order_status="3" )AS a GROUP BY a.tahun');
+        $tahunPemesanan = DB::select('SELECT count(a.total) AS total, a.tahun AS tahun FROM (SELECT id_order AS total, year(tgl_order) AS tahun FROM `t_order`  UNION ALL SELECT id_order AS total, year(tgl_order) FROM `t_multi_order`)AS a GROUP BY a.tahun');
+        $namaTahunSelesai = '';
+        $namaTahunProses = '';
+        $namaTahunPemesanan = '';
+        $chartTahunSelesai = '';
+        $chartTahunProses = '';
+        $chartTahunPemesanan = '';
+        foreach ($tahunSelesai as $item) {
+            $chartTahunSelesai .= $item->total.',';
+            $namaTahunSelesai .= '"'.$item->tahun.'"'.',';
+        }
+        foreach ($tahunProses as $item) {
+            $chartTahunProses .= $item->total.',';
+            $namaTahunProses .= '"'.$item->tahun.'"'.',';
+        }
+        foreach ($tahunPemesanan as $item) {
+            $chartTahunPemesanan .= $item->total.',';
+            $namaTahunPemesanan .= '"'.$item->tahun.'"'.',';
+        }
         $orderTR =  DB::table('t_order')
                 ->whereMonth('tgl_order', $Month)
                 ->where('order_status','4')
@@ -29,7 +99,28 @@ class StatistikController extends Controller
             'view' => 'statistik.v_statistik',
             'data' =>
             [
-                'label' => 'Statistik'
+                'label' => 'Statistik',
+                //bulan
+                'chrtSelesai' => $chrtSelesai,
+                'chrtProses' => $chrtProses,
+                'chrtPemesanan' => $chrtPemesanan,
+                'namaBulan' => $namaBulan,
+                'prosesBulan' => $prosesBulan,
+                'pemesananBulan' => $pemesananBulan,
+                //tahun
+                'chartTahunSelesai' => $chartTahunSelesai,
+                'chartTahunProses' => $chartTahunProses,
+                'chartTahunPemesanan' => $chartTahunPemesanan,
+                'namaTahunSelesai' =>  $namaTahunSelesai ,
+                'namaTahunProses' => $namaTahunProses,
+                'namaTahunPemesanan' => $namaTahunPemesanan,
+                //minggu
+                'chrtWeekSelesai' => $chrtWeekSelesai,
+                'chrtWeekTerkirim' => $chrtWeekTerkirim,
+                'chrtWeekTotal' => $chrtWeekTotal,
+                'namaHariTotal' => $namaHariTotal,
+                'namaHariSelesai' => $namaHariSelesai,
+                'namaHariTerkirim' => $namaHariTerkirim,
             ]
         ];
         return backend($request,$data);

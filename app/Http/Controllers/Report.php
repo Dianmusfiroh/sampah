@@ -131,42 +131,8 @@ class Report extends Controller
     }
     public function storeAkun(request $request)
     {
-        // $tanggal_awal = date('Y-m-t',strtotime('2022-06-13'));
-        // $tanggal_akhir = date('Y-m-t',strtotime('2022-06-14'));
-        // $userExp = DB::table('t_user')
-        //             ->join('t_setting','t_setting.id_user','=','t_user.id_user')
-        //             ->whereDate('t_user.tgl_expired','=>','2022-06-13')
-        //             ->whereDate('t_user.tgl_expired','<=','2022-06-13')
-        //             ->whereIn('t_user.produk_id',['198','175'])
-        //             ->get();
-        $now = Carbon::now()->format('y-m-d');
-
         $tanggal_awal = date($request->tanggal_awal);
         $tanggal_akhir = date($request->tanggal_akhir);
-        $user  = DB::table('t_user')
-        ->join('t_setting','t_setting.id_user','=','t_user.id_user')
-        ->whereBetween('t_user.tgl_expired',[$tanggal_awal,$tanggal_akhir])
-        ->whereIn('t_user.produk_id',['198','175'])
-        ->get();
-        $tgl = '';
-        foreach ($user as $u){
-            $tgl .= $u->tgl_expired;
-            echo $tgl;
-        }
-        die();
-
-        // return view('report.v_reportUserFilter', [
-        //     $user  = DB::table('t_user')
-        //     ->join('t_setting','t_setting.id_user','=','t_user.id_user')
-        //     ->whereBetween('t_user.tgl_expired',[$tanggal_awal,$tanggal_akhir])
-        //     ->whereIn('t_user.produk_id',['198','175'])
-        //     ->get()
-
-        // ]);
-        // return Excel::download($user,'Laporan User .xlsx');
-
-        // return Excel::download($userExp,'Laporan User ($tanggal_awal-$tanggal_akhir).xlsx');
-
-
+        return (new UserFilterExport)->forYear($tanggal_awal,$tanggal_akhir)->download('Daftar Akun '.$tanggal_awal.'-'.$tanggal_awal.'.xlsx');
             }
 }

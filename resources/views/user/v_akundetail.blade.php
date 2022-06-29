@@ -7,7 +7,6 @@
         <div class="card-body">
             <div class="row">
                 @foreach ($akun as $item )
-
                 <div class="col-xl col-lg flex-grow-0" style="flex-basis: 230px">
                     <div class="img-thumbnail shadow w-100 bg-white position-relative text-center" style="height: 190px; width: 200px; margin-top: -120px">
                         {{--  <img src="{{asset('backend/assets/imgs/people/profile.png')}}" class="center-xy img-fluid" alt="Logo Brand" />  --}}
@@ -16,7 +15,7 @@
                 </div>
                 <!--  col.// -->
                 <div class="col-xl col-lg">
-                    <h3>{{$item->nama_toko}}</h3>
+                    <h3>{{$item->nama_toko}} <span>({{$item->username}})</span></h3>
                     <h5><span>({{$item->nama_lengkap}})</span></h5>
                     <p></p>
 
