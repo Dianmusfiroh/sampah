@@ -179,6 +179,39 @@ input:focus::-moz-placeholder {
     transition: .4s;
 }
 
+.btn-close {
+    width: 5px;
+    height: 5px;
+    display: block;
+    float: right;
+}
+
+.btn-close::before,
+
+/* .btn-close::after {
+    content: '';
+    width: 32px;
+    height: 6px;
+    display: block;
+    background: rgb(173, 173, 173);
+} */
+
+.btn-close::before {
+    margin-top: 12px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.btn-close::after {
+    margin-top: -6px;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
 
 /*--- Common Classes---------------------*/
 

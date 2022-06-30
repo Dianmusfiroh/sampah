@@ -9,8 +9,10 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\Report;
 use App\Http\Controllers\AkunController;
+use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LoguserController;
 use App\Http\Controllers\StatistikController;
+use Illuminate\Routing\Route as RoutingRoute;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,5 +51,6 @@ Route::post('/login', [LoginController::class, 'log']);
 Route::get('/logout', [LoginController::class, 'logout']);
 Route::get('/cetakUserAktif', [Report::class, 'cetakAktif_pdf'])->name('cetakAktif');
 Route::get('/cetakUserTidakAktif', [Report::class, 'cetakTidakAktif_pdf'])->name('cetakNonAktif');
+Route::resource('kategori', KategoriController::class);
 
 

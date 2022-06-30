@@ -1,7 +1,7 @@
 <script>
     var url = '';
     const deleteData = (id) =>{
-        url = '{{route("${model}.destroy",":id")}}';
+        url = '{{route("${modul}.destroy",":id")}}';
         url = url.replace(':id',id);
         $("#deleteForm").attr('action',url);
     }

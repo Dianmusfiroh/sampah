@@ -43,13 +43,13 @@
                 <span class="text">Log Activity User</span>
             </a>
         </li>
-        <li class="menu-item @if(Request::segment(1) == 'user'): {{'active'}} @endif">
+        <li class="menu-item @if(Request::segment(1) == 'user'): {{'active'}} @endif has-submenu ">
             <a class="menu-link" href="{{ url('akun') }}">
                 <i class="icon material-icons  md-admin_panel_settings"></i>
                 <span class="text">Setting</span>
             </a>
             <div class="submenu">
-                <a href="{{ url('kategori') }}">Tambah Kategori</a>
+                <a href="{{ url('kategori') }}"> Tambah Kategori</a>
                 {{--  <a href="{{ url('statistikMember') }}">Statistik Member</a>  --}}
             </div>
         </li>
