@@ -26,14 +26,17 @@ class StatistikController extends Controller
         $namaHariTerkirim = '';
         foreach ($weekTotal as $item){
             $chrtWeekTotal .= $item->total.',';
+            // $namaHariTotal .= '"'.$item->tgl_order.'"'.',';
             $namaHariTotal .= '"'.Carbon::parse($item->tgl_order)->isoFormat('dddd').'"'.',';
         }
         foreach ($weekSelesai as $item){
             $chrtWeekSelesai .= $item->total.',';
+            // $namaHariSelesai .= '"'.$item->tgl_order.'"'.',';
             $namaHariSelesai .= '"'.Carbon::parse($item->tgl_order)->isoFormat('dddd').'"'.',';
         }
         foreach ($weekTerkirim as $item){
             $chrtWeekTerkirim .= $item->total.',';
+            // $namaHariTerkirim .= '"'.$item->tgl_order.'"'.',';
             $namaHariTerkirim .= '"'.Carbon::parse($item->tgl_order)->isoFormat('dddd').'"'.',';
         }
         //month
@@ -49,15 +52,20 @@ class StatistikController extends Controller
         foreach ($bulanSelesai as $item) {
             $chrtSelesai .= $item->total.',';
             $namaBulan .= '"'.$item->namabulan.'"'.',';
+            // $namaBulan .= '"'.Carbon::parse($item->bulan)->isoFormat('MMMM').'"'.',';
+
+
         }
         foreach ($bulanProses as $item) {
             $chrtProses .= $item->total.',';
             $prosesBulan .= '"'.$item->namabulan.'"'.',';
+            // $prosesBulan .= '"'.Carbon::parse($item->bulan)->isoFormat('MMMM').'"'.',';
 
         }
         foreach ($bulanPemesanan as $item) {
             $chrtPemesanan .= $item->total.',';
             $pemesananBulan .= '"'.$item->namabulan.'"'.',';
+            // $pemesananBulan .= '"'.Carbon::parse($item->bulan)->isoFormat('MMMM').'"'.',';
 
         }
 

@@ -1,7 +1,7 @@
 <div class="content-header">
     <div>
         <h2 class="content-title card-title">{{ $label }}</h2>
-        <p>Whole data about your business here</p>
+        <p>Whole data about your business </p>
     </div>
 </div>
 <div class="row">

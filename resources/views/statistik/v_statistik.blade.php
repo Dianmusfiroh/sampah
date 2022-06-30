@@ -16,7 +16,7 @@
         <div class="card mb-4">
             <article class="card-body">
                 <div>
-                    <input type="radio" id="week" class="form-check-input" onChange="timeFrame(this)" name="periode" value="week">
+                    <input type="radio" id="week" class="form-check-input" onChange="timeFrame(this)" name="periode" value="week"  checked>
                     <label onChange="timeFrame(this)"  for="week">Minggu</label><br>
                 </div>
                 <div>
@@ -51,12 +51,7 @@
     const namaHariTotal = [@php echo $namaHariTotal @endphp];
     var unionHari = [...new Set([...namaHariSelesai, ...namaHariTerkirim, ...namaHariTotal])];
 
-    {{--  console.log(unionHari.sort((a, b) => new Date(b).getDay() - new Date(a).getDay()));  --}}
-    {{--  const d = new Date("July 21, 1983 01:15:00");
-    let day = d.getDay();
-    console.log(day);  --}}
-    var tanggalWaktu = new Date();
-		console.log(tanggalWaktu);
+		{{--  console.log(unionHari.sort());  --}}
 
      //Month
     const selesai = [@php echo $chrtSelesai @endphp];
@@ -145,39 +140,38 @@
         datasets:
         [
             {
-                label: "Selesai",
-                backgroundColor: "#5897fb",
+                label: "Pemesanan",
+                backgroundColor: "#36e05e",
                 barThickness: 10,
                 tension: 0.3,
-                data: TrafficMonth,
+                data: TrafficWeek,
                 parsing:{
-                        xAxisKey: 'month',
-                        yAxisKey: 'chrt.selesai'
-                    },
+                    xAxisKey: 'week',
+                    yAxisKey: 'chrt.chrtWeekTotal',
+                },
             },
             {
                 label: "Dikirim",
                 backgroundColor: "#fb5858",
                 barThickness: 10,
                 tension: 0.3,
-                data: TrafficMonth,
+                data: TrafficWeek,
                 parsing:{
-                    xAxisKey: 'bulan.prosesBulan',
-                    yAxisKey: 'chrt.chrtProses'
+                    xAxisKey: 'minggu.namaHariTerkirim',
+                    yAxisKey: 'chrt.chrtWeekTerkirim'
                 },
             },
             {
-                label: "Pemesanan",
-                backgroundColor: "#36e05e",
+                label: "Selesai",
+                backgroundColor: "#5897fb",
                 barThickness: 10,
                 tension: 0.3,
-                data: TrafficMonth,
+                data: TrafficWeek,
                 parsing:{
-                    xAxisKey: 'bulan.pemesananBulan',
-                    yAxisKey: 'chrt.chrtPemesanan',
-                },
-
-            }
+                        xAxisKey: 'minggu.namaHariSelesai',
+                        yAxisKey: 'chrt.chrtWeekSelesai'
+                    },
+            },
         ]
     };
     {{--  const data = {
@@ -250,45 +244,44 @@
         if(period.value == 'week'){
 
 
-            myChart.data.datasets[2].data = TrafficWeek;
-            myChart.data.datasets[2].parsing.xAxisKey = 'week';
-            myChart.data.datasets[2].parsing.yAxisKey = 'chrt.chrtWeekTotal';
+            myChart.data.datasets[0].data = TrafficWeek;
+            myChart.data.datasets[0].parsing.xAxisKey = 'week';
+            myChart.data.datasets[0].parsing.yAxisKey = 'chrt.chrtWeekTotal';
 
             myChart.data.datasets[1].data = TrafficWeek;
             myChart.data.datasets[1].parsing.yAxisKey = 'chrt.chrtWeekTerkirim';
             myChart.data.datasets[1].parsing.xAxisKey = 'minggu.namaHariTerkirim';
-            myChart.data.datasets[0].data = TrafficWeek;
-            myChart.data.datasets[0].parsing.xAxisKey = 'minggu.namaHariSelesai';
-            myChart.data.datasets[0].parsing.yAxisKey = 'chrt.chrtWeekSelesai';
+            myChart.data.datasets[2].data = TrafficWeek;
+            myChart.data.datasets[2].parsing.xAxisKey = 'minggu.namaHariSelesai';
+            myChart.data.datasets[2].parsing.yAxisKey = 'chrt.chrtWeekSelesai';
 
         }
 
         if(period.value == 'month'){
             myChart.data.datasets[0].data = TrafficMonth;
-            myChart.data.datasets[0].parsing.xAxisKey = 'month';
-            myChart.data.datasets[0].parsing.yAxisKey = 'chrt.selesai';
+            myChart.data.datasets[0].parsing.xAxisKey = 'bulan.pemesananBulan';
+            myChart.data.datasets[0].parsing.yAxisKey = 'chrt.chrtPemesanan';
 
             myChart.data.datasets[1].data = TrafficMonth;
             myChart.data.datasets[1].parsing.yAxisKey = 'chrt.chrtProses';
             myChart.data.datasets[1].parsing.xAxisKey = 'bulan.prosesBulan';
 
             myChart.data.datasets[2].data = TrafficMonth;
-            myChart.data.datasets[2].parsing.xAxisKey = 'bulan.pemesananBulan';
-            myChart.data.datasets[2].parsing.yAxisKey = 'chrt.chrtPemesanan';
-
+            myChart.data.datasets[2].parsing.xAxisKey = 'month';
+            myChart.data.datasets[2].parsing.yAxisKey = 'chrt.selesai';
         }
         if(period.value == 'year'){
-            myChart.data.datasets[0].data = TrafficTahun;
-            myChart.data.datasets[0].parsing.xAxisKey = 'year';
-            myChart.data.datasets[0].parsing.yAxisKey = 'chrt.chartTahunSelesai';
 
+            myChart.data.datasets[0].data = TrafficTahun;
+            myChart.data.datasets[0].parsing.xAxisKey = 'tahun.namaTahunPemesanan';
+            myChart.data.datasets[0].parsing.yAxisKey = 'chrt.chartTahunPemesanan';
             myChart.data.datasets[1].data = TrafficTahun;
             myChart.data.datasets[1].parsing.yAxisKey = 'chrt.chartTahunProses';
             myChart.data.datasets[1].parsing.xAxisKey = 'tahun.namaTahunProses';
-
             myChart.data.datasets[2].data = TrafficTahun;
-            myChart.data.datasets[2].parsing.xAxisKey = 'tahun.namaTahunPemesanan';
-            myChart.data.datasets[2].parsing.yAxisKey = 'chrt.chartTahunPemesanan';
+            myChart.data.datasets[2].parsing.xAxisKey = 'year';
+            myChart.data.datasets[2].parsing.yAxisKey = 'chrt.chartTahunSelesai';
+
         }
         myChart.update();
     }
