@@ -24,12 +24,17 @@
                             <td >{{  ++$key }}</td>
                             <td style="width: 807px;">{{ $item->kategori_bisnis }}</td>
                             <td class="text-center">
-                                <a href="{{ route( $modul.'.show', $item->id_kategori_bisnis) }}" class="btn btn-sm font-sm rounded btn-brand"
-                                    type="submit"> <i class="material-icons md-edit"></i> Edit </a>
+                                <a href="{{ route($modul.'.edit', $item->id_kategori_bisnis) }}" title="{{ $item->kategori_bisnis }}" class="btn btn-sm font-sm rounded btn-brand btn-modal"><i class="material-icons md-edit"></i> Edit</a>
+
+                                {{--  <a data-toggle="modal" data-target="#myModalEdit" class="btn btn-sm font-sm rounded btn-brand"
+                                    type="submit"> <i class="material-icons md-edit"></i> Edit </a>  --}}
+                                    {{--  <a href="{{ route( $modul.'.edit', $item->id_kategori_bisnis) }}" class="btn btn-sm font-sm rounded btn-brand"
+                                        type="submit"> <i class="material-icons md-edit"></i> Edit </a>  --}}
+
                                 {{--  <a href="{{ route('kategori.show', $item->id_ketgori_bisnis) }}" class="btn btn-success btn-sm"
                                     type="submit"><i class="fas fa-fw fa-edit"></i> Detail</a>  --}}
-                                <a href="javascript:;" data-toggle="modal" onclick="deleteData({{$item->id_ketgori_bisnis}})"
-                                    data-target="#DeleteModal" class="btn btn-sm btn-danger"><i class="fas fa-fw fa-trash"></i>
+                                <a href="javascript:;" data-toggle="modal" onclick="deleteData({{$item->id_kategori_bisnis}})"
+                                    data-target="#DeleteModal" class="btn btn-sm btn-danger"><i class="material-icons md-delete"></i>
                                     Delete</a>
                             </td>
                         </tr>
@@ -75,7 +80,23 @@
         </div>
     </div>
 </div>
+<!-- Modal Edit -->
+<div class="modal fade" id="modalFee" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5>Ubah Kategori Bisnis  </h5>
+        <h5 class="modal-title" ></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modal-body">
 
+        <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </div>
+    </div>
+</div>
 </div>
 
 @include('script.delete')
@@ -88,7 +109,24 @@
                     "responsive": true
                 });
 </script>
+<script>
+    $('body').on('click', '.btn-modal', function (event) {
+        event.preventDefault();
+        var me = $(this),
+            url = me.attr('href'),
+            title = me.attr('title');
+        $('#modal-title').text(title);
+        $.ajax({
+            url: url,
+            dataType: 'html',
+            success: function (response) {
+                $('#modal-body').html(response);
+            }
+        });
+        $('#modalFee').modal('show');
+    });
 
+</script>
 
 
 

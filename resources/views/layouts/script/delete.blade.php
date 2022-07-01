@@ -5,6 +5,8 @@
         url = url.replace(':id',id);
         $("#deleteForm").attr('action',url);
     }
+    console.log(deleteData);
+
     const formSubmit = () => {
         $("#deleteForm").submit();
     }

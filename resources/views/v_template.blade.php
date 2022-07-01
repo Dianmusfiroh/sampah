@@ -92,6 +92,7 @@
                             </div>
                             <div class="modal-footer justify-content-between">
                                 <button type="button" class="btn btn-outline-light" data-dismiss="modal">Cancel</button>
+                                {{--  <button type="button" class="btn btn-outline-light" data-dismiss="modal">Cancel</button>  --}}
                                 <button  type="submit" name="" class="btn btn-outline-light" data-dismiss="modal"
                                     onclick="formSubmit()">Yes, Delete</button>
                             </div>
