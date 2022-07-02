@@ -80,7 +80,7 @@
         weekObject.chrt.chrtWeekTerkirim = chrtWeekTerkirim[index];
         return weekObject;
     });
-
+console.log(TrafficWeek);
     const TrafficMonth = namaBulan.map((month,index) =>{
         let monthObject = {};
         monthObject.month = month;

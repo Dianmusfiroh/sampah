@@ -5,24 +5,55 @@
     <!-- card-header end// -->
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-hover" id="myTable">
-                <thead>
+            <div class="table-responsive">
+                <table class="table align-middle table-nowrap mb-0" id="myTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="align-middle"  style="width: 4%;">No</th>
+                            <th class="align-middle"  scope="col">Nama Toko</th>
+                            <th class="align-middle"  scope="col">Nama Lengkap</th>
+                            <th class="align-middle"  scope="col">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($log as $key => $item )
+                            <tr>
+                                <td ><span> {{  ++$key }}</span></td>
+                                <td >
+                                    <a href="{{ route( 'akun.show', $item->id_user) }}">
+                                            <h6 class="mb-0 title">{{ $item->nama_toko }}</h6>
+                                    </a>
+                                </td>
+                                <td ><a href="{{ route( 'akun.show', $item->id_user) }}">
+                                    <h6>{{ $item->nama_lengkap }}</h6></a></td>
+                                <td class="mb-0 title">Melakukan <b>{{ $item->aksi }}</b> Transaksi <b>{{ $logPensanan[0]['order_id'] }}</b></td>
+                            </tr>
+                            @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- table-responsive end// -->
+    </div>
+    {{--  <div class="card-body">
+        <div class="table-responsive">
+            <table  class="table align-middle table-nowrap mb-0" id="myTable">
+                <thead class="table-light">
                     <tr>
-                        <th>No</th>
-                        <th>Nama Toko</th>
-                        <th  width="30%">Nama Lengkap</th>
-                        <th>Aksi</th>
-                        {{--  <th>Total Transaksi</th>  --}}
+                        <th scope="col">No</th>
+                        <th scope="col">Nama Toko</th>
+                        <th scope="col">Nama Lengkap</th>
+                        <th scope="col">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($log as $key => $item )
                         <tr>
-                            <td>
+                            <td >
                                 <span> {{  ++$key }}</span>
                             </td>
 
-                            <td width="20%">
+                            <td >
                                 <a href="{{ route( 'akun.show', $item->id_user) }}">
                                     <div class="left">
                                     </div>
@@ -35,28 +66,13 @@
                                 <a href="{{ route( 'akun.show', $item->id_user) }}">
                                     <h6>{{ $item->nama_lengkap }}</h6></a></td>
                             <td class="mb-0 title">Melakukan <b>{{ $item->aksi }}</b> Transaksi <b>{{ $logPensanan[0]['order_id'] }}</b></td>
-                            {{--  <td class="text-end">
-                                <div class="row align-items-start form-check form-switch">
-                                    <div class="col ">
-                                        <input data-ids="{{$item['id_user']}}" class="form-check-input" type="checkbox" data-onstyle="success" {{ $item->is_active ? 'checked' : '' }}>
-                                        @if (preg_match("/_/",$item['nama_toko']))
-                                        <a href="https://wbslink.id/{{$item['nama_toko']}}" target="_blank" title="{{ $item['nama_lengkap'] }}" alamat="{{$item->alamat}}" ><i class="material-icons md-open_in_browser"></i></a>
-                                        @else
-                                        <a href="https://wbslink.id/{{Str::slug($item['nama_toko'])}}" target="_blank" title="{{ $item->nama_lengkap }}" alamat="{{$item->alamat}}" ><i class="material-icons md-open_in_browser"></i></a>
-                                        @endif
-                                        <a href="javascript:;" data-toggle="modal" onclick="deleteData({{$item['id_user']}})"
-                                            data-target="#DeleteModal" class="material-icons md-delete_outline">
-                                            </a>
-                                    </div>
-                                </div>
-                            </td>  --}}
                         </tr>
                         @endforeach
-                    </tbody>
+                </tbody>
             </table>
         </div>
         <!-- table-responsive.// -->
-    </div>
+    </div>  --}}
     </div>
 </div>
 <!-- card-body end// -->
@@ -83,7 +99,26 @@
     })
     })
 </script>
+//script is_active
+{{--  <script>
+    $(function() {
+    $('.form-check-input').change(function() {
+        var is_active = $(this).prop('checked') == true ? 1 : 0;
+        var id_user = $(this).data('ids');
 
+        console.log(is_active)
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: '{{ route('updateStatus') }}',
+            data: {'is_active': is_active, 'id_user': id_user},
+            success: function(data){
+                console.log(url)
+            }
+        });
+    })
+    })
+</script>  --}}
 <script>
     $("#myTable").DataTable({
                     "autoWidth": false,

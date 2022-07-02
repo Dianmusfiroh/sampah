@@ -14,7 +14,7 @@
                 <thead>
                     <tr>
                         <th >No</th>
-                        <th width="90%">Kategori Bisnis</th>
+                        <th >Kategori Bisnis</th>
                         <th  class="text-center">Action</th>
                     </tr>
                 </thead>
@@ -22,7 +22,7 @@
                     @foreach ($kategori as $key => $item   )
                         <tr>
                             <td >{{  ++$key }}</td>
-                            <td style="width: 807px;">{{ $item->kategori_bisnis }}</td>
+                            <td >{{ $item->kategori_bisnis }}</td>
                             <td class="text-center">
                                 <a href="{{ route($modul.'.edit', $item->id_kategori_bisnis) }}" title="{{ $item->kategori_bisnis }}" class="btn btn-sm font-sm rounded btn-brand btn-modal"><i class="material-icons md-edit"></i> Edit</a>
 

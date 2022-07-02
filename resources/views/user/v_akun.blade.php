@@ -43,7 +43,11 @@
                             <td class="text-end">
                                 <div class="row align-items-start form-check form-switch">
                                     <div class="col ">
+
                                         <input data-ids="{{$item->id_user}}" class="form-check-input" type="checkbox" data-onstyle="success" {{ $item->is_active ? 'checked' : '' }}>
+                                        {{--  <span class="badge badge-pill badge-soft-success dataExp btn btn-blue" id="demo">Paid</span>  --}}
+                                        {{--  <button data-uid="{{$item->user_id}}" data-pid="{{$item->produk_id}}" id="dataExp">Click me</button>  --}}
+                                        {{--  <input data-ids="{{$item->id_user}}" data-uid="{{$item->user_id}}" data-pid="{{$item->produk_id}}" class="badge badge-pill badge-soft-success dataExp btn btn-blue"  onclick="myFunction()"></button>  --}}
                                         @if (preg_match("/_/",$item->nama_toko))
                                         <a href="https://wbslink.id/{{$item->nama_toko}}" target="_blank" title="{{ $item->nama_lengkap }}" alamat="{{$item->alamat}}" ><i class="material-icons md-open_in_browser"></i></a>
                                         @else
@@ -77,6 +81,49 @@
                     "responsive": true
                 });
 </script>
+<script>
+    function changeValue(id){
+        document.getElementById('dataExp').attr('data-uid') = console.log(attr('data-uid'));
+        document.getElementById('demo').value = attr('data-uid');
+        };
+    {{--  $('#dataExp').on('click', function (e) {
+        e.preventDefault();
+        let $this = $(this);
+        let id = $this.attr('data-uid');
+        document.getElementById("demo").innerHTML = id;
+
+     });  --}}
+    {{--  fetch('https://wbslink.id/apiv2/user/getExpired?_key=WbsLinkV00&user_id=30856&product_id=175')
+    .then(response => response.text())
+    .then(data => console.log(data));
+    var user = $(this).data('uid');
+    console.log(user)
+    function myFunction() {
+        document.getElementById("demo").innerHTML = "user_id";
+    }  --}}
+    {{--  .catch(error => {
+    alert('error');
+    });  --}}
+    {{--  $(function() {
+    $('#dataExp').change(function() {
+
+        var id_user = $(this).data('ids');
+        var user_id = $(this).data('uid');
+        console.log(user_id);
+        console.log(is_active)
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: '{{ route('updateStatus') }}',
+            data: {'is_active': is_active, 'id_user': id_user},
+            success: function(data){
+                console.log(id_user)
+            }
+        });
+    })
+    })  --}}
+</script>
+//script is_active
 <script>
     $(function() {
     $('.form-check-input').change(function() {

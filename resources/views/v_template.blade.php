@@ -15,7 +15,7 @@
     <!-- Favicon -->
     {{--  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">  --}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    {{--  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>  --}}
     {{--  <link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"/>  --}}
 
     {{--  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.22/datatables.min.css"/>  --}}
@@ -119,13 +119,14 @@
         </footer>
     </main>
     <script src="{{ asset('backend/assets/js/vendors/jquery-3.6.0.min.js')}}"></script>
-    <script src="{{ asset('backend/assets/js/vendors/bootstrap.bundle.min.js')}}"></script>
+    {{--  <script src="{{ asset('backend/assets/js/vendors/bootstrap.bundle.min.js')}}"></script>  --}}
     <script src="{{ asset('backend/assets/js/vendors/select2.min.js')}}"></script>
     <script src="{{ asset('backend/assets/js/vendors/perfect-scrollbar.js')}}"></script>
     <script src="{{ asset('backend/assets/js/vendors/jquery.fullscreen.min.js')}}"></script>
     <script src="{{ asset('backend/assets/js/vendors/chart.js')}}"></script>
     <!-- Main Script -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"></script>
+    {{--  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"></script>  --}}
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
 
     <script src="{{ asset('backend/assets/js/main.js?v=1.0')}}" type="text/javascript"></script>
     <script src="{{ asset('backend/assets/js/custom-chart.js')}}" type="text/javascript"></script>

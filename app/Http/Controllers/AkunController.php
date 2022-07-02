@@ -101,7 +101,6 @@ class AkunController extends Controller
             ->where('t_user.id_user','=',$id_user)
             ->get();
                 $json = file_get_contents('https://wbslink.id/apiv2/user/getExpired?_key=WbsLinkV00&user_id='.$akun[0]->user_id.'&product_id='.$akun[0]->produk_id.'');
-
                 $modul = $this->modul;
         $data = [
             'view' => 'user.v_akundetail',
