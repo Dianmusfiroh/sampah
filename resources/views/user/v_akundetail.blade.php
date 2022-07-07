@@ -22,6 +22,19 @@
                     @endforeach
                 </div>
                 <!--  col.// -->
+                {{--  <div class="col-xl-4 form-check form-switch">
+                    <div class="col ">  --}}
+                        {{--  @foreach ($xendit as $item)  --}}
+
+                        {{--  {{$xendit->is_blocked}}  --}}
+                        {{--  @endforeach  --}}
+
+                        {{--  @foreach ($xendit as $item)
+                        <input data-ids="{{$item->id_user}}" class="form-check-input" type="checkbox" data-onstyle="success" {{ $item->is_blocked ? 'checked' : '' }}>
+
+                        @endforeach  --}}
+                    {{--  </div>
+                </div>  --}}
                 <div class="col-xl-4 text-md-end">
                     @if (preg_match("/_/",$item->nama_toko))
                     <a href="https://wbslink.id/{{$item->nama_toko}}" target="_blank" title="{{ $item->nama_lengkap }}" alamat="{{$item->alamat}}" class="btn btn-primary"> View live <i class="material-icons md-launch"></i> </a>
@@ -134,14 +147,6 @@
                             <div class="price mt-1">
                                 @currency($item->harga_jual)
                             </div>
-                            {{--  <div class="dropdown float-end">
-                                @if ($item->status == 'aktif')
-                                <span class="badge rounded-pill alert-success">{{$item->is_active}}</span>
-                                @elseif($item->status == 'deleted')
-                                    <span class="badge rounded-pill alert-danger">{{$item->is_active}}</span>
-                                @endif
-                            </div>  --}}
-
                         </div>
                     </div>
 
@@ -237,4 +242,23 @@
             }
         });
     }
+</script>
+<script>
+    $(function() {
+    $('.form-check-input').change(function() {
+        var is_blocked = $(this).prop('checked') == true ? 1 : 0;
+        var id_user = $(this).data('ids');
+
+        console.log(is_active)
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: '{{ route('updateStatus') }}',
+            data: {'is_blocked': is_blocked, 'id_user': id_user},
+            success: function(data){
+                console.log(is_blocked)
+            }
+        });
+    })
+    })
 </script>

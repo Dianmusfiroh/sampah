@@ -18,6 +18,11 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {{--  <span id="tes">
+                        @foreach ($json as $item )
+                            {{$item->user_id}}
+                        @endforeach
+                    </span>  --}}
                     @foreach ($akunA as $key => $item   )
                         <tr>
                             <td>
@@ -39,24 +44,27 @@
                                     <h6>{{ $item->nama_lengkap }}</h6></a></td>
                             <td>{{ $item->email }}</td>
                             <td>{{ $item->no_hp }}</td>
-                            {{--  <td></td>  --}}
                             <td class="text-end">
                                 <div class="row align-items-start form-check form-switch">
                                     <div class="col ">
+                                        {{--  @dd($json);  --}}
 
-                                        <input data-ids="{{$item->id_user}}" class="form-check-input" type="checkbox" data-onstyle="success" {{ $item->is_active ? 'checked' : '' }}>
-                                        {{--  <span class="badge badge-pill badge-soft-success dataExp btn btn-blue" id="demo">Paid</span>  --}}
-                                        {{--  <button data-uid="{{$item->user_id}}" data-pid="{{$item->produk_id}}" id="dataExp">Click me</button>  --}}
-                                        {{--  <input data-ids="{{$item->id_user}}" data-uid="{{$item->user_id}}" data-pid="{{$item->produk_id}}" class="badge badge-pill badge-soft-success dataExp btn btn-blue"  onclick="myFunction()"></button>  --}}
+
+                                        {{--  <input data-ids="{{$item->id_user}}" class="form-check-input" type="checkbox" data-onstyle="success" {{ $item->is_active ? 'checked' : '' }}>  --}}
+                                        {{--  <span class="badge badge-pill badge-soft-success dataExp btn btn-blue" id="demo{{$item->user_id}}{{$item->produk_id}}">Paid</span>
+                                        <button type="button" data-ids="{{$item->id_user}}" data-uid="{{$item->user_id}}" data-pid="{{$item->produk_id}}"  class="tes" id="dataExp" onclick="myfunction(this)" >Follow</button>
+                                        <button data-uid="{{$item->user_id}}" data-pid="{{$item->produk_id}}" id="dataExp"> CLICK</button>  --}}
                                         @if (preg_match("/_/",$item->nama_toko))
                                         <a href="https://wbslink.id/{{$item->nama_toko}}" target="_blank" title="{{ $item->nama_lengkap }}" alamat="{{$item->alamat}}" ><i class="material-icons md-open_in_browser"></i></a>
                                         @else
                                         <a href="https://wbslink.id/{{Str::slug($item->nama_toko)}}" target="_blank" title="{{ $item->nama_lengkap }}" alamat="{{$item->alamat}}" ><i class="material-icons md-open_in_browser"></i></a>
                                         @endif
-                                        {{--  <a href="https://wbslink.id/{{Str::slug($item->nama_toko)}}" target="_blank" title="{{ $item->nama_lengkap }}" alamat="{{$item->alamat}}" ><i class="material-icons md-open_in_browser"></i></a>  --}}
                                         <a href="javascript:;" data-toggle="modal" onclick="deleteData({{$item->id_user}})"
                                             data-target="#DeleteModal" class="material-icons md-delete_outline">
                                             </a>
+                                            <span>
+                                                {{--  {{ file_get_contents('https://wbslink.id/apiv2/user/getExpired?_key=WbsLinkV00&user_id='.$item->user_id.'&product_id='.$item->produk_id.'')}}  --}}
+                                                 </span>
                                     </div>
                                 </div>
                             </td>
@@ -73,8 +81,9 @@
 </div>
 @include('script.delete')
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-{{--  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js"></script>  --}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="DataTables/datatables.min.js"></script>
+
 <script>
     $("#myTable").DataTable({
                     "autoWidth": false,
@@ -82,46 +91,37 @@
                 });
 </script>
 <script>
-    function changeValue(id){
-        document.getElementById('dataExp').attr('data-uid') = console.log(attr('data-uid'));
-        document.getElementById('demo').value = attr('data-uid');
-        };
-    {{--  $('#dataExp').on('click', function (e) {
-        e.preventDefault();
-        let $this = $(this);
-        let id = $this.attr('data-uid');
-        document.getElementById("demo").innerHTML = id;
 
-     });  --}}
-    {{--  fetch('https://wbslink.id/apiv2/user/getExpired?_key=WbsLinkV00&user_id=30856&product_id=175')
-    .then(response => response.text())
-    .then(data => console.log(data));
-    var user = $(this).data('uid');
-    console.log(user)
-    function myFunction() {
-        document.getElementById("demo").innerHTML = "user_id";
+    {{--  window.onload =  --}}
+    {{--  function myfunction() {  --}}
+
+        {{--  $.each($('.tes'), function(index, value) {
+            console.log(index + ':' + $('#dataExp').data('ids'));
+          });  --}}
+
+          $.noConflict();
+          jQuery( document ).ready(function( $ ) {
+        var uid = $('#dataExp').data('uid');
+        var pid = $('#dataExp').data('pid');
+        console.log(uid);
+        console.log(pid);
+        fetch ('https://wbslink.id/apiv2/user/getExpired?_key=WbsLinkV00&user_id='+uid+'&product_id='+pid+'')
+        .then(x => x.text())
+        .then(y => document.getElementById("demo"+uid+pid+"").innerHTML = y);
+    });
+    {{--  };  --}}
+    {{--  function myfunction(e){
+        var uid = $(this).data('uid');
+        var pid = $(this).data('pid');
+        var uid = e.getAttribute('data-uid');
+        var pid = e.getAttribute('data-pid');
+
+        console.log(uid);
+        console.log(pid);
+        fetch ('https://wbslink.id/apiv2/user/getExpired?_key=WbsLinkV00&user_id='+uid+'&product_id='+pid+'')
+        .then(x => x.text())
+        .then(y => document.getElementById("demo"+uid+pid+"").innerHTML = y);
     }  --}}
-    {{--  .catch(error => {
-    alert('error');
-    });  --}}
-    {{--  $(function() {
-    $('#dataExp').change(function() {
-
-        var id_user = $(this).data('ids');
-        var user_id = $(this).data('uid');
-        console.log(user_id);
-        console.log(is_active)
-        $.ajax({
-            type: "GET",
-            dataType: "json",
-            url: '{{ route('updateStatus') }}',
-            data: {'is_active': is_active, 'id_user': id_user},
-            success: function(data){
-                console.log(id_user)
-            }
-        });
-    })
-    })  --}}
 </script>
 //script is_active
 <script>
@@ -143,6 +143,7 @@
     })
     })
 </script>
+
 
 
 

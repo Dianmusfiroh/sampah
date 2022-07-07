@@ -12,6 +12,7 @@ use App\Http\Controllers\AkunController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LoguserController;
 use App\Http\Controllers\StatistikController;
+use App\Http\Controllers\TutorialController;
 use Illuminate\Routing\Route as RoutingRoute;
 
 /*
@@ -52,5 +53,6 @@ Route::get('/logout', [LoginController::class, 'logout']);
 Route::get('/cetakUserAktif', [Report::class, 'cetakAktif_pdf'])->name('cetakAktif');
 Route::get('/cetakUserTidakAktif', [Report::class, 'cetakTidakAktif_pdf'])->name('cetakNonAktif');
 Route::resource('kategori', KategoriController::class);
+Route::resource('tutorial', TutorialController::class);
 
 

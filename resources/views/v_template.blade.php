@@ -125,7 +125,7 @@
     <script src="{{ asset('backend/assets/js/vendors/jquery.fullscreen.min.js')}}"></script>
     <script src="{{ asset('backend/assets/js/vendors/chart.js')}}"></script>
     <!-- Main Script -->
-    {{--  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"></script>  --}}
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
 
     <script src="{{ asset('backend/assets/js/main.js?v=1.0')}}" type="text/javascript"></script>

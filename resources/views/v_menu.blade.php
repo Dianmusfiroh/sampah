@@ -49,8 +49,8 @@
                 <span class="text">Setting</span>
             </a>
             <div class="submenu">
-                <a href="{{ url('kategori') }}"> Tambah Kategori</a>
-                {{--  <a href="{{ url('statistikMember') }}">Statistik Member</a>  --}}
+                <a href="{{ url('kategori') }}">Tambah Kategori</a>
+                <a href="{{ url('tutorial') }}">Tutorial </a>
             </div>
         </li>
     </ul>

@@ -315,5 +315,16 @@ console.log({la,ly});
         myChart.update();
     }
     </script>
+----jquery API link----
+$('#dataExp').click(function() {
 
+    var id_user = 'ada';
+    var user_id = $(this).data('uid');
+    alert (id_user);
+
+fetch ('https://wbslink.id/apiv2/user/getExpired?_key=WbsLinkV00&user_id=user_id&product_id=175')
+.then(x => x.text())
+.then(y => document.getElementById("demo").innerHTML = y);
+
+})
 

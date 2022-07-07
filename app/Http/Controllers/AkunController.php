@@ -6,6 +6,9 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Models;
 use App\Models\Order;
+use App\Models\SetingXendit;
+use App\Models\SettingXendit;
+use App\Models\Tutorial;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -19,9 +22,24 @@ class AkunController extends Controller
     }
     public function index(Request $request){
         $now = Carbon::now();
-        $addBulan = $now->addMonth();
-        $akunA = DB::select(DB::raw('select u.*,s.*, current_date() as tgl_sekarang,datediff(u.tgl_expired, current_date()) as selisih from t_user u, t_setting s WHERE u.produk_id IN (175,198) AND s.id_user= u.id_user'));
 
+        $addBulan = $now->addMonth();
+        $akunA = DB::select(DB::raw('select u.*,s.*, current_date() as tgl_sekarang,datediff(u.tgl_expired, current_date()) as selisih from t_user u, t_setting s WHERE u.produk_id IN (175,198) AND s.id_user= u.id_user '));
+        $akun =   DB::table('t_user')
+            ->Join('t_setting','t_user.id_user','=','t_setting.id_user')
+            ->select('t_user.*','t_setting.*')
+            ->limit(10)
+            // ->where('t_user.id_user','=',$id_user)
+            ->get();
+
+
+        $json= '';
+        foreach ($akun as $item) {
+                $json = file_get_contents('https://wbslink.id/apiv2/user/getExpired?_key=WbsLinkV00&user_id='.$item->user_id.'&product_id='.$item->produk_id.'');
+
+            // $tes .=$item->id_user;
+            // dd($tes);
+        }
         foreach($akunA as $item){
             $order = DB::table('t_order')->where('id_user',$item->id_user)->count('order_id');
          }
@@ -35,6 +53,7 @@ class AkunController extends Controller
                 'label' => 'Akun',
                 'modul' => 'akun',
                 'now' =>$now,
+                'json' => $json,
                 'akunA'=>  DB::select(DB::raw('select u.*,s.*, current_date() as tgl_sekarang,datediff(u.tgl_expired, current_date()) as selisih from t_user u, t_setting s WHERE u.produk_id IN (175,198) AND s.id_user= u.id_user')),
                 // 'akunA'=>  DB::select(DB::raw('select u.*,s.*, current_date() as tgl_sekarang,datediff(u.tgl_expired, current_date()) as selisih from t_user u, t_setting s WHERE u.produk_id = 175 && 198 AND s.id_user= u.id_user')),
                 'addBulan' =>$addBulan,
@@ -61,6 +80,7 @@ class AkunController extends Controller
     public function show(Request $request, $id_user ){
         $now = Carbon::now()->format('Y-m-d') ;
         $year = Carbon::now();
+
         //pendapatan perbulan
         $pendapatanbulan = DB::select("SELECT t.kodebulan,t.bulan , SUM(t.total) AS total FROM (SELECT a.kodebulan,a.bulan , a.total AS total FROM (SELECT month(tgl_selesai) as kodebulan, monthname(tgl_selesai) AS bulan, totalbayar AS total FROM `t_order` WHERE year(tgl_selesai) = year(now()) AND id_user = $id_user AND order_status = '4' ) AS a UNION ALL SELECT month(tgl_selesai) as kodebulan, monthname(tgl_selesai) AS bulan ,totalbayar AS total FROM `t_multi_order` WHERE  year(tgl_selesai) = year(now())  AND id_user = $id_user AND order_status = '4' ) AS t GROUP by bulan ORDER by kodebulan ASC");
         $bulan = '';
@@ -100,6 +120,7 @@ class AkunController extends Controller
             ->select('t_user.*','t_setting.nama_toko')
             ->where('t_user.id_user','=',$id_user)
             ->get();
+
                 $json = file_get_contents('https://wbslink.id/apiv2/user/getExpired?_key=WbsLinkV00&user_id='.$akun[0]->user_id.'&product_id='.$akun[0]->produk_id.'');
                 $modul = $this->modul;
         $data = [
@@ -109,6 +130,9 @@ class AkunController extends Controller
                 'label' => 'Akun',
                 'modul' => 'akun',
                 'exp' => $json,
+                'xendit'=> SetingXendit::first(),
+
+                // 'xendit'=> DB::table('t_setting_xendit')->find($id_user),
                 'transaksi' =>$total,
                 'totalbayar' =>$totalbayar,
                 'now' => Carbon::now()->format('Y-m-d'),
@@ -131,9 +155,9 @@ class AkunController extends Controller
     }
     public function updateStatus(Request $request)
     {
-        $user = tUser::find($request->id_user);
+        $user = DB::table('t_setting_xendit')->find($request->id_user);
         $user->id_user = $request->id_user;
-        $user->is_active = $request->is_active;
+        $user->is_blocked = $request->is_blocked;
         $user->save();
     }
     public function destroy($id_user){
