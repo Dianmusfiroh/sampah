@@ -13,7 +13,7 @@
                         <th  width="50%">Nama Lengkap</th>
                         <th>Email</th>
                         <th>No Hp</th>
-                        {{--  <th>Expire</th>  --}}
+                        <th>Expire</th>
                         {{--  <th>Total Transaksi</th>  --}}
                         <th width="20%" class="text-center">Action</th>
                     </tr>
@@ -58,7 +58,7 @@
                 {data: 'nama_lengkap', name: 'nama_lengkap'},
                 {data: 'email', name: 'email'},
                 {data: 'no_hp', name: 'no_hp'},
-                {{--  {name: 'expire'},  --}}
+                {name: 'expire'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ],
             columnDefs: [

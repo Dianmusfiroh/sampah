@@ -15,7 +15,7 @@
                         <option value="bulanINI">Bulan ini</option>
                         <option value="bulanKemarin">Bulan Lalu</option>
                         <option value="tahun">Tahun Ini</option>
-                    </select>
+                </select>
             </div>
 
         </div>

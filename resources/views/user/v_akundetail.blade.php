@@ -119,18 +119,18 @@
             <div class="card-body">
                 <h5 class="card-title">Statistik</h5>
                 <div class="row gx-4">
-                    <aside class="col-lg-2 border-end">
-                        <nav class="nav nav-pills flex-column mb-4">
-                            <a class="nav-link active" aria-current="page" href="#">Pendapatan Perbulan</a>
-                            <a class="nav-link" href="#">Produk Terlaris</a>
+                    <aside  class="col-lg-2 border-end">
+                        <nav  id="layar" class="nav nav-pills flex-column mb-4">
+                            <a  class="nav-link active" aria-current="page" value="perbulan">Pendapatan Perbulan</a>
+                            <a   class="nav-link"  value="produk" >Produk Terlaris</a>
                         </nav>
                     </aside>
                     <div class="col-lg-10">
-                        <section class="content-body p-xl-12">
-                            {{--  <article class="card-body">  --}}
-                                {{--  <h5 class="card-title">Total Pendapatan Perbulan</h5>  --}}
-                                <canvas id="myChart3" height="120px"></canvas>
-                            {{--  </article>  --}}
+                        <section class="content-body p-xl-12 view"  style="display: block;"  id="perbulan">
+                            <canvas  id="myChart3" height="120px"></canvas>
+                        </section>
+                        <section class="content-body p-xl-12 view"  id="produk">
+                            <canvas  id="myChartProduk" height="120px"></canvas>
                         </section>
                         <!-- content-body .// -->
                     </div>
@@ -139,24 +139,6 @@
                 <!-- row.// -->
             </div>
             <!-- card body end// -->
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xl-12 col-lg-12">
-            <div class="card mb-4">
-                <article class="card-body">
-                    <h5 class="card-title">Total Pendapatan Perbulan</h5>
-                    <canvas id="myChart3" height="120px"></canvas>
-                </article>
-            </div>
-        </div>
-        <div class="col-xl-12 col-lg-12">
-            <div class="card mb-4">
-                <article class="card-body">
-                    <h5 class="card-title">Produk Terlaris</h5>
-                    <canvas id="myChartProduk" height="120px"></canvas>
-                </article>
-            </div>
         </div>
     </div>
     <div class="card mb-4">
@@ -249,9 +231,9 @@
 <script>
 
     $(function() {
-        $('#layar').change(function() {
+        $("#layar").on("click","a", function(){
             $('.view').hide();
-            $('#' + $(this).val()).show();
+            $('#'+$(this).attr('value')).show();
         });
     });
 </script>
@@ -355,6 +337,7 @@
             }
         });
     });
+
     {{--  $('#reset').change(function() {
         var id_user = $(this).data('ids');
 
