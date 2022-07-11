@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Tutorial;
+use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
 
 class TutorialController extends Controller
@@ -46,14 +47,14 @@ class TutorialController extends Controller
             return redirect()
                 ->route('tutorial.index')
                 ->with([
-                    'success' => 'New post has been created successfully'
+                    'success' => 'Tutorial Berhasil Dibuat'
                 ]);
         } else {
             return redirect()
                 ->back()
                 ->withInput()
                 ->with([
-                    'error' => 'Some problem occurred, please try again'
+                    'error' => 'Tutorial Tidak Berhasil Dibuat'
                 ]);
         }
     }
@@ -81,33 +82,34 @@ class TutorialController extends Controller
             return redirect()
                 ->route('tutorial.index')
                 ->with([
-                    'success' => 'Kategori has been updated successfully'
+                    'success' => 'Kategori Berhasil Diubah'
                 ]);
         } else {
             return redirect()
                 ->back()
                 ->withInput()
                 ->with([
-                    'error' => 'Some problem has occured, please try again'
+                    'error' => 'Terjadi Sesuatu Masalah, Mohon Coba Lagi'
                 ]);
         }
     }
     public function destroy(Request $request,$id_tutorial)
     {
         $post = Tutorial::findOrFail($id_tutorial);
+        dd($post);
         $post->delete();
 
         if ($post) {
             return redirect()
                 ->route('tutorial.index')
                 ->with([
-                    'success' => 'Kategori has been deleted successfully'
+                    'success' => 'Kategori Berhasil Dihapus'
                 ]);
         } else {
             return redirect()
                 ->route('tutorial.index')
                 ->with([
-                    'error' => 'Some problem has occurred, please try again'
+                    'error' => 'Terjadi Sesuatu Masalah, Mohon Coba Lagi'
                 ]);
         }
     }

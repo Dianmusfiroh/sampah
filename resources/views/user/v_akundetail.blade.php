@@ -22,19 +22,7 @@
                     @endforeach
                 </div>
                 <!--  col.// -->
-                {{--  <div class="col-xl-4 form-check form-switch">
-                    <div class="col ">  --}}
-                        {{--  @foreach ($xendit as $item)  --}}
 
-                        {{--  {{$xendit->is_blocked}}  --}}
-                        {{--  @endforeach  --}}
-
-                        {{--  @foreach ($xendit as $item)
-                        <input data-ids="{{$item->id_user}}" class="form-check-input" type="checkbox" data-onstyle="success" {{ $item->is_blocked ? 'checked' : '' }}>
-
-                        @endforeach  --}}
-                    {{--  </div>
-                </div>  --}}
                 <div class="col-xl-4 text-md-end">
                     @if (preg_match("/_/",$item->nama_toko))
                     <a href="https://wbslink.id/{{$item->nama_toko}}" target="_blank" title="{{ $item->nama_lengkap }}" alamat="{{$item->alamat}}" class="btn btn-primary"> View live <i class="material-icons md-launch"></i> </a>
@@ -88,23 +76,73 @@
                         {{$item->alamat}}
                     </p>
                 </div>
-                <!--  col.// -->
-                {{--  <div class="col-sm-6 col-xl-4 text-xl-end">
-                    <map class="mapbox position-relative d-inline-block">
-                        <img src="{{asset('backend/assets/imgs/misc/map.jpg')}}" class="rounded2" height="120" alt="map" />
-                        <span class="map-pin" style="top: 50px; left: 100px"></span>
-                        <button class="btn btn-sm btn-brand position-absolute bottom-0 end-0 mb-15 mr-15 font-xs">Large</button>
-                    </map>
-                </div>  --}}
-                <!--  col.// -->
             </div>
             <!--  row.// -->
         </div>
 
         <!--  card-body.// -->
     </div>
+    <div class="card mb-4">
+        <article class="card-body ">
+            <h5 class="card-title">Pengaturan Xendit</h5>
+            <div class="row ">
+                <div class="col-sm-6 col-lg-4 col-xl-3">
+                    <h6>Email</h6>
+                    <p>
+                        {{$xendit ? $xendit->email : ''}} <br />
+                    </p>
+                </div>
+                <div class="col-sm-9 col-lg-4 col-xl-3">
+                    <h6>Nama Bisnis</h6>
+                    <p>
+                        {{$xendit ? $xendit->business_name : ''}} <br />
+                    </p>
+                </div>
+                <div class="col-sm-12 col-lg-4 col-xl-6">
+                    <p>
+                        <div class="row align-items-start form-check form-switch">
+                            <div class="col ">
+                                <input data-ids="{{$xendit ? $xendit->id_user : ''}}" class="form-check-input col-sm-5" type="checkbox" data-onstyle="success" {{ ($xendit ? $xendit->is_blocked : '') ? 'checked' : '' }}>
+
+                                {{--  <a href="{{ url('reset', $xendit->id_user) }}" data-ids="{{$xendit->id_user}}" id="reset" class="btn btn-primary">Reset</a>  --}}
+                                <a data-toggle="modal" data-target="#myModal" id="reset" class="btn btn-primary">Reset</a>
+                                <a data-toggle="modal" data-target="#modalLog" id="withdraw"class="btn btn-primary">Log Withdraw</a>
+                            </div>
+                        </div>
+                    </p>
+                </div>
+            </div>
+        </article>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Statistik</h5>
+                <div class="row gx-4">
+                    <aside class="col-lg-2 border-end">
+                        <nav class="nav nav-pills flex-column mb-4">
+                            <a class="nav-link active" aria-current="page" href="#">Pendapatan Perbulan</a>
+                            <a class="nav-link" href="#">Produk Terlaris</a>
+                        </nav>
+                    </aside>
+                    <div class="col-lg-10">
+                        <section class="content-body p-xl-12">
+                            {{--  <article class="card-body">  --}}
+                                {{--  <h5 class="card-title">Total Pendapatan Perbulan</h5>  --}}
+                                <canvas id="myChart3" height="120px"></canvas>
+                            {{--  </article>  --}}
+                        </section>
+                        <!-- content-body .// -->
+                    </div>
+                    <!-- col.// -->
+                </div>
+                <!-- row.// -->
+            </div>
+            <!-- card body end// -->
+        </div>
+    </div>
     <div class="row">
-        <div class="col-xl-8 col-lg-12">
+        <div class="col-xl-12 col-lg-12">
             <div class="card mb-4">
                 <article class="card-body">
                     <h5 class="card-title">Total Pendapatan Perbulan</h5>
@@ -112,16 +150,15 @@
                 </article>
             </div>
         </div>
-        <div class="col-xl-4 col-lg-12">
+        <div class="col-xl-12 col-lg-12">
             <div class="card mb-4">
                 <article class="card-body">
                     <h5 class="card-title">Produk Terlaris</h5>
-                    <canvas id="myChartProduk" height="217"></canvas>
+                    <canvas id="myChartProduk" height="120px"></canvas>
                 </article>
             </div>
         </div>
     </div>
-
     <div class="card mb-4">
         <div class="card-body">
             <div class="row gx-3">
@@ -131,25 +168,18 @@
             </div>
             <div class="row">
                 @foreach($produk as $item)
-
                 <div class="col-xl-2 col-lg-3 col-md-5">
-
                     <div class="card card-product-grid">
-
                         <a href="https://wbslink.id/@if (preg_match("/_/",$item->nama_toko)){{$item->nama_toko}}@else{{Str::slug($item->nama_toko)}}@endif/{{$item->id_produk}}/{{Str::slug($item->nama_produk)}}" target="_blank" class="img-wrap img-card"> <img src="https://wbslink.id/assets/image/produk/{{$item->gambar}}"  /> </a>
-
                         <div class="info-wrap">
-
                             <a href="https://wbslink.id/@if (preg_match("/_/",$item->nama_toko)){{$item->nama_toko}}@else{{Str::slug($item->nama_toko)}}@endif/{{$item->id_produk}}/{{Str::slug($item->nama_produk)}}" target="_blank" class="title" <abbr title="{{$item->nama_produk}}">
                                 {{ str_limit($item->nama_produk, 14, '...') }}
                             </a>
-
                             <div class="price mt-1">
                                 @currency($item->harga_jual)
                             </div>
                         </div>
                     </div>
-
                     <!-- card-product  end// -->
         </div>
 
@@ -162,12 +192,69 @@
         <!--  card-body.// -->
 
     </div>
+    <!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Konfirmasi Reset Pin Xendit</h4>
+                <button type="button" class="btn-close " data-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('resetPin.update',$item->id_user) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="row mb-4 text-center">
+                        <h6>Apakah Anda Yakin Ingin Reset Pin Xendit?</h6>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button  class="btn btn-default" data-dismiss="modal">Batal</button>
+                <button class="btn btn-primary " value="{{$xendit ? $xendit->pin : ''}}" type="submit">Ya, Reset</button>
+            </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalLog" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>log Withdraw akun Xendit Toko {{$item->nama_toko}}</h4>
+                <button type="button" class="btn-close " data-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                {{--  <form action="{{ route($modul.'.store') }}" method="POST">
+                    @csrf  --}}
+                    <div class="row mb-4 text-center">
+                        <h6>Isi Log</h6>
+                    </div>
+            </div>
+            {{--  <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                <button class="btn btn-primary " type="submit">Ya, Reset</button>
+            </form>
+            </div>  --}}
+        </div>
+    </div>
+</div>
 </section>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 <script src="{{ asset('backend/assets/js/vendors/chart.js')}}"></script>
+<script>
 
+    $(function() {
+        $('#layar').change(function() {
+            $('.view').hide();
+            $('#' + $(this).val()).show();
+        });
+    });
+</script>
 <script>
     var totalpendapatan = [@php echo $totalpendapatan @endphp];
     var bulan = [@php echo $bulan @endphp];
@@ -208,18 +295,19 @@
 
     var produkNama = [@php echo $produkNama @endphp];
     var produkTotal = [@php echo $produkTotal @endphp];
-
+    const pNama = produkNama.map(label => label.split(' '));
+    console.log(pNama);
     console.log(bulan)
     if ($('#myChartProduk').length) {
         var ctx = document.getElementById("myChartProduk");
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: produkNama,
+                labels: pNama,
                 datasets: [{
                         label: 'Produk',
                         backgroundColor: "#5897fb",
-                        barThickness: 10,
+                        barThickness: 25,
                         data: produkTotal
                     },
 
@@ -235,6 +323,13 @@
                     }
                 },
                 scales: {
+                    x:{
+                        ticks:{
+                            font:{
+                                size:9
+                            }
+                        }
+                    },
                     y: {
                         beginAtZero: true
                     }
@@ -249,7 +344,7 @@
         var is_blocked = $(this).prop('checked') == true ? 1 : 0;
         var id_user = $(this).data('ids');
 
-        console.log(is_active)
+        console.log(is_blocked)
         $.ajax({
             type: "GET",
             dataType: "json",
@@ -259,6 +354,20 @@
                 console.log(is_blocked)
             }
         });
-    })
+    });
+    {{--  $('#reset').change(function() {
+        var id_user = $(this).data('ids');
+
+        console.log(id_user)
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: '{{ route('reset',$item->id_user) }}',
+            data: {'id_user': id_user},
+            success: function(data){
+                console.log(id_user)
+            }
+        });
+    })  --}}
     })
 </script>

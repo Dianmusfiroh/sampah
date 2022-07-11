@@ -1057,6 +1057,14 @@ b {
     max-width: 100px;
 }
 
+
+/* Input */
+
+.form-switch input[type=checkbox] {
+    width: 85px;
+    min-height: 38px;
+}
+
 .form-control,
 .form-select {
     background-color: #f4f5f9;
@@ -2135,7 +2143,7 @@ a.itemside:hover .title {
 }
 
 
-/* --------- description list --------*/
+/* --------- gription list --------*/
 
 [class*="dlist"] {
     margin-bottom: 5px;

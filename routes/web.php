@@ -13,6 +13,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LoguserController;
 use App\Http\Controllers\StatistikController;
 use App\Http\Controllers\TutorialController;
+use App\Http\Controllers\SettingXenditController;
 use Illuminate\Routing\Route as RoutingRoute;
 
 /*
@@ -44,7 +45,10 @@ Route::resource('report', Report::class);
 Route::get('statistikMember', [StatistikController::class,'statistikMember'])->name('statistikMember');
 Route::resource('statistik', StatistikController::class);
 Route::post('storeAkun', [Report::class,'storeAkun'])->name('storeAkun');
-Route::get('updateStatus',[AkunController::class,'updateStatus'])->name('updateStatus');
+Route::get('updateStatus',[SettingXenditController::class,'updateStatus'])->name('updateStatus');
+// Route::put('resetPin',[SettingXenditController::class,'resetPin'])->name('resetPin');
+Route::resource('resetPin',SettingXenditController::class);
+// Route::get('resetPin',[SettingXenditController::class,'reset'])->name('reset');
 Route::get('userAktif',[AkunController::class,'userAktif'])->name('userAktif');
 Route::get('produkTerbaik',[Report::class,'topProduk'])->name('topProduk');
 Route::get('reportAkun',[Report::class,'reportAkun'])->name('reportAkun');
@@ -54,5 +58,6 @@ Route::get('/cetakUserAktif', [Report::class, 'cetakAktif_pdf'])->name('cetakAkt
 Route::get('/cetakUserTidakAktif', [Report::class, 'cetakTidakAktif_pdf'])->name('cetakNonAktif');
 Route::resource('kategori', KategoriController::class);
 Route::resource('tutorial', TutorialController::class);
+Route::get('data',[AkunController::class,'data'])->name('data');
 
 

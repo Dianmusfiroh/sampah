@@ -328,3 +328,64 @@ fetch ('https://wbslink.id/apiv2/user/getExpired?_key=WbsLinkV00&user_id=user_id
 
 })
 
+//cadangan data
+<script>
+
+    {{--  window.onload =  --}}
+    {{--  function myfunction() {  --}}
+
+
+
+          $.noConflict();
+          $(document).ready(function( $ ) {
+            $.each($('.tes'), function(index, value) {
+                console.log(index + ':' + $('#dataExp').data('uid'));
+              });
+        {{--  var uid = $('#dataExp').data('uid');
+        var pid = $('#dataExp').data('pid');
+        console.log(uid);
+        console.log(pid);
+        fetch ('https://wbslink.id/apiv2/user/getExpired?_key=WbsLinkV00&user_id='+uid+'&product_id='+pid+'')
+        .then(x => x.text())
+        .then(y => document.getElementById("demo"+uid+pid+"").innerHTML = y);  --}}
+    });
+    {{--  };  --}}
+    {{--  function myfunction(e){
+        var uid = $(this).data('uid');
+        var pid = $(this).data('pid');
+        var uid = e.getAttribute('data-uid');
+        var pid = e.getAttribute('data-pid');
+
+        console.log(uid);
+        console.log(pid);
+        fetch ('https://wbslink.id/apiv2/user/getExpired?_key=WbsLinkV00&user_id='+uid+'&product_id='+pid+'')
+        .then(x => x.text())
+        .then(y => document.getElementById("demo"+uid+pid+"").innerHTML = y);
+    }  --}}
+</script>
+//script is_active
+<script>
+    $(function() {
+    $('.form-check-input').change(function() {
+        var is_active = $(this).prop('checked') == true ? 1 : 0;
+        var id_user = $(this).data('ids');
+
+        console.log(is_active)
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: '{{ route('updateStatus') }}',
+            data: {'is_active': is_active, 'id_user': id_user},
+            success: function(data){
+                console.log(is_active)
+            }
+        });
+    })
+    })
+</script>
+
+
+
+
+
+

@@ -88,14 +88,14 @@ class KategoriController extends Controller
             return redirect()
                 ->route('kategori.index')
                 ->with([
-                    'success' => 'Kategori has been updated successfully'
+                    'success' => 'Kategori Kategori Berhasil Diupdate'
                 ]);
         } else {
             return redirect()
                 ->back()
                 ->withInput()
                 ->with([
-                    'error' => 'Some problem has occured, please try again'
+                    'error' => 'Terjadi Kesalahan, Coba Lagi'
                 ]);
         }
     }

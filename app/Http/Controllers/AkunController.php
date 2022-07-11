@@ -12,6 +12,7 @@ use App\Models\Tutorial;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
 
 class AkunController extends Controller
 {
@@ -33,13 +34,13 @@ class AkunController extends Controller
             ->get();
 
 
-        $json= '';
-        foreach ($akun as $item) {
-                $json = file_get_contents('https://wbslink.id/apiv2/user/getExpired?_key=WbsLinkV00&user_id='.$item->user_id.'&product_id='.$item->produk_id.'');
+        // $json= '';
+        // foreach ($akun as $item) {
+        //         $json = file_get_contents('https://wbslink.id/apiv2/user/getExpired?_key=WbsLinkV00&user_id='.$item->user_id.'&product_id='.$item->produk_id.'');
 
-            // $tes .=$item->id_user;
-            // dd($tes);
-        }
+        //     // $tes .=$item->id_user;
+        //     // dd($tes);
+        // }
         foreach($akunA as $item){
             $order = DB::table('t_order')->where('id_user',$item->id_user)->count('order_id');
          }
@@ -53,7 +54,7 @@ class AkunController extends Controller
                 'label' => 'Akun',
                 'modul' => 'akun',
                 'now' =>$now,
-                'json' => $json,
+                // 'json' => $json,
                 'akunA'=>  DB::select(DB::raw('select u.*,s.*, current_date() as tgl_sekarang,datediff(u.tgl_expired, current_date()) as selisih from t_user u, t_setting s WHERE u.produk_id IN (175,198) AND s.id_user= u.id_user')),
                 // 'akunA'=>  DB::select(DB::raw('select u.*,s.*, current_date() as tgl_sekarang,datediff(u.tgl_expired, current_date()) as selisih from t_user u, t_setting s WHERE u.produk_id = 175 && 198 AND s.id_user= u.id_user')),
                 'addBulan' =>$addBulan,
@@ -61,6 +62,35 @@ class AkunController extends Controller
         ];
         return backend($request,$data,$modul);
     }
+    public function data()
+    {
+        $akunA = DB::select(DB::raw('select u.*,s.*, current_date() as tgl_sekarang,datediff(u.tgl_expired, current_date()) as selisih from t_user u, t_setting s WHERE u.produk_id IN (175,198) AND s.id_user= u.id_user '));
+
+        $akun =   DB::table('t_user')
+        ->Join('t_setting','t_user.id_user','=','t_setting.id_user')
+        ->select('t_user.*','t_setting.*')
+        ->limit(10)
+        ->get();
+
+        return DataTables::of($akunA)
+        ->addIndexColumn()
+        ->addColumn('action', function($row){
+
+               $btn = '';
+               if (preg_match("/_/",$row->nama_toko)){
+               $btn .= '<a href="https://wbslink.id/{{$row->nama_toko}}" target="_blank" title="{{ $row->nama_lengkap }}" alamat="{{$row->alamat}}" ><i class="material-icons md-open_in_browser"></i></a>';
+               }else{
+               $btn .= '<a href="https://wbslink.id/{{Str::slug($row->nama_toko)}}" target="_blank" title="{{ $row->nama_lengkap }}" alamat="{{$row->alamat}}" ><i class="material-icons md-open_in_browser"></i></a>';
+                }
+               $btn .='<a href="javascript:;" data-toggle="modal" onclick="deleteData({{$row->id_user}})"
+                   data-target="#DeleteModal" class="material-icons md-delete_outline">
+               </a>';
+
+                return $btn;
+        })
+        ->rawColumns(['action'])
+        ->make(true);
+}
     public function userAktif(Request $request){
 
 
@@ -122,6 +152,7 @@ class AkunController extends Controller
             ->get();
 
                 $json = file_get_contents('https://wbslink.id/apiv2/user/getExpired?_key=WbsLinkV00&user_id='.$akun[0]->user_id.'&product_id='.$akun[0]->produk_id.'');
+
                 $modul = $this->modul;
         $data = [
             'view' => 'user.v_akundetail',
@@ -130,9 +161,9 @@ class AkunController extends Controller
                 'label' => 'Akun',
                 'modul' => 'akun',
                 'exp' => $json,
-                'xendit'=> SetingXendit::first(),
+                'xendit'=> SetingXendit::where('id_user',$id_user)->first(),
 
-                // 'xendit'=> DB::table('t_setting_xendit')->find($id_user),
+                // 'xendit'=> DB::table('t_setting_xendit')->find($id_user)->,
                 'transaksi' =>$total,
                 'totalbayar' =>$totalbayar,
                 'now' => Carbon::now()->format('Y-m-d'),
@@ -153,13 +184,7 @@ class AkunController extends Controller
         ];
         return backend($request,$data,$modul);
     }
-    public function updateStatus(Request $request)
-    {
-        $user = DB::table('t_setting_xendit')->find($request->id_user);
-        $user->id_user = $request->id_user;
-        $user->is_blocked = $request->is_blocked;
-        $user->save();
-    }
+
     public function destroy($id_user){
         $user = DB::table('t_user')->where ('id_user','=',$id_user)->delete();
         $expedisi = DB::table('t_expedisi')->where ('id_user','=',$id_user)->delete();
