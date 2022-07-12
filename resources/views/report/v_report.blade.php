@@ -23,14 +23,12 @@
                             <img src="https://wbslink.id/assets/image/toko/{{$item->logo_toko}}" alt="" class="avatar" />
                             <div>
                                 <h6>{{$item->nama_toko}}</h6>
-                                {{--  <p class="text-muted font-xs">Sanfrancisco</p>  --}}
                             </div>
                         </div>
                         <div >{{$item->total}}</div>
                     </div>
                     </a>
                     @endforeach
-
                 </div>
             </article>
         </div>
@@ -41,23 +39,24 @@
                 <h5 class="card-title">Top Seles By Produk</h5>
                 <div class="new-member-list">
                     @foreach ($produk as $item )
-                    <a href="{{$item->link}}" target="_blank" class="title">
+                    @if (preg_match("/_/",$item->nama_toko))
+                    <a href="https://wbslink.id/{{$item->nama_toko}}/{{$item->id_produk}}/{{Str::slug($item->nama_produk)}}" target="_blank" class="title">
+                    @else
+                    <a href="https://wbslink.id/{{Str::slug($item->nama_toko)}}/{{$item->id_produk}}/{{Str::slug($item->nama_produk)}}" target="_blank" class="title">
+                    @endif
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <div class="d-flex align-items-center">
                             <img src="https://wbslink.id/assets/image/produk/{{$item->gambar}}" alt="" class="avatar" />
                             <div>
                                 <h6>{{$item->nama_produk}}</h6>
-                                {{--  <p class="text-muted font-xs">Sanfrancisco</p>  --}}
                             </div>
                         </div>
                         <div >{{$item->total}}</div>
                     </div>
                     </a>
                     @endforeach
-
                 </div>
             </article>
-
         </div>
     </div>
 </div>
