@@ -6,31 +6,7 @@
 
     </div>
 </div>
-<div class="row">
-    <div class="col-lg-9">
-        <div class="card mb-6">
 
-            <div class="card-body">
-            <div class="col-lg-6">
-                <div class="mb-4">
-                    <input type="date" id="date-input"/>
-                    <input type="submit" id="submit" value="submit"/>
-
-                    <label for="product_name" class="form-label">Start</label>
-                    {{--  <input type="text" class="input-tanggal" id="dateStart">  --}}
-                    <input type="date" name="tanggal_awal" placeholder="inch" class="form-control" id="dateStart" />
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="mb-4">
-                    <label for="product_name" class="form-label">End</label>
-                    <input type="date" name="tanggal_akhir" placeholder="inch" class="form-control" id="date" />
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
 
 
 </div>
