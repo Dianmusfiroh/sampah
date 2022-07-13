@@ -43,6 +43,7 @@ Route::resource('akun', AkunController::class);
 Route::resource('logUser', LoguserController::class);
 Route::resource('report', Report::class);
 Route::get('statistikMember', [StatistikController::class,'statistikMember'])->name('statistikMember');
+Route::get('statistikJenisUsaha', [StatistikController::class,'statistikJenisUsaha'])->name('statistikJenisUsaha');
 Route::resource('statistik', StatistikController::class);
 Route::post('storeAkun', [Report::class,'storeAkun'])->name('storeAkun');
 Route::get('updateStatus',[SettingXenditController::class,'updateStatus'])->name('updateStatus');

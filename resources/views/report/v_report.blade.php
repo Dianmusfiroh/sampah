@@ -7,9 +7,40 @@
     </div>
 </div>
 <div class="row">
+    <div class="col-lg-9">
+        <div class="card mb-6">
+
+            <div class="card-body">
+            <div class="col-lg-6">
+                <div class="mb-4">
+                    <input type="date" id="date-input"/>
+                    <input type="submit" id="submit" value="submit"/>
+
+                    <label for="product_name" class="form-label">Start</label>
+                    {{--  <input type="text" class="input-tanggal" id="dateStart">  --}}
+                    <input type="date" name="tanggal_awal" placeholder="inch" class="form-control" id="dateStart" />
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="mb-4">
+                    <label for="product_name" class="form-label">End</label>
+                    <input type="date" name="tanggal_akhir" placeholder="inch" class="form-control" id="date" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+</div>
+<div class="row">
     <div class="col-lg-5">
+
         <div class="card mb-4">
             <article class="card-body">
+
+
                 <h5 class="card-title">Top Seles By Toko</h5>
                 <div class="new-member-list">
                     @foreach ($penjualanToko as $item )
@@ -60,3 +91,17 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<script>
+    const d = new Date();
+    let day = d.getDate();
+    $(function() {
+
+    $('#submit').on('click','input', function(){
+        var date = new Date($('#date-input').val());
+        alert(date);
+
+      });
+    });
+</script>

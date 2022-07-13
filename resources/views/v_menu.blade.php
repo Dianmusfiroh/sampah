@@ -35,6 +35,7 @@
             <div class="submenu">
                 <a href="{{ url('statistik') }}">Statistik Barang</a>
                 <a href="{{ url('statistikMember') }}">Statistik Member</a>
+                <a href="{{ url('statistikJenisUsaha') }}">Statistik Jenis Usaha</a>
             </div>
         </li>
         <li class="menu-item @if(Request::segment(1) == 'user'): {{'active'}} @endif">

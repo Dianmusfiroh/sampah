@@ -56,15 +56,15 @@
             <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"><i class="material-icons md-apps"></i></button>
 
                 <ul class="nav menu-aside">
-                    <li class="dropdown nav-item">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount"
+                    <li class="dropdown nav-item ">
+                        <a class="dropdown-toggle " data-bs-toggle="dropdown" href="#" id="dropdownAccount"
                             aria-expanded="false">
                             <img class="img-xs rounded-circle"
                                 src="{{asset('backend/assets/imgs/people/profile.png')}}" alt="User" />
                             </a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
                             <a class="dropdown-item text-danger" href="logout"><i
-                                    class="material-icons md-exit_to_app"></i>Logout</a>
+                            class="material-icons md-exit_to_app"></i>Logout</a>
                         </div>
                     </li>
                 </ul>

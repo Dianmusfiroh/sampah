@@ -223,4 +223,33 @@ class StatistikController extends Controller
         ];
         return backend($request,$data);
     }
+    public function statistikJenisUsaha(request $request)
+    {
+        $dataJU    = DB::table('t_setting')
+        ->join('t_kategori_bisnis','t_setting.id_kategori_bisnis','=','t_kategori_bisnis.id_kategori_bisnis')
+        ->select('t_setting.id_kategori_bisnis', 't_kategori_bisnis.kategori_bisnis')
+        ->addSelect(DB::raw('COUNT("t_setting.id_user") as total'))
+        ->groupBy(DB::raw('t_setting.id_kategori_bisnis'))
+        ->get();
+
+
+        $namaKU = '';
+        $chrtTotal = '';
+
+        foreach ($dataJU as $item) {
+            $chrtTotal .= '"'.$item->total.'"'.',';
+            $namaKU .= '"'.$item->kategori_bisnis.'"'.',';
+        }
+        $data = [
+            'view' => 'statistik.v_statistikJenisUsaha',
+            'data' =>
+            [
+                'label'     => 'Statistik Jenis Usaha',
+                'namaKU'     =>$namaKU,
+                'chrtTotal' => $chrtTotal,
+
+            ]
+        ];
+        return backend($request,$data);
+    }
 }
