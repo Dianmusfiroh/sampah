@@ -11,7 +11,8 @@ Bootstrap with custom variables
  */
 
 :root {
-    --bs-blue: #3167EB;
+    --bs-blue: #3BB77E;
+    --bs-wbslink: #3BB77E;
     --bs-indigo: #6610f2;
     --bs-purple: #6f42c1;
     --bs-pink: #d63384;
@@ -2568,6 +2569,8 @@ textarea.form-control-lg {
     font-size: 1.25rem;
 }
 
+
+/*
 .form-check {
     display: block;
     min-height: 1.5rem;
@@ -2605,8 +2608,10 @@ textarea.form-control-lg {
         -webkit-transition: none;
         transition: none;
     }
-}
+} */
 
+
+/*
 .form-check-input[type="checkbox"] {
     border-radius: 0.25em;
 }
@@ -2630,8 +2635,10 @@ textarea.form-control-lg {
 .form-check-input:checked {
     background-color: #3167EB;
     border-color: #3167EB;
-}
+} */
 
+
+/*
 .form-check-input:checked[type="checkbox"] {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
 }
@@ -2644,9 +2651,10 @@ textarea.form-control-lg {
     background-color: #3167EB;
     border-color: #3167EB;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10h8'/%3e%3c/svg%3e");
-}
+} */
 
-.form-check-input:disabled {
+
+/* .form-check-input:disabled {
     pointer-events: none;
     -webkit-filter: none;
     filter: none;
@@ -2656,9 +2664,10 @@ textarea.form-control-lg {
 .form-check-input[disabled]~.form-check-label,
 .form-check-input:disabled~.form-check-label {
     opacity: 0.5;
-}
+} */
 
-.form-switch {
+
+/* .form-switch {
     padding-left: 2.5em;
 }
 
@@ -2677,7 +2686,7 @@ textarea.form-control-lg {
 .form-switch .form-check-input:checked {
     background-position: right center;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
-}
+} */
 
 .form-check-inline {
     display: inline-block;
@@ -3780,6 +3789,17 @@ fieldset:disabled .btn {
     color: #fff;
     background-color: #141432;
     border-color: #141432;
+}
+
+.btn-outline-wbslink {
+    color: #3BB77E;
+    border-color: #3BB77E;
+}
+
+.btn-outline-wbslink:hover {
+    color: #fff;
+    background-color: #3BB77E;
+    border-color: #3BB77E;
 }
 
 .btn-outline-primary {

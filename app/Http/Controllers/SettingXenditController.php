@@ -40,9 +40,7 @@ class SettingXenditController extends Controller
             return redirect()
                 ->route('akun.show',$id_user)
                 ->with([
-                    'success' => 'Pin Berhasil Direset',
-                    'confirmButton'=>'da'
-
+                    'success' => 'Pin Berhasil Direset'
                 ]);
         } else {
             return redirect()

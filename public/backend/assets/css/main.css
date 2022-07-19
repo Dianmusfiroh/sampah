@@ -7,6 +7,7 @@ INCLUDE STYLES AND COMPONENTS
 
 @import url(vendors/normalize.css);
 @import url(vendors/bootstrap.css);
+@import url(vendors/bootstrap5-toggle.min.css);
 @import url(vendors/material-icon-round.css);
 @import url(vendors/perfect-scrollbar.css);
 @import url(vendors/select2.min.css);
@@ -519,6 +520,10 @@ table .form-check {
     position: absolute;
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
+}
+
+.main-wrap .content-main .content-main .card .card-body .row .col-sm-12 .form-switch input[type=checkbox] {
+    transform: translatex(25px) translatey(-4px) !important;
 }
 
 .center-y {
@@ -1488,6 +1493,11 @@ textarea.form-control {
     position: absolute;
     top: 50%;
     color: #adb5bd;
+}
+
+.slow .toggle-group {
+    transition: left 0.7s;
+    -webkit-transition: left 0.7s;
 }
 
 .dropdown-menu {

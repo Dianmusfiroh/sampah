@@ -92,22 +92,37 @@
                         {{$xendit ? $xendit->email : ''}} <br />
                     </p>
                 </div>
-                <div class="col-sm-9 col-lg-4 col-xl-3">
+                <div class="col-sm-9 col-lg-4 col-xl-2">
                     <h6>Nama Bisnis</h6>
                     <p>
                         {{$xendit ? $xendit->business_name : ''}} <br />
                     </p>
                 </div>
-                <div class="col-sm-12 col-lg-4 col-xl-6">
+                <div class="col-sm-12 col-lg-4 col-xl-2">
+                    <h6>Blokir Xendit</h6>
                     <p>
-                        <div class="row align-items-start form-check form-switch">
-                            <div class="col ">
-                                <input data-ids="{{$xendit ? $xendit->id_user : ''}}" class="form-check-input col-sm-5" type="checkbox" data-onstyle="success" {{ ($xendit ? $xendit->is_blocked : '') ? 'checked' : '' }}>
 
-                                {{--  <a href="{{ url('reset', $xendit->id_user) }}" data-ids="{{$xendit->id_user}}" id="reset" class="btn btn-primary">Reset</a>  --}}
-                                <a data-toggle="modal" data-target="#myModal" id="reset" class="btn btn-primary">Reset</a>
-                                <a data-toggle="modal" data-target="#modalLog" id="withdraw"class="btn btn-primary">Log Withdraw</a>
-                            </div>
+                        <div class="row align-items-start form-check form-switch">
+                            <input type="checkbox" data-width="100" checked data-toggle="toggle" class="form-check-input" data-onstyle="outline-wbslink" data-offstyle="outline-wbslink" data-ids="{{$xendit ? $xendit->id_user : ''}}"  {{ ($xendit ? $xendit->is_blocked : '') ? 'checked' : '' }}>
+
+                            {{--  <input type="checkbox"    data-ids="{{$xendit ? $xendit->id_user : ''}}" class="form-check-input col-sm-5 center"  data-onstyle="success" {{ ($xendit ? $xendit->is_blocked : '') ? 'checked' : '' }} data-checked="On" data-unchecked="Off">  --}}
+                        </div>
+                    </p>
+
+                </div>
+                <div class="col-sm-9 col-lg-4 col-xl-2">
+                    <h6>Reset Pin</h6>
+                    <p >
+                        <div class="col">
+                            <a data-toggle="modal" data-target="#myModal" id="reset" class="btn btn-primary">Reset</a>
+                        </div>
+                    </p>
+                </div>
+                <div class="col-sm-9 col-lg-4 col-xl-3">
+                    <h6>Log</h6>
+                    <p >
+                        <div class="col">
+                            <a data-toggle="modal" data-target="#modalLog" id="withdraw"class="btn btn-primary">Log Withdraw</a>
                         </div>
                     </p>
                 </div>
