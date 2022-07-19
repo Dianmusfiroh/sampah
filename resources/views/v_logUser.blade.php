@@ -26,7 +26,8 @@
                                 </td>
                                 <td ><a href="{{ route( 'akun.show', $item->id_user) }}">
                                     <h6>{{ $item->nama_lengkap }}</h6></a></td>
-                                <td class="mb-0 title">Melakukan <b>{{ $item->aksi }}</b> Transaksi <b>{{ $logPensanan[0]['order_id'] }}</b></td>
+                                <td class="mb-0 title">Melakukan <b>{{ $item->aksi }}</b> Transaksi <b>@php $pesanan= json_decode($item->pesanan,true); echo $pesanan[0]['order_id'];  @endphp</b></td>
+
                             </tr>
                             @endforeach
                     </tbody>

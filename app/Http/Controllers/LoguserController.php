@@ -24,9 +24,9 @@ class LoguserController extends Controller
 
         $logPensanan = json_decode($item->pesanan,true);
         $nama_toko = $item->nama_toko;
-        }
-        // dd($logPensanan);
-        // dd($logPensanan);
+            
+    }
+        
         $log2 = DB::table('t_setting')
                 ->select('t_setting.*')
                 ->where('id_user')->get();
