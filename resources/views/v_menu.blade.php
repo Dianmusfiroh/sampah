@@ -44,6 +44,12 @@
                 <span class="text">Log Activity User</span>
             </a>
         </li>
+        <li class="menu-item @if(Request::segment(1) == 'user'): {{'active'}} @endif">
+            <a class="menu-link" href="{{ url('SendNotification') }}">
+                <i class="icon material-icons  md-notification_important"></i>
+                <span class="text">Kirim Notifikasi</span>
+            </a>
+        </li>
         <li class="menu-item @if(Request::segment(1) == 'user'): {{'active'}} @endif has-submenu ">
             <a class="menu-link" href="{{ url('akun') }}">
                 <i class="icon material-icons  md-admin_panel_settings"></i>
