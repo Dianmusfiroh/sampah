@@ -71,21 +71,21 @@ class AkunController extends Controller
         ->select('t_user.*','t_setting.*')
         ->limit(10)
         ->get();
-
+       
         return DataTables::of($akunA)
         ->addIndexColumn()
         ->addColumn('action', function($row){
 
                $btn = '';
                if (preg_match("/_/",$row->nama_toko)){
-               $btn .= '<a href="https://wbslink.id/{{$row->nama_toko}}" target="_blank" title="{{ $row->nama_lengkap }}" alamat="{{$row->alamat}}" ><i class="material-icons md-open_in_browser"></i></a>';
+               $btn .= '<a href="https://wbslink.id/'.$row->nama_toko .'" target="_blank" title="'.$row->nama_lengkap.'" alamat="'.$row->alamat.'" ><i class="material-icons md-open_in_browser"></i></a>';
+               
                }else{
-               $btn .= '<a href="https://wbslink.id/{{Str::slug($row->nama_toko)}}" target="_blank" title="{{ $row->nama_lengkap }}" alamat="{{$row->alamat}}" ><i class="material-icons md-open_in_browser"></i></a>';
+               $btn .= '<a href="https://wbslink.id/'.Str::slug($row->nama_toko).'" target="_blank" title="'.$row->nama_lengkap.'" alamat="'.$row->alamat.'" ><i class="material-icons md-open_in_browser"></i></a>';
                 }
-               $btn .='<a href="javascript:;" data-toggle="modal" onclick="deleteData({{$row->id_user}})"
+               $btn .='<a href="javascript:;" data-toggle="modal" onclick="deleteData('.$row->id_user.')"
                    data-target="#DeleteModal" class="material-icons md-delete_outline">
                </a>';
-
                 return $btn;
         })
         ->rawColumns(['action'])

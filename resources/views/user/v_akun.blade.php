@@ -73,6 +73,12 @@
                     data : function ( row, type, val, meta){
                         return get_expire(row.user_id,row.produk_id);
                     }
+                },
+                {
+                    targets:6,
+                    data : function ( row, type, val, meta){
+                        return `<a href="{{url('akun')}}/${row.id_user}">${row.nama_toko}</a>`
+                    }
                 }
             ]
 
