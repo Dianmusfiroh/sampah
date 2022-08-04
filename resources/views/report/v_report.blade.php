@@ -137,7 +137,7 @@
                             `<img id="teksDatatotal"  src="https://wbslink.id/assets/image/produk/`+item.gambar+`" alt="" class="avatar" />`
 
                             +`<div id="teksDatatotal">`+
-                                `<h6 id="teksDatatotal" >`+item.nama_toko+`</h6>`
+                                `<h6 id="teksDatatotal" >`+item.nama_produk+`</h6>`
                             +`</div>`
                         +`</div>`
                             +`<div id="teksDatatotal" >`+item.total+`</div>`
