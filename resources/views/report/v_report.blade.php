@@ -1,56 +1,29 @@
 <div class="content-header">
-    <div>
+    <div class="">
         <h2 class="content-title card-title">Report</h2>
         <p>Whole data about your business here</p>
     </div>
-
-    </div>
-</div>
-{{--  data picker  --}}
-<div class="row">
-    <div class="col-lg-5">
-        <div class="card mb-4">
-            <article class="card-body">
-                <div class="new-member-list" id="pToko">
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <div class="d-flex align-items-center">
-                            <input type="text" class="form-control" name="daterange" value="{{$now->firstOfMonth()->format('m/d/Y')}} - {{$now->lastOfMonth()->format('m/d/Y')}}" />
-                            <div>
-                                <button type="submit" class=" ml-10 btn btn-primary" id="btnSearch">cari</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </article>
+    <div>
+        <div id="reportrange" class="form-control bg-white ">
+            <i class="material-icons md-calendar_today"></i>&nbsp;
+            <span id="span"></span> <i class="fa fa-caret-down"></i>
         </div>
     </div>
+
+
 </div>
+</div>
+{{-- data picker --}}
+
+
+
 <div class="row">
     <div class="col-lg-5">
 
         <div class="card mb-4">
             <article class="card-body">
-
-
                 <h5 class="card-title">Top Seles By Toko</h5>
-                <div class="new-member-list" id="pToko">
-                    @foreach ($penjualanToko as $item )
-                    @if (preg_match("/_/",$item->nama_toko))
-                    <a id="data"  href="https://wbslink.id/{{$item->nama_toko}}" target="_blank"  >
-                    @else
-                    <a id="data"  href="https://wbslink.id/{{Str::slug($item->nama_toko)}}" target="_blank"  ></i>
-                    @endif
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <div class="d-flex align-items-center">
-                            <img id="data"  src="https://wbslink.id/assets/image/toko/{{$item->logo_toko}}" alt="" class="avatar" />
-                            <div>
-                                <h6 id="data" >{{$item->nama_toko}}</h6>
-                            </div>
-                        </div>
-                        <div id="data" >{{$item->total}}</div>
-                    </div>
-                    </a>
-                    @endforeach
+                <div class="new-member-list" id="exampleid">
                 </div>
             </article>
         </div>
@@ -59,24 +32,8 @@
         <div class="card mb-4">
             <article class="card-body">
                 <h5 class="card-title">Top Seles By Produk</h5>
-                <div class="new-member-list">
-                    @foreach ($produk as $item )
-                    @if (preg_match("/_/",$item->nama_toko))
-                    <a id="data" href="https://wbslink.id/{{$item->nama_toko}}/{{$item->id_produk}}/{{Str::slug($item->nama_produk)}}" target="_blank" class="title">
-                    @else
-                    <a id="data" href="https://wbslink.id/{{Str::slug($item->nama_toko)}}/{{$item->id_produk}}/{{Str::slug($item->nama_produk)}}" target="_blank" class="title">
-                    @endif
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <div class="d-flex align-items-center">
-                            <img id="data" src="https://wbslink.id/assets/image/produk/{{$item->gambar}}" alt="" class="avatar" />
-                            <div>
-                                <h6 id="data">{{$item->nama_produk}}</h6>
-                            </div>
-                        </div>
-                        <div id="data">{{$item->total}}</div>
-                    </div>
-                    </a>
-                    @endforeach
+                <div class="new-member-list" id="dataTotal">
+
                 </div>
             </article>
         </div>
@@ -84,35 +41,138 @@
 </div>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js" defer="">
+</script>
 
+<script type="text/javascript">
+    $(function() {
 
-{{--  Script yang Jadi  --}}
-<script>
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-    $.noConflict();
-        jQuery(document).ready(function($){
-        $('input[name="daterange"]').daterangepicker({
-            opens: 'left'
+        var start = moment().subtract(29, 'days');
+        var end = moment();
+        // 2022-08-02
+        function cb(start, end) {
+            $('#reportrange #span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            // console.log(start.format('YYYY-MM-D') + ' - ' + end.format('YYYY-MM-D'));
+            $(document).ready(function() {
+                var teks = $('#exampleid').find('#teks');
+                var panjang = 6
+                if (teks.length == 0) {
+                    panjang = teks.length + 1
+                    fetchData();
+                }else if(teks.length > 0){
+                    for (let index = 0; index <= panjang; index++) {
+                        $("#teks").remove();
+                    }
+                    fetchData();
+                }
 
-        }, function(start, end, label) {
-            $("#btnSearch").on("click",function(){
-                var tanggal_awal = start.format('YYYY-MM-DD');
-                var tanggal_akhir = end.format('YYYY-MM-DD');
-                console.log(tanggal_awal);
-
-                window.location ="http://localhost/panel_wbslink/public/report?tanggal_awal="+tanggal_awal+"&tanggal_akhir="+tanggal_akhir+"";
-
+                var teksDatatotal = $('#dataTotal').find('#teksDatatotal');
+                if (teksDatatotal.length == 0) {
+                    panjang = teksDatatotal.length + 1
+                    fetchDataTotal();
+                }else if(teksDatatotal.length > 0){
+                    for (let index = 0; index <= panjang; index++) {
+                        $("#teksDatatotal").remove();
+                    }
+                    fetchDataTotal();
+                }
             });
-        });
+
+            function fetchData() {
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    url: '{{ route('get_data') }}',
+                    data: {
+                        'start': start.format('YYYY-MM-D'),
+                        'end': end.format('YYYY-MM-D')
+                    },
+                    success: function(data, success) {
+                        $.each(data, function(key, item) {
+                            var namaToko ="";
+                            if (item.nama_toko.match(/_/)) {
+                                namaToko = generateSlug(item.nama_toko);
+                            } else {
+                                namaToko = generateSlug(item.nama_toko);
+                            }
+                            $('#exampleid').append(
+                        `<a id="teks"href="https://wbslink.id/`+namaToko+`"    target="_blank" class="title">`+
+                        `<div id="teks" class="d-flex align-items-center justify-content-between mb-4">`+
+                        `<div id="teks" class="d-flex align-items-center">`+
+                            `<img id="teks"  src="https://wbslink.id/assets/image/toko/`+item.logo_toko+`" alt="" class="avatar" />`
+                            +`<div id="teks">`+
+                                `<h6 id="teks" >`+item.nama_toko+`</h6>`
+                            +`</div>`
+                        +`</div>`
+                            +`<div id="teks" >`+item.total+`</div>`
+                        +`</div>
+                        `
+                        );
+                    });
+
+                    }
+                });
+            }
+            function fetchDataTotal() {
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    url: '{{ route('get_dataTotal') }}',
+                    data: {
+                        'start': start.format('YYYY-MM-D'),
+                        'end': end.format('YYYY-MM-D')
+                    },
+                    success: function(data, success) {
+                        $.each(data, function(key, item) {
+                            var namaToko ="";
+                            if (item.nama_toko.match(/_/)) {
+                                namaToko = generateSlug(item.nama_toko);
+                            } else {
+                                namaToko = generateSlug(item.nama_toko);
+                            }
+                            $('#dataTotal').append(
+                        `<a id="teksDatatotal"href="https://wbslink.id/`+namaToko+`/`+ item.id_produk +`/`+generateSlug(item.nama_produk)+`"    target="_blank" class="title">`+
+                        `<div id="teksDatatotal" class="d-flex align-items-center justify-content-between mb-4">`+
+                        `<div id="teksDatatotal" class="d-flex align-items-center">`+
+                            `<img id="teksDatatotal"  src="https://wbslink.id/assets/image/produk/`+item.gambar+`" alt="" class="avatar" />`
+
+                            +`<div id="teksDatatotal">`+
+                                `<h6 id="teksDatatotal" >`+item.nama_toko+`</h6>`
+                            +`</div>`
+                        +`</div>`
+                            +`<div id="teksDatatotal" >`+item.total+`</div>`
+                        +`</div>`
+                        );
+                    });
+
+                    }
+                });
+            }
+        }
+        function generateSlug(text)
+        {
+            return text.toString().toLowerCase()
+                .replace(/^-+/, '')
+                .replace(/-+$/, '')
+                .replace(/\s+/g, '-')
+                .replace(/\-\-+/g, '-')
+                .replace(/[^\w\-]+/g, '');
+        }
+        $('#reportrange').daterangepicker({
+            startDate: start,
+            endDate: end,
+            ranges: {
+                'Hari Ini': [moment(), moment()],
+                'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                '7 Hari Terakhir': [moment().subtract(6, 'days'), moment()],
+                '30 Hari Terakhir': [moment().subtract(29, 'days'), moment()],
+                'Bulan Ini': [moment().startOf('month'), moment().endOf('month')],
+                'Bulan Lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
+                    'month').endOf('month')]
+            }
+        }, cb);
+
+        cb(start, end);
+
     });
 </script>
-{{--  $.each(data.penjualanToko, function(){
-    $('#data').append('<img id="data" src="https://wbslink.id/assets/image/produk/'+ this['logo_toko']+ '" alt="" class="avatar" />');
-
-});  --}}

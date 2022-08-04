@@ -49,6 +49,8 @@ Route::get('statistikJenisUsaha', [StatistikController::class,'statistikJenisUsa
 Route::resource('statistik', StatistikController::class);
 Route::post('storeAkun', [Report::class,'storeAkun'])->name('storeAkun');
 Route::get('updateStatus',[SettingXenditController::class,'updateStatus'])->name('updateStatus');
+Route::get('get_data',[Report::class,'get_data'])->name('get_data');
+Route::get('get_dataTotal',[Report::class,'get_dataTotal'])->name('get_dataTotal');
 // Route::put('resetPin',[SettingXenditController::class,'resetPin'])->name('resetPin');
 Route::resource('resetPin',SettingXenditController::class);
 // Route::get('resetPin',[SettingXenditController::class,'reset'])->name('reset');
@@ -64,5 +66,22 @@ Route::get('/cetakUserTidakAktif', [Report::class, 'cetakTidakAktif_pdf'])->name
 Route::resource('kategori', KategoriController::class);
 Route::resource('tutorial', TutorialController::class);
 Route::get('data',[AkunController::class,'data'])->name('data');
+Route::get('detailHari',[HomeController::class,'detailDay'])->name('detailDay');
+Route::get('detailNominalTahun',[HomeController::class,'detailTahunNominal'])->name('detailTahunNominal');
+Route::get('detailTotalTahun',[HomeController::class,'detailTotalTahun'])->name('detailTotalTahun');
+Route::get('detailPendaftaranTahun',[HomeController::class,'detailPendaftaranTahun'])->name('detailPendaftaranTahun');
+Route::get('detailAkunTotal',[HomeController::class,'detailAkunTotal'])->name('detailAkunTotal');
+Route::get('detailPendaftaranBulanKemarin',[HomeController::class,'detailPendaftaranBulanKemarin'])->name('detailPendaftaranBulanKemarin');
+Route::get('detailTransaksiBulanLalu',[HomeController::class,'detailTransaksiBulanLalu'])->name('detailTransaksiBulanLalu');
+Route::get('detailBulanLaluNominal',[HomeController::class,'detailBulanLaluNominal'])->name('detailBulanLaluNominal');
+Route::get('detailPendaftaranBulan',[HomeController::class,'detailPendaftaranBulan'])->name('detailPendaftaranBulan');
+Route::get('detailTransaksiBulan',[HomeController::class,'detailTransaksiBulan'])->name('detailTransaksiBulan');
+Route::get('detailBulanNominal',[HomeController::class,'detailBulanNominal'])->name('detailBulanNominal');
+Route::get('detailPendaftaranKemarin',[HomeController::class,'detailPendaftaranKemarin'])->name('detailPendaftaranKemarin');
+Route::get('detailTransaksiKemarin',[HomeController::class,'detailTransaksiKemarin'])->name('detailTransaksiKemarin');
+Route::get('detailKemarinNominal',[HomeController::class,'detailKemarinNominal'])->name('detailKemarinNominal');
+Route::get('detailPendaftaranHariIni',[HomeController::class,'detailPendaftaranHariIni'])->name('detailPendaftaranHariIni');
+Route::get('detailTransaksiHariIni',[HomeController::class,'detailTransaksiHariIni'])->name('detailTransaksiHariIni');
+Route::get('detailHariIniNominal',[HomeController::class,'detailHariIniNominal'])->name('detailHariIniNominal');
 
 

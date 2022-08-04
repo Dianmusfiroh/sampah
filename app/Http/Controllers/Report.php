@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Validator;
+use Response;
 
 class Report extends Controller
 {
@@ -30,7 +32,7 @@ class Report extends Controller
         foreach($akunA as $item){
             $order = DB::table('t_order')->where('id_user',$item->id_user)->count('order_id');
         }
-        $penjualanToko = DB::select("SELECT a.id_user ,s.nama_toko ,s.logo_toko,COUNT(a.total) AS total FROM(SELECT k.id_user, mo.tgl_selesai, k.id_produk AS total FROM `t_keranjang` k , t_multi_order mo WHERE k.kode_keranjang = mo.kode_keranjang AND mo.order_status ='4' AND month(mo.tgl_order) = month(now()) AND year(mo.tgl_order) = year(now()) UNION ALL SELECT o.id_user, o.tgl_order, o.id_user AS total FROM t_order o WHERE o.order_status='4' and month(o.tgl_order) = month(now()) AND year(o.tgl_order) = year(now())) AS a , t_setting s WHERE a.id_user = s.id_user GROUP BY a.id_user ORDER BY total DESC LIMIT 5");
+        $penjualanToko = DB::select ("SELECT a.id_user ,s.nama_toko ,s.logo_toko,COUNT(a.total) AS total FROM(SELECT k.id_user, mo.tgl_selesai, k.id_produk AS total FROM `t_keranjang` k , t_multi_order mo WHERE k.kode_keranjang = mo.kode_keranjang AND mo.order_status ='4' AND month(mo.tgl_order) = month(now()) AND year(mo.tgl_order) = year(now()) UNION ALL SELECT o.id_user, o.tgl_order, o.id_user AS total FROM t_order o WHERE o.order_status='4' and month(o.tgl_order) = month(now()) AND year(o.tgl_order) = year(now())) AS a , t_setting s WHERE a.id_user = s.id_user GROUP BY a.id_user ORDER BY total DESC LIMIT 5");
         $produktotal = DB::select(DB::raw("SELECT t.id_user,s.nama_toko, t.id_produk,p.nama_produk,p.gambar ,sum(total) as total from ( SELECT a.id_user, a.id_produk , COUNT(a.id_produk) as total FROM (SELECT k.id_user, k.id_produk FROM `t_keranjang` k JOIN t_multi_order mo WHERE k.kode_keranjang = mo.kode_keranjang AND mo.order_status = '4' AND month(tgl_order)=month(now()) AND year(tgl_order)= year(now())) AS a GROUP BY a.id_produk UNION ALL SELECT id_user,id_produk,COUNT(id_produk) AS total FROM `t_order` o WHERE o.order_status='4' AND month(o.tgl_order)= month(now()) AND year(o.tgl_order) =year(now()) GROUP BY id_produk) AS t JOIN t_produk p JOIN t_setting s WHERE s.id_user = t.id_user AND p.id_produk = t.id_produk GROUP BY t.id_produk ORDER BY total DESC limit 5"));
 
         if ($request->tanggal_awal != '' && $request->tanggal_akhir != '') {
@@ -152,5 +154,16 @@ class Report extends Controller
             'penjualanToko' => $penjualanToko,
             'produk' => $produk,
         ]);
+    }
+    public function get_data(Request $request)
+    {
+        $penjualanToko = DB::select ("SELECT a.id_user ,s.nama_toko ,s.logo_toko,COUNT(a.total) AS total FROM(SELECT k.id_user, mo.tgl_selesai, k.id_produk AS total FROM `t_keranjang` k , t_multi_order mo WHERE k.kode_keranjang = mo.kode_keranjang AND mo.order_status ='4' AND date(mo.tgl_order) BETWEEN date('$request->start') AND date('$request->end') UNION ALL SELECT o.id_user, o.tgl_order, o.id_user AS total FROM t_order o WHERE o.order_status='4' and date(o.tgl_order) BETWEEN date('$request->start') AND date('$request->end')) AS a , t_setting s WHERE a.id_user = s.id_user GROUP BY a.id_user ORDER BY total DESC LIMIT 5");
+        echo json_encode($penjualanToko);
+    }
+    public function get_dataTotal(Request $request)
+    {
+        $produktotal = DB::select(DB::raw("SELECT t.id_user,s.nama_toko, t.id_produk,p.nama_produk,p.gambar ,sum(total) as total from ( SELECT a.id_user, a.id_produk , COUNT(a.id_produk) as total FROM (SELECT k.id_user, k.id_produk FROM `t_keranjang` k JOIN t_multi_order mo WHERE k.kode_keranjang = mo.kode_keranjang AND mo.order_status = '4' AND date(mo.tgl_order) BETWEEN date('$request->start') AND date('$request->end')) AS a GROUP BY a.id_produk UNION ALL SELECT id_user,id_produk,COUNT(id_produk) AS total FROM `t_order` o WHERE o.order_status='4' AND date(o.tgl_order) BETWEEN date('$request->start') AND date('$request->end') GROUP BY id_produk) AS t JOIN t_produk p JOIN t_setting s WHERE s.id_user = t.id_user AND p.id_produk = t.id_produk GROUP BY t.id_produk ORDER BY total DESC limit 5"));
+
+        echo json_encode($produktotal);
     }
 }

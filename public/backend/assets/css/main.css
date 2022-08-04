@@ -375,7 +375,9 @@ table .form-check {
 .text-brand {
     color: #3BB77E !important;
 }
-
+.text-black {
+    color: #000000 !important;
+}
 .bg-primary {
     background-color: rgba(59, 183, 126, 0.2);
 }
@@ -1078,7 +1080,7 @@ b {
     -webkit-box-shadow: none;
     box-shadow: none;
     padding-left: 20px;
-    color: #4f5d77;
+    color: #2b2a30;
     width: 100%;
     border-radius: 4px;
     height: 45px;

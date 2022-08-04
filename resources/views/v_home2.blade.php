@@ -27,21 +27,21 @@
                 <table class="table table-hover " >
                         <tr>
                             <th style="width: 20%">Pengguna</th>
-                            <td>@foreach ($userA as $item )
+                            <td><a class="text-body" href="{{ route('userAktif') }}">@foreach ($userA as $item )
                                 {{ $item->total}}
-                            @endforeach/{{$user->count() }}</td>
+                            @endforeach</a>/<a class="text-body" href="{{ route('detailAkunTotal') }}">{{$user->count() }}</a></td>
                         </tr>
                         <tr>
                             <th>Pendaftaran</th>
-                            <td>{{$userToDay}}</td>
+                            <td><a class="text-body" href="{{ route('detailPendaftaranHariIni') }}">{{$userToDay}}</a></td>
                         </tr>
                         <tr>
                             <th>Transaksi</th>
-                            <td>{{$totalTransaksiHariSukses}}/{{$totalTransaksiHari}}</td>
+                            <td><a class="text-body" href="{{ route('detailHariIniNominal') }}">{{$totalTransaksiHariSukses}}</a>/<a class="text-body" href="{{ route('detailTransaksiHariIni') }}">{{$totalTransaksiHari}}</a></td>
                         </tr>
                         <tr>
                             <th>Nominal</th>
-                            <td>@currency($NominalTransaksiHariSukses)</td>
+                            <td><a class="text-body" href="{{ route('detailHariIniNominal') }}">@currency($NominalTransaksiHariSukses)</a></td>
                         </tr>
                 </table>
             </div>
@@ -51,21 +51,21 @@
             <table class="table table-hover "  >
                     <tr>
                         <th>Pengguna kemarin</th>
-                        <td>@foreach ($userA as $item )
+                        <td><a class="text-body" href="{{ route('userAktif') }}">@foreach ($userA as $item )
                             {{ $item->total}}
-                        @endforeach/{{$user->count() }}</td>
+                        @endforeach</a>/<a class="text-body" href="{{ route('detailAkunTotal') }}">{{$user->count() }}</a></td>
                     </tr>
                     <tr>
                         <th>Pendaftaran</th>
-                        <td>{{$userYesterday}}</td>
+                        <td><a class="text-body" href="{{ route('detailPendaftaranKemarin') }}">{{$userYesterday}}</a></td>
                     </tr>
                     <tr>
                         <th>Transaksi</th>
-                        <td>{{$totalTransaksiYesterdaySukses}}/{{$totalTransaksiYesterday}}</td>
+                        <td><a class="text-body" href="{{ route('detailKemarinNominal') }}">{{$totalTransaksiYesterdaySukses}}</a>/<a class="text-body" href="{{ route('detailTransaksiKemarin') }}">{{$totalTransaksiYesterday}}</a>   </td>
                     </tr>
                     <tr>
                         <th>Nominal</th>
-                        <td>@currency($NominalTransaksiYesterdaySukses)</td>
+                        <td><a class="text-body" href="{{ route('detailKemarinNominal') }}">@currency($NominalTransaksiYesterdaySukses)</a></td>
                     </tr>
             </table>
             </div>
@@ -75,21 +75,21 @@
             <table class="table table-hover "  >
                     <tr>
                         <th>Pengguna </th>
-                        <td>@foreach ($userA as $item )
+                        <td><a class="text-body" href="{{ route('userAktif') }}">@foreach ($userA as $item )
                             {{ $item->total}}
-                        @endforeach/{{$user->count() }}</td>
+                        @endforeach</a>/<a class="text-body" href="{{ route('detailAkunTotal') }}">{{$user->count() }}</a></td>
                     </tr>
                     <tr>
                         <th>Pendaftaran</th>
-                        <td>{{$userMonth}}</td>
+                        <td><a class="text-body" href="{{ route('detailPendaftaranBulan') }}">{{$userMonth}}</a></td>
                     </tr>
                     <tr>
                         <th>Transaksi</th>
-                        <td>{{$totalTransaksiMonthSukses}}/{{$totalTransaksiMonth}}</td>
+                        <td><a class="text-body" href="{{ route('detailBulanNominal') }}">{{$totalTransaksiMonthSukses}}</a>/<a class="text-body" href="{{ route('detailTransaksiBulan') }}">{{$totalTransaksiMonth}}</a></td>
                     </tr>
                     <tr>
                         <th>Nominal</th>
-                        <td>@currency($NominalTransaksiMonthSukses)</td>
+                        <td><a class="text-body" href="{{ route('detailBulanNominal') }}">@currency($NominalTransaksiMonthSukses)</a></td>
                     </tr>
             </table>
             </div>
@@ -99,45 +99,45 @@
             <table class="table table-hover "  >
                     <tr>
                         <th>Pengguna </th>
-                        <td>@foreach ($userA as $item )
+                        <td><a class="text-body" href="{{ route('userAktif') }}">@foreach ($userA as $item )
                             {{ $item->total}}
-                        @endforeach/{{$user->count() }}</td>
+                        @endforeach</a>/<a class="text-body" href="{{ route('detailAkunTotal') }}">{{$user->count() }}</a></td>
                     </tr>
                     <tr>
                         <th>Pendaftaran</th>
-                        <td>{{$userLastMonth}}</td>
+                        <td><a class="text-body" href="{{ route('detailPendaftaranBulanKemarin') }}">{{$userLastMonth}}</a></td>
                     </tr>
                     <tr>
                         <th>Transaksi</th>
-                        <td>{{$totalTransaksiLastMonthSukses}}/{{$totalTransaksiLastMonth}}</td>
+                        <td><a class="text-body" href="{{ route('detailBulanLaluNominal') }}">{{$totalTransaksiLastMonthSukses}}</a>/<a class="text-body" href="{{ route('detailTransaksiBulanLalu') }}">{{$totalTransaksiLastMonth}}</a></td>
                     </tr>
                     <tr>
                         <th>Nominal</th>
-                        <td>@currency($NominalTransaksiLastMonthSukses)</td>
+                        <td><a class="text-body" href="{{ route('detailBulanLaluNominal') }}">@currency($NominalTransaksiLastMonthSukses)</a></td>
                     </tr>
             </table>
             </div>
         </div>
         <div class="card-body view" id="tahun" >
             <div class="table-responsive">
-            <table class="table table-hover "  >
+            <table class="table table-hover"  >
                     <tr>
                         <th>Pengguna </th>
-                        <td>@foreach ($userA as $item )
+                        <td><a class="text-body" href="{{ route('userAktif') }}">@foreach ($userA as $item )
                             {{ $item->total}}
-                        @endforeach/{{$user->count() }}</td>
+                        @endforeach</a>/<a class="text-body" href="{{ route('detailAkunTotal') }}">{{$user->count() }}</a></td>
                     </tr>
                     <tr>
                         <th>Pendaftaran</th>
-                        <td>{{$userYear}}</td>
+                        <td><a class="text-body" href="{{ route('detailPendaftaranTahun') }}">{{$userYear}}</a></td>
                     </tr>
                     <tr>
                         <th>Transaksi</th>
-                        <td>{{$totalTransaksiYearSukses}}/{{$totalTransaksiYear}}</td>
+                        <td><a class="text-body" href="{{ route('detailTahunNominal') }}">{{$totalTransaksiYearSukses}}</a>/<a class="text-body" href="{{ route('detailTotalTahun') }}">{{$totalTransaksiYear}}</a></td>
                     </tr>
                     <tr>
                         <th>Nominal</th>
-                        <td>@currency($NominalTransaksiYearSukses)</td>
+                        <td > <a class="text-body" href="{{ route('detailTahunNominal') }}"> @currency($NominalTransaksiYearSukses)</a></td>
                     </tr>
             </table>
             </div>

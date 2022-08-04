@@ -84,30 +84,35 @@
     </div>
     <div class="card mb-4">
         <article class="card-body ">
+            @if ($xendit !='')
+
             <h5 class="card-title">Pengaturan Xendit</h5>
             <div class="row ">
+
                 <div class="col-sm-6 col-lg-4 col-xl-3">
                     <h6>Email</h6>
                     <p>
-                        {{$xendit ? $xendit->email : ''}} <br />
+                        {{$xendit ? $xendit->email : 'Belum ada akun xendit'}} <br />
                     </p>
                 </div>
                 <div class="col-sm-9 col-lg-4 col-xl-2">
                     <h6>Nama Bisnis</h6>
                     <p>
-                        {{$xendit ? $xendit->business_name : ''}} <br />
+                        {{$xendit ? $xendit->business_name : 'Belum ada akun xendit'}} <br />
                     </p>
                 </div>
+
                 <div class="col-sm-12 col-lg-4 col-xl-2">
                     <h6>Blokir Xendit</h6>
                     <p>
-
                         <div class="row align-items-start form-check form-switch">
                             <input type="checkbox" data-width="100" checked data-toggle="toggle" class="form-check-input" data-onstyle="outline-wbslink" data-offstyle="outline-wbslink" data-ids="{{$xendit ? $xendit->id_user : ''}}"  {{ ($xendit ? $xendit->is_blocked : '') ? 'checked' : '' }}>
 
                             {{--  <input type="checkbox"    data-ids="{{$xendit ? $xendit->id_user : ''}}" class="form-check-input col-sm-5 center"  data-onstyle="success" {{ ($xendit ? $xendit->is_blocked : '') ? 'checked' : '' }} data-checked="On" data-unchecked="Off">  --}}
                         </div>
                     </p>
+
+
 
                 </div>
                 <div class="col-sm-9 col-lg-4 col-xl-2">
@@ -125,8 +130,13 @@
                             <a data-toggle="modal" data-target="#modalLog" id="withdraw"class="btn btn-primary">Log Withdraw</a>
                         </div>
                     </p>
+
                 </div>
+
             </div>
+            @else
+            <h1 class="text-md-center">Belum Ada Akun Xendit</h1>
+            @endif
         </article>
     </div>
     <div class="col-12">
@@ -227,7 +237,7 @@
                 {{--  <form action="{{ route($modul.'.store') }}" method="POST">
                     @csrf  --}}
                     <div class="row mb-4 text-center">
-                        <h6>Isi Log</h6>
+                        <h6>Isi Log Comming Soon...</h6>
                     </div>
             </div>
             {{--  <div class="modal-footer">

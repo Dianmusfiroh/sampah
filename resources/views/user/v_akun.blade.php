@@ -43,6 +43,7 @@
             let obj;
             const res =  await fetch (`{{getenv('WBS_ENPOINT')}}?_key={{getenv('WBS_KEY')}}&user_id=${user_id}&product_id=${product_id}`);
             obj = await res.text();
+            
             console.log(obj)
             return obj
         }
