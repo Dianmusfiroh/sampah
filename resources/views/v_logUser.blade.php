@@ -9,7 +9,7 @@
                 <table class="table align-middle table-nowrap mb-0" id="myTable">
                     <thead class="table-light">
                         <tr>
-                            <th class="align-middle"  style="width: 4%;">No</th>
+                            <th class="align-middle"  style="width: 4%;" hidden>No</th>
                             <th class="align-middle"  scope="col">Nama Toko</th>
                             <th class="align-middle"  scope="col">Nama Lengkap</th>
                             <th class="align-middle"  scope="col">Aksi</th>
@@ -18,7 +18,7 @@
                     <tbody>
                         @foreach ($log as $key => $item )
                             <tr>
-                                <td ><span> {{  ++$key }}</span></td>
+                                <td hidden><span> {{  ++$key }}</span></td>
                                 <td >
                                     <a href="{{ route( 'akun.show', $item->id_user) }}">
                                             <h6 class="mb-0 title">{{ $item->nama_toko }}</h6>
