@@ -82,13 +82,12 @@
 
         <!--  card-body.// -->
     </div>
+    {{--  pengaturan Akun Xendit  --}}
     <div class="card mb-4">
         <article class="card-body ">
             @if ($xendit !='')
-
             <h5 class="card-title">Pengaturan Xendit</h5>
             <div class="row ">
-
                 <div class="col-sm-6 col-lg-4 col-xl-3">
                     <h6>Email</h6>
                     <p>
@@ -106,9 +105,8 @@
                     <h6>Blokir Xendit</h6>
                     <p>
                         <div class="row align-items-start form-check form-switch">
-                            <input type="checkbox" data-width="100" checked data-toggle="toggle" class="form-check-input" data-onstyle="outline-wbslink" data-offstyle="outline-wbslink" data-ids="{{$xendit ? $xendit->id_user : ''}}"  {{ ($xendit ? $xendit->is_blocked : '') ? 'checked' : '' }}>
-
-                            {{--  <input type="checkbox"    data-ids="{{$xendit ? $xendit->id_user : ''}}" class="form-check-input col-sm-5 center"  data-onstyle="success" {{ ($xendit ? $xendit->is_blocked : '') ? 'checked' : '' }} data-checked="On" data-unchecked="Off">  --}}
+                            {{--  <input type="checkbox" data-width="100" checked data-toggle="toggle" class="form-check-input" data-onstyle="outline-wbslink" data-offstyle="outline-wbslink" data-ids="{{$xendit ? $xendit->id_user : ''}}"  {{ ($xendit ? $xendit->is_blocked : '') ? 'checked' : '' }} data-checked="On" data-unchecked="Off">  --}}
+                            <input type="checkbox" data-width="100"  data-toggle="toggle"    data-ids="{{$xendit ? $xendit->id_user : ''}}" class="form-check-input "  data-onstyle="outline-wbslink" data-offstyle="outline-wbslink" {{ ($xendit ? $xendit->is_blocked : '') ? 'checked' : '' }} data-checked="On" data-unchecked="Off">
                         </div>
                     </p>
 
@@ -137,6 +135,56 @@
             @else
             <h1 class="text-md-center">Belum Ada Akun Xendit</h1>
             @endif
+        </article>
+    </div>
+    {{--  pengaturan setting Custom  --}}
+    <div class="card mb-4">
+        <header class="card-header">
+            <div class="row gx-3">
+                <div class="col-lg-4 col-md-6 me-auto">
+                    <h5>Setting Custom</h5>
+                </div>
+                <div class="col-lg-2 col-6 col-md-3">
+                    <div class="col">
+                        <a data-toggle="modal" data-target="#modalCustom" id="tambahCustom"class="btn btn-primary">Tambah</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <article class="card-body ">
+            <div class="table-responsive">
+                <table class="table table-hover" id="myTable" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Fitur</th>
+                        <th class="text-md-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($settingCustom as $key => $item)
+                    @if ($item->kd_fittur != '')
+                        <tr>
+                            <td>{{++$key}}</td>
+                            <td>{{$item->fittur}}</td>
+                            <td class="text-md-center">
+                                <div class="row align-items-start form-check form-switch">
+                                    <div class="col ">
+                                    <input type="checkbox" data-width="60" data-size="sm" data-toggle="toggle"    data-ids="{{$item ? $item->kd_fittur : ''}}" class="custom-control-input "  data-onstyle="outline-wbslink" data-offstyle="outline-wbslink" {{ ($item ? $item->status : '') ? 'checked' : '' }} data-checked="On" data-unchecked="Off">
+                                    <a href="javascript:;" data-toggle="modal" onclick="deleteData({{$item->kd_fittur}})"
+                                        data-target="#DeleteModal" class="material-icons md-delete_outline">
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        @else($item->kd_fittur == '')
+                        <h1>tidak ada</h1>
+                        @endif
+                        @endforeach
+                </tbody>
+            </table>
+            </div>
         </article>
     </div>
     <div class="col-12">
@@ -193,13 +241,10 @@
         @endforeach
 
     </div>
-            <!-- row.// -->
-        </div>
-
-        <!--  card-body.// -->
-
+    </div>
     </div>
     <!-- Modal -->
+{{--  modal Reset Pin  --}}
 <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
@@ -225,6 +270,7 @@
         </div>
     </div>
 </div>
+{{--  modal Log Xendit  --}}
 <div class="modal fade" id="modalLog" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
@@ -248,11 +294,59 @@
         </div>
     </div>
 </div>
+{{--  modal tambah setting custom  --}}
+<div class="modal fade" id="modalCustom" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Tambah Setting Custom</h4>
+                <button type="button" class="btn-close " data-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('settingCustom.store') }}" method="POST">
+                    @csrf
+                    <input type="text" name="id_user" hidden value="{{$item->id_user}}">
+
+                    <div class="row mb-4">
+                        <label class="col-lg-3 col-form-label">Nama Fitur</label>
+                        <div class="col-lg-9">
+
+                            <select name="id_fittur" id="fitur" class="form-control">
+                                @foreach ($fittur as $item)
+                                <option value="{{$item->id_fittur}}">{{$item->fittur}}</option>
+
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button  class="btn btn-default" data-dismiss="modal">Batal</button>
+                <button class="btn btn-primary " type="submit">Simpan</button>
+            </form>
+
+            </div>
+        </div>
+    </div>
+</div>
 </section>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+{{--  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>  --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 <script src="{{ asset('backend/assets/js/vendors/chart.js')}}"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="{{ asset('DataTables/datatables.min.js') }}"></script>
+@include('script.deleteAkunDetail')
+
+<script>
+    $("#myTable").DataTable({
+                    "autoWidth": false,
+                    "responsive": true
+                });
+</script>
+</script>
+</script>
 <script>
 
     $(function() {
@@ -350,7 +444,6 @@
     $('.form-check-input').change(function() {
         var is_blocked = $(this).prop('checked') == true ? 1 : 0;
         var id_user = $(this).data('ids');
-
         console.log(is_blocked)
         $.ajax({
             type: "GET",
@@ -362,20 +455,23 @@
             }
         });
     });
+    });
+    $( document ).ready(function() {
+        $('.custom-control-input').change(function() {
+            var status = $(this).prop('checked') == true ? 1 : 0;
+            var kd_fittur = $(this).data('ids');
 
-    {{--  $('#reset').change(function() {
-        var id_user = $(this).data('ids');
-
-        console.log(id_user)
-        $.ajax({
-            type: "GET",
-            dataType: "json",
-            url: '{{ route('reset',$item->id_user) }}',
-            data: {'id_user': id_user},
-            success: function(data){
-                console.log(id_user)
-            }
+            console.log(status)
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: '{{ route('updateStatusCustom') }}',
+                data: {'status': status, 'kd_fittur': kd_fittur},
+                success: function(data,success){
+                    console.log(data);
+                }
+            });
         });
-    })  --}}
-    })
+    });
 </script>
+

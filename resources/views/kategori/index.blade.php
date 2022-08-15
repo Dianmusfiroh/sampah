@@ -25,14 +25,6 @@
                             <td >{{ $item->kategori_bisnis }}</td>
                             <td class="text-center">
                                 <a href="{{ route($modul.'.edit', $item->id_kategori_bisnis) }}" title="{{ $item->kategori_bisnis }}" class="btn btn-sm font-sm rounded btn-brand btn-modal"><i class="material-icons md-edit"></i> Edit</a>
-
-                                {{--  <a data-toggle="modal" data-target="#myModalEdit" class="btn btn-sm font-sm rounded btn-brand"
-                                    type="submit"> <i class="material-icons md-edit"></i> Edit </a>  --}}
-                                    {{--  <a href="{{ route( $modul.'.edit', $item->id_kategori_bisnis) }}" class="btn btn-sm font-sm rounded btn-brand"
-                                        type="submit"> <i class="material-icons md-edit"></i> Edit </a>  --}}
-
-                                {{--  <a href="{{ route('kategori.show', $item->id_ketgori_bisnis) }}" class="btn btn-success btn-sm"
-                                    type="submit"><i class="fas fa-fw fa-edit"></i> Detail</a>  --}}
                                 <a href="javascript:;" data-toggle="modal" onclick="deleteData({{$item->id_kategori_bisnis}})"
                                     data-target="#DeleteModal" class="btn btn-sm btn-danger"><i class="material-icons md-delete"></i>
                                     Delete</a>

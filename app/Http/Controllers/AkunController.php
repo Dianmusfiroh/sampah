@@ -13,6 +13,8 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
+use App\Models\SettingCustom;
+use App\Models\Fittur;
 
 class AkunController extends Controller
 {
@@ -71,7 +73,7 @@ class AkunController extends Controller
         ->select('t_user.*','t_setting.*')
         ->limit(10)
         ->get();
-       
+
         return DataTables::of($akunA)
         ->addIndexColumn()
         ->addColumn('action', function($row){
@@ -79,7 +81,7 @@ class AkunController extends Controller
                $btn = '';
                if (preg_match("/_/",$row->nama_toko)){
                $btn .= '<a href="https://wbslink.id/'.$row->nama_toko .'" target="_blank" title="'.$row->nama_lengkap.'" alamat="'.$row->alamat.'" ><i class="material-icons md-open_in_browser"></i></a>';
-               
+
                }else{
                $btn .= '<a href="https://wbslink.id/'.Str::slug($row->nama_toko).'" target="_blank" title="'.$row->nama_lengkap.'" alamat="'.$row->alamat.'" ><i class="material-icons md-open_in_browser"></i></a>';
                 }
@@ -162,8 +164,6 @@ class AkunController extends Controller
                 'modul' => 'akun',
                 'exp' => $json,
                 'xendit'=> SetingXendit::where('id_user',$id_user)->first(),
-
-                // 'xendit'=> DB::table('t_setting_xendit')->find($id_user)->,
                 'transaksi' =>$total,
                 'totalbayar' =>$totalbayar,
                 'now' => Carbon::now()->format('Y-m-d'),
@@ -179,7 +179,10 @@ class AkunController extends Controller
                             ->Join('t_setting','t_user.id_user','=','t_setting.id_user')
                             ->select('t_user.*','t_setting.*')
                             ->where('t_user.id_user','=',$id_user)
-                            ->get()
+                            ->get(),
+                'settingCustom' => SettingCustom::join('t_fittur','t_fittur.id_fittur','=','t_set_fittur.id_fittur')
+                                ->where('id_user',$id_user)->get(),
+                'fittur' => Fittur::all(),
             ]
         ];
         return backend($request,$data,$modul);
