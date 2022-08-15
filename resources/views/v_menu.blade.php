@@ -58,6 +58,7 @@
             <div class="submenu">
                 <a href="{{ url('kategori') }}">Tambah Kategori</a>
                 <a href="{{ url('tutorial') }}">Tutorial </a>
+                <a href="{{ url('fittur') }}">Fittur</a>
             </div>
         </li>
     </ul>

@@ -15,6 +15,9 @@ use App\Http\Controllers\LoguserController;
 use App\Http\Controllers\StatistikController;
 use App\Http\Controllers\TutorialController;
 use App\Http\Controllers\SettingXenditController;
+use App\Http\Controllers\settingCustomController;
+use App\Http\Controllers\FitturController;
+
 use Illuminate\Routing\Route as RoutingRoute;
 
 /*
@@ -49,6 +52,7 @@ Route::get('statistikJenisUsaha', [StatistikController::class,'statistikJenisUsa
 Route::resource('statistik', StatistikController::class);
 Route::post('storeAkun', [Report::class,'storeAkun'])->name('storeAkun');
 Route::get('updateStatus',[SettingXenditController::class,'updateStatus'])->name('updateStatus');
+Route::get('updateStatusCustom',[settingCustomController::class,'updateStatusCustom'])->name('updateStatusCustom');
 Route::get('get_data',[Report::class,'get_data'])->name('get_data');
 Route::get('get_dataTotal',[Report::class,'get_dataTotal'])->name('get_dataTotal');
 // Route::put('resetPin',[SettingXenditController::class,'resetPin'])->name('resetPin');
@@ -65,6 +69,8 @@ Route::get('/cetakUserAktif', [Report::class, 'cetakAktif_pdf'])->name('cetakAkt
 Route::get('/cetakUserTidakAktif', [Report::class, 'cetakTidakAktif_pdf'])->name('cetakNonAktif');
 Route::resource('kategori', KategoriController::class);
 Route::resource('tutorial', TutorialController::class);
+Route::resource('settingCustom', settingCustomController::class);
+Route::resource('fittur', FitturController::class);
 Route::get('data',[AkunController::class,'data'])->name('data');
 Route::get('detailHari',[HomeController::class,'detailDay'])->name('detailDay');
 Route::get('detailNominalTahun',[HomeController::class,'detailTahunNominal'])->name('detailTahunNominal');
@@ -83,5 +89,5 @@ Route::get('detailKemarinNominal',[HomeController::class,'detailKemarinNominal']
 Route::get('detailPendaftaranHariIni',[HomeController::class,'detailPendaftaranHariIni'])->name('detailPendaftaranHariIni');
 Route::get('detailTransaksiHariIni',[HomeController::class,'detailTransaksiHariIni'])->name('detailTransaksiHariIni');
 Route::get('detailHariIniNominal',[HomeController::class,'detailHariIniNominal'])->name('detailHariIniNominal');
-
+Route::post('/sendNotif', [App\Http\Controllers\SendNotifikasiController::class, 'sendNotif'])->name('sendNotif');
 

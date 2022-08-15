@@ -12,23 +12,18 @@
     <meta property="og:type" content="" />
     <meta property="og:url" content="" />
     <meta property="og:image" content="" />
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
     <!-- Favicon -->
-    {{--  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">  --}}
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/emojionearea/3.4.2/emojionearea.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    {{--  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>  --}}
-    {{--  <link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"/>  --}}
-    {{--  <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.22/datatables.min.css"/>  --}}
-
 
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('backend/assets/imgs/theme/ICON LOGO.png')}}" />
     <!-- Template CSS -->
     <link href="{{ asset('backend/assets/css/main.css?v=1.0')}}" rel="stylesheet" type="text/css" />
     <link href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
-    {{--  <link rel="stylesheet" type="text/css" href="{{asset('DataTables/datatables.css')}}"/>  --}}
 </head>
 
 <body>
@@ -130,10 +125,10 @@
     <!-- Main Script -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
-
     <script src="{{ asset('backend/assets/js/main.js?v=1.0')}}" type="text/javascript"></script>
     <script src="{{ asset('backend/assets/js/custom-chart.js')}}" type="text/javascript"></script>
     <script src="{{ asset('backend/assets/js/vendors/bootstrap5-toggle.min.js')}}" type="text/javascript"></script>
+
 </body>
 
 </html>
