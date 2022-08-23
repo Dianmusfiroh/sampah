@@ -385,7 +385,10 @@ table .form-check {
 .bg-brand-2 {
     background-color: #3BB77E;
 }
+#form-type{
+    display: none;
 
+    }
 .text-primary {
     color: #3BB77E !important;
 }

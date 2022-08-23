@@ -13,7 +13,7 @@
                         <th  width="50%">Nama Lengkap</th>
                         <th>Email</th>
                         <th>No Hp</th>
-                        <th>Expire</th>
+                        {{--  <th>Expire</th>  --}}
                         {{--  <th>Total Transaksi</th>  --}}
                         <th width="20%" class="text-center">Action</th>
                     </tr>
@@ -43,7 +43,7 @@
             let obj;
             const res =  await fetch (`{{getenv('WBS_ENPOINT')}}?_key={{getenv('WBS_KEY')}}&user_id=${user_id}&product_id=${product_id}`);
             obj = await res.text();
-            
+
             console.log(obj)
             return obj
         }
@@ -59,7 +59,7 @@
                 {data: 'nama_lengkap', name: 'nama_lengkap'},
                 {data: 'email', name: 'email'},
                 {data: 'no_hp', name: 'no_hp'},
-                {name: 'expire'},
+                {{--  {name: 'expire'},  --}}
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ],
             columnDefs: [
@@ -69,14 +69,14 @@
                         return `<a href="{{url('akun')}}/${row.id_user}">${row.nama_toko}</a>`
                     }
                 },
-                {
+                {{--  {
                     targets:5,
                     data : function ( row, type, val, meta){
                         return get_expire(row.user_id,row.produk_id);
                     }
-                },
+                },  --}}
                 {
-                    targets:6,
+                    targets:5,
                     data : function ( row, type, val, meta){
                         return `<a href="{{url('akun')}}/${row.id_user}">${row.nama_toko}</a>`
                     }

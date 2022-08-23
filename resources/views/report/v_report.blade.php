@@ -125,6 +125,7 @@
                     success: function(data, success) {
                         $.each(data, function(key, item) {
                             var namaToko ="";
+                            console.log(item.nama_toko)
                             if (item.nama_toko.match(/_/)) {
                                 namaToko = generateSlug(item.nama_toko);
                             } else {

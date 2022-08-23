@@ -21,6 +21,7 @@ class SettingXenditController extends Controller
         $user = SetingXendit::where('id_user',$request->id_user)->first();
         $user->id_user = $request->id_user;
         $user->is_blocked = $request->is_blocked;
+        // dd($user->is_blocked);
         $user->save();
     }
     public function update(Request $request,$id_user)
