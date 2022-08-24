@@ -10,12 +10,26 @@
                         <table class="table align-middle table-nowrap mb-0">
                             <thead class="table-light">
                                 <tr>
-                                    <th class="align-middle" scope="col">No</th>
+                                    <th hidden class="align-middle" scope="col">No</th>
+                                    <th class="align-middle" scope="col">Judul</th>
                                     <th class="align-middle" scope="col">Deskripsi</th>
                                     <th class="align-middle" scope="col">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ( $logNotif as $key =>$item )
+                                <tr>
+                                    <td hidden>{{++$key}}</td>
+                                    <td>{{$item->title}}</td>
+                                    <td>{{$item->description}}</td>
+                                    <td>
+                                        <a href="{{ route('sendNotifA', $item->id_log_notif) }}" ><i class="material-icons md-send"></i></a>
+                                        <a href="javascript:;" data-toggle="modal" onclick="deleteData({{$item->id_log_notif}})"
+                                            data-target="#DeleteModal" ><i class="material-icons  md-delete"></i>
+                                            </a></td>
+                                </tr>
+                                @endforeach
+
 
                             </tbody>
                         </table>
@@ -66,7 +80,7 @@
     </div>
 </div>
 
-{{--  @include('script.delete')  --}}
+@include('script.delete')
 {{--  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>  --}}
 <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

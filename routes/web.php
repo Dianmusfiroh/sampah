@@ -90,4 +90,5 @@ Route::get('detailPendaftaranHariIni',[HomeController::class,'detailPendaftaranH
 Route::get('detailTransaksiHariIni',[HomeController::class,'detailTransaksiHariIni'])->name('detailTransaksiHariIni');
 Route::get('detailHariIniNominal',[HomeController::class,'detailHariIniNominal'])->name('detailHariIniNominal');
 Route::post('/sendNotif', [App\Http\Controllers\SendNotifikasiController::class, 'sendNotif'])->name('sendNotif');
+Route::get('/sendNotifikasi/{id_log_notif}', [App\Http\Controllers\SendNotifikasiController::class, 'sendNotifA'])->name('sendNotifA');
 

@@ -79,9 +79,7 @@
                         <div class="modal-content bg-danger">
                             <div class="modal-header">
                                 <h4 style="color: white" class="modal-title text-center">DELETE CONFIRMATION</h4>
-                                <button type="button"  data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true" >x</span>
-                                </button>
+                                <button type="button" class="btn-close " data-dismiss="modal"></button>
                             </div>
                             <div class="modal-body">
                                 {{ csrf_field() }}
