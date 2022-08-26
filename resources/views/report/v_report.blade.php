@@ -22,7 +22,7 @@
 
         <div class="card mb-4">
             <article class="card-body">
-                <h5 class="card-title">Top Seles By Toko</h5>
+                <h5 class="card-title">10 Top Seles By Toko</h5>
                 <div class="new-member-list" id="exampleid">
                 </div>
             </article>
@@ -31,7 +31,7 @@
     <div class="col-lg-7">
         <div class="card mb-4">
             <article class="card-body">
-                <h5 class="card-title">Top Seles By Produk</h5>
+            <h5 class="card-title">10 Top Seles By Produk</h5>
                 <div class="new-member-list" id="dataTotal">
 
                 </div>
@@ -49,13 +49,15 @@
 
         var start = moment().subtract(29, 'days');
         var end = moment();
+
         // 2022-08-02
         function cb(start, end) {
             $('#reportrange #span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-            // console.log(start.format('YYYY-MM-D') + ' - ' + end.format('YYYY-MM-D'));
+
             $(document).ready(function() {
                 var teks = $('#exampleid').find('#teks');
-                var panjang = 6
+
+                var panjang = 11
                 if (teks.length == 0) {
                     panjang = teks.length + 1
                     fetchData();
@@ -79,6 +81,7 @@
             });
 
             function fetchData() {
+
                 $.ajax({
                     type: "GET",
                     dataType: "json",
@@ -89,6 +92,8 @@
                     },
                     success: function(data, success) {
                         $.each(data, function(key, item) {
+                            var s =`?start=`+start.format('YYYY-MM-D')+`&end=`+end.format('YYYY-MM-D');
+
                             var namaToko ="";
                             if (item.nama_toko.match(/_/)) {
                                 namaToko = generateSlug(item.nama_toko);
@@ -96,23 +101,33 @@
                                 namaToko = generateSlug(item.nama_toko);
                             }
                             $('#exampleid').append(
-                        `<a id="teks"href="https://wbslink.id/`+namaToko+`"    target="_blank" class="title">`+
-                        `<div id="teks" class="d-flex align-items-center justify-content-between mb-4">`+
-                        `<div id="teks" class="d-flex align-items-center">`+
-                            `<img id="teks"  src="https://wbslink.id/assets/image/toko/`+item.logo_toko+`" alt="" class="avatar" />`
-                            +`<div id="teks">`+
-                                `<h6 id="teks" >`+item.nama_toko+`</h6>`
+                        `<a id="teks"href="{{ url('detailSellByToko/`+item.id_user+s+`',) }}"   class="title id_user">`+
+                        `<div id="teks" class="d-flex align-items-center justify-content-between mb-3">`+
+                            `<div id="teks" class="d-flex align-items-center">`+
+                                `<img id="teks"  src="https://wbslink.id/assets/image/toko/`+item.logo_toko+`" alt="" class="avatar" />`
+                                +`<div id="teks">`+
+                                    `<h6 id="teks" >`+item.nama_toko+`</h6>`
+                                +`</div>`
                             +`</div>`
-                        +`</div>`
-                            +`<div id="teks" >`+item.total+`</div>`
+                            +`<div id="teks" class="d-flex align-items-center">`
+                                +`<h6 id="teks" >`
+                                    +item.total
+                                +`</h6>`
+                                +`<div class="px-1" id="teks">`+
+                                    `<button id="teks" class=" btn  btn-primary font-sm btn-xs">Detail</button>`
+                                +`</div>`
+                            +`</div>`
                         +`</div>
                         `
-                        );
+
+
+                );
                     });
 
                     }
                 });
             }
+
             function fetchDataTotal() {
                 $.ajax({
                     type: "GET",
@@ -124,31 +139,43 @@
                     },
                     success: function(data, success) {
                         $.each(data, function(key, item) {
+                            var s =`?start=`+start.format('YYYY-MM-D')+`&end=`+end.format('YYYY-MM-D')+`&id_produk=`+item.id_produk;
                             var namaToko ="";
-                            console.log(item.nama_toko)
                             if (item.nama_toko.match(/_/)) {
                                 namaToko = generateSlug(item.nama_toko);
                             } else {
                                 namaToko = generateSlug(item.nama_toko);
                             }
                             $('#dataTotal').append(
-                        `<a id="teksDatatotal"href="https://wbslink.id/`+namaToko+`/`+ item.id_produk +`/`+generateSlug(item.nama_produk)+`"    target="_blank" class="title">`+
-                        `<div id="teksDatatotal" class="d-flex align-items-center justify-content-between mb-4">`+
-                        `<div id="teksDatatotal" class="d-flex align-items-center">`+
-                            `<img id="teksDatatotal"  src="https://wbslink.id/assets/image/produk/`+item.gambar+`" alt="" class="avatar" />`
+                        `<a id="teksDatatotal" href="{{ url('detailSellByProduk/`+item.id_user+s+`',) }}"    class="title">`+
+                        `<div id="teksDatatotal" class="d-flex align-items-center justify-content-between  mb-3">`+
+                            `<div id="teksDatatotal" class="d-flex align-items-center">`+
+                                `<img id="teksDatatotal"  src="https://wbslink.id/assets/image/produk/`+item.gambar+`" alt="" class="avatar" />`
 
-                            +`<div id="teksDatatotal">`+
-                                `<h6 id="teksDatatotal" >`+item.nama_produk+`</h6>`
+                                +`<div id="teksDatatotal">`+
+                                    `<h6 id="teksDatatotal" >`+item.nama_produk+`</h6>`
+                                +`</div>`
+                            +`</div>`
+                            +`<div id="teksDatatotal" class="d-flex align-items-center">`
+                                +`<h6 id="teksDatatotal">`
+                                    +item.total
+                                +`</h6>`
+                                +`<div class="px-1" id="teksDatatotal">`+
+                                    `<button id="teksDatatotal" class=" btn  btn-primary font-sm btn-xs">Detail</button>`
+                                +`</div>`
                             +`</div>`
                         +`</div>`
-                            +`<div id="teksDatatotal" >`+item.total+`</div>`
-                        +`</div>`
+
+
+
+
                         );
                     });
 
                     }
                 });
             }
+
         }
         function generateSlug(text)
         {

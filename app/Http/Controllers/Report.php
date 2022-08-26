@@ -7,6 +7,7 @@ use App\Exports\UsersExpireExport;
 use App\Exports\UsersExport;
 use App\Models\Order;
 use App\Models\tUser;
+use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -157,13 +158,54 @@ class Report extends Controller
     }
     public function get_data(Request $request)
     {
-        $penjualanToko = DB::select ("SELECT a.id_user ,s.nama_toko ,s.logo_toko,COUNT(a.total) AS total FROM(SELECT k.id_user, mo.tgl_selesai, k.id_produk AS total FROM `t_keranjang` k , t_multi_order mo WHERE k.kode_keranjang = mo.kode_keranjang AND mo.order_status ='4' AND date(mo.tgl_order) BETWEEN date('$request->start') AND date('$request->end') UNION ALL SELECT o.id_user, o.tgl_order, o.id_user AS total FROM t_order o WHERE o.order_status='4' and date(o.tgl_order) BETWEEN date('$request->start') AND date('$request->end')) AS a , t_setting s WHERE a.id_user = s.id_user GROUP BY a.id_user ORDER BY total DESC LIMIT 5");
+        $dataStart = $request->start;
+        $penjualanToko = DB::select ("SELECT a.id_user ,s.nama_toko ,s.logo_toko,COUNT(a.total) AS total FROM(SELECT k.id_user, mo.tgl_selesai, k.id_produk AS total FROM `t_keranjang` k , t_multi_order mo WHERE k.kode_keranjang = mo.kode_keranjang AND mo.order_status ='4' AND date(mo.tgl_order) BETWEEN date('$request->start') AND date('$request->end') UNION ALL SELECT o.id_user, o.tgl_order, o.id_user AS total FROM t_order o WHERE o.order_status='4' and date(o.tgl_order) BETWEEN date('$request->start') AND date('$request->end')) AS a , t_setting s WHERE a.id_user = s.id_user GROUP BY a.id_user ORDER BY total DESC LIMIT 10");
         echo json_encode($penjualanToko);
     }
     public function get_dataTotal(Request $request)
     {
-        $produktotal = DB::select(DB::raw("SELECT t.id_user,s.nama_toko, t.id_produk,p.nama_produk,p.gambar ,sum(total) as total from ( SELECT a.id_user, a.id_produk , COUNT(a.id_produk) as total FROM (SELECT k.id_user, k.id_produk FROM `t_keranjang` k JOIN t_multi_order mo WHERE k.kode_keranjang = mo.kode_keranjang AND mo.order_status = '4' AND date(mo.tgl_order) BETWEEN date('$request->start') AND date('$request->end')) AS a GROUP BY a.id_produk UNION ALL SELECT id_user,id_produk,COUNT(id_produk) AS total FROM `t_order` o WHERE o.order_status='4' AND date(o.tgl_order) BETWEEN date('$request->start') AND date('$request->end') GROUP BY id_produk) AS t JOIN t_produk p JOIN t_setting s WHERE s.id_user = t.id_user AND p.id_produk = t.id_produk GROUP BY t.id_produk ORDER BY total DESC limit 5"));
+        $produktotal = DB::select(DB::raw("SELECT t.id_user,s.nama_toko, t.id_produk,p.nama_produk,p.gambar ,sum(total) as total from ( SELECT a.id_user, a.id_produk , COUNT(a.id_produk) as total FROM (SELECT k.id_user, k.id_produk FROM `t_keranjang` k JOIN t_multi_order mo WHERE k.kode_keranjang = mo.kode_keranjang AND mo.order_status = '4' AND date(mo.tgl_order) BETWEEN date('$request->start') AND date('$request->end')) AS a GROUP BY a.id_produk UNION ALL SELECT id_user,id_produk,COUNT(id_produk) AS total FROM `t_order` o WHERE o.order_status='4' AND date(o.tgl_order) BETWEEN date('$request->start') AND date('$request->end') GROUP BY id_produk) AS t JOIN t_produk p JOIN t_setting s WHERE s.id_user = t.id_user AND p.id_produk = t.id_produk GROUP BY t.id_produk ORDER BY total DESC limit 10"));
 
         echo json_encode($produktotal);
+    }
+    public function detailSellByToko( Request $request)
+    {
+
+        $modul = $this->modul;
+
+        $data = [
+            'view' => 'report.v_detailReportSellByToko',
+            'data' =>
+            [
+                'label' => 'Detail Penjualan  ',
+                'modul' => 'report',
+                'namaToko' => DB::table('t_setting')->where('id_user',$request->id_user)->select('nama_toko')->first(),
+
+                'detail' => DB::select("SELECT a.id_user ,u.nama_lengkap,s.nama_toko,a.tgl_order,a.tgl_kirim, a.tgl_selesai ,a.nama_pembeli,a.nama_produk,s.logo_toko FROM(SELECT k.id_user,mo.tgl_order,mo.tgl_kirim, mo.tgl_selesai,mo.nama_pembeli, k.nama_produk FROM `t_keranjang` k , t_multi_order mo WHERE k.kode_keranjang = mo.kode_keranjang AND mo.order_status ='4' AND date(mo.tgl_order) BETWEEN date('$request->start') AND date('$request->end') UNION ALL SELECT o.id_user, o.tgl_order,o.tgl_kirim,o.tgl_selesai,o.nama_pembeli,o.nama_produk AS total FROM t_order o WHERE o.order_status='4' and date(o.tgl_order) BETWEEN date('$request->start') AND date('$request->end')) AS a , t_setting s, t_user u WHERE a.id_user = u.id_user AND a.id_user = s.id_user AND a.id_user = $request->id_user;"),
+
+            ]
+        ];
+        return backend($request,$data,$modul);
+
+    }
+    public function detailSellByProduk( Request $request)
+    {
+
+        $modul = $this->modul;
+
+        $data = [
+            'view' => 'report.v_detailReportSellByProduk',
+            'data' =>
+            [
+                'label' => 'Detail Penjualan  ',
+                'modul' => 'report',
+                'namaProduk' => DB::table('t_produk')->where('id_produk',$request->id_produk)->select('nama_produk')->first(),
+
+                'detail' => DB::select("SELECT t.id_user,u.nama_lengkap,s.nama_toko,t.nama_pembeli, t.tgl_order, t.tgl_kirim, t.tgl_selesai, t.id_produk,p.nama_produk,p.gambar from ( SELECT a.id_user, a.id_produk , a.nama_pembeli, a.tgl_order,a.tgl_kirim, a.tgl_selesai FROM (SELECT k.id_user, k.id_produk,mo.nama_pembeli,mo.tgl_order,mo.tgl_kirim,mo.tgl_selesai FROM `t_keranjang` k JOIN t_multi_order mo WHERE k.kode_keranjang = mo.kode_keranjang AND mo.order_status = '4' AND date(mo.tgl_order) BETWEEN date('$request->start') AND date('$request->end')) AS a GROUP BY a.id_produk UNION ALL SELECT id_user,id_produk, o.nama_pembeli,tgl_order,tgl_kirim,tgl_selesai FROM `t_order` o WHERE o.order_status='4' AND date(o.tgl_order) BETWEEN date('$request->start') AND date('$request->end')) AS t JOIN t_produk p JOIN t_setting s , t_user u WHERE t.id_user = u.id_user AND s.id_user = t.id_user AND p.id_produk = t.id_produk AND t.id_produk = $request->id_produk;"),
+
+            ]
+        ];
+        return backend($request,$data,$modul);
+
     }
 }

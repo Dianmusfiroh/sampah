@@ -53,7 +53,13 @@ Route::resource('statistik', StatistikController::class);
 Route::post('storeAkun', [Report::class,'storeAkun'])->name('storeAkun');
 Route::get('updateStatus',[SettingXenditController::class,'updateStatus'])->name('updateStatus');
 Route::get('updateStatusCustom',[settingCustomController::class,'updateStatusCustom'])->name('updateStatusCustom');
+Route::get('get_Pemesanan',[StatistikController::class,'get_Pemesanan'])->name('get_Pemesanan');
+Route::get('get_Dikirim',[StatistikController::class,'get_Dikirim'])->name('get_Dikirim');
+Route::get('get_Selesai',[StatistikController::class,'get_Selesai'])->name('get_Selesai');
 Route::get('get_data',[Report::class,'get_data'])->name('get_data');
+Route::get('get_Chart_Pemesanan',[StatistikController::class,'get_Chart_Pemesanan'])->name('get_Chart_Pemesanan');
+
+
 Route::get('get_dataTotal',[Report::class,'get_dataTotal'])->name('get_dataTotal');
 // Route::put('resetPin',[SettingXenditController::class,'resetPin'])->name('resetPin');
 Route::resource('resetPin',SettingXenditController::class);
@@ -91,4 +97,7 @@ Route::get('detailTransaksiHariIni',[HomeController::class,'detailTransaksiHariI
 Route::get('detailHariIniNominal',[HomeController::class,'detailHariIniNominal'])->name('detailHariIniNominal');
 Route::post('/sendNotif', [App\Http\Controllers\SendNotifikasiController::class, 'sendNotif'])->name('sendNotif');
 Route::get('/sendNotifikasi/{id_log_notif}', [App\Http\Controllers\SendNotifikasiController::class, 'sendNotifA'])->name('sendNotifA');
+Route::get('/detailSellByToko/{id_user}',[Report::class,'detailSellByToko'])->name('detailSellByToko');
+Route::get('/detailSellByProduk/{id_user}',[Report::class,'detailSellByProduk'])->name('detailSellByProduk');
+Route::post('/detailSellByToko/',[Report::class,'detailSellByToko'])->name('postdetailSellByToko');
 
