@@ -423,13 +423,13 @@ class StatistikController extends Controller
         return DataTables::of($pesanan)
             ->addIndexColumn()
             ->addColumn('dikirim', function ($row, Request $request) {
-                $ttlDikirim = "";
+                $ttlDikirim = "0";
                 $dikirimm = DB::select("SELECT count(a.total) AS total ,is_created FROM ( SELECT tgl_order AS total, is_created FROM `t_multi_order` WHERE order_status = '3' AND date(is_created) BETWEEN date('$request->start') AND date('$request->end') UNION ALL SELECT is_created as total, is_created FROM `t_order` WHERE order_status = '3' AND date(is_created) BETWEEN date('$request->start') AND date('$request->end') ) AS a GROUP BY a.is_created ORDER BY a.is_created ");
                 foreach ($dikirimm as $k) {
                     if ($k->is_created == $row->is_created) {
-                        $ttlDikirim .= "<td>$k->total</td><br>";
+                        $ttlDikirim = $k->total;
                     } else {
-                        $ttlDikirim;
+                        $ttlDikirim  ;
                     }
                 }
                 return $ttlDikirim;
@@ -440,7 +440,7 @@ class StatistikController extends Controller
                 $selesaii = DB::select("SELECT count(a.total) AS total ,is_created FROM ( SELECT tgl_order AS total, is_created FROM `t_multi_order` WHERE order_status = '4' AND date(is_created) BETWEEN date('$request->start') AND date('$request->end') UNION ALL SELECT is_created as total, is_created FROM `t_order` WHERE order_status = '4' AND date(is_created) BETWEEN date('$request->start') AND date('$request->end') ) AS a GROUP BY a.is_created ORDER BY a.is_created ");
                 foreach ($selesaii as $k) {
                     if ($k->is_created == $row->is_created) {
-                        $ttl .= "<td>$k->total</td><br>";
+                        $ttl = "<td>$k->total</td><br>";
                     } else {
                         $ttl;
                     }

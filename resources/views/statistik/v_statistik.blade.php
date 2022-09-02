@@ -131,19 +131,14 @@
                             name: 'dikirim',
                             orderable: false,
                             searchable: false,
-                            render: function(data) {
-                                if(data =='') {
-                                    return '0'
-                                }
-
-                              }
+                                
                         },
                         {
                             data: 'action',
                             name: 'action',
                             orderable: false,
                             searchable: false,
-                            
+
                         },
 
                     ],
