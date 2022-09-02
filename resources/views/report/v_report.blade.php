@@ -49,14 +49,11 @@
 
         var start = moment().subtract(29, 'days');
         var end = moment();
-
-        // 2022-08-02
         function cb(start, end) {
             $('#reportrange #span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
 
             $(document).ready(function() {
                 var teks = $('#exampleid').find('#teks');
-
                 var panjang = 11
                 if (teks.length == 0) {
                     panjang = teks.length + 1
@@ -67,7 +64,6 @@
                     }
                     fetchData();
                 }
-
                 var teksDatatotal = $('#dataTotal').find('#teksDatatotal');
                 if (teksDatatotal.length == 0) {
                     panjang = teksDatatotal.length + 1

@@ -7,14 +7,15 @@
 
     <!-- card-header end// -->
     <div class="card-body">
-        <div class="table-responsive">
+        <div >
             <table class="table table-hover" id="myTable">
                 <thead>
                     <tr>
-                        <th class="col-1">No</th>
+                        <th>No</th>
                         <th>Nama Lengkap</th>
                         <th>Nama Usaha</th>
                         <th>Nama produk</th>
+                        <th>Jenis produk</th>
                         <th>Nama Konsumen</th>
                         <th>Tanggal Order</th>
                         <th>Tanggal Dikirim</th>
@@ -31,6 +32,7 @@
                         <td>
                             <a href="{{ url('akun', $item->id_user ) }}">{{$item->nama_toko}}</td>
                         <td>{{$item->nama_produk}}</td>
+                        <td>{{$item->jenis_produk}}</td>
                         <td>{{$item->nama_pembeli}}</td>
                         <td>{{$item->tgl_order}}</td>
                         <td>{{$item->tgl_kirim}}</td>

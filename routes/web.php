@@ -57,6 +57,9 @@ Route::get('get_Pemesanan',[StatistikController::class,'get_Pemesanan'])->name('
 Route::get('get_Dikirim',[StatistikController::class,'get_Dikirim'])->name('get_Dikirim');
 Route::get('get_Selesai',[StatistikController::class,'get_Selesai'])->name('get_Selesai');
 Route::get('get_data',[Report::class,'get_data'])->name('get_data');
+Route::get('getDate',[StatistikController::class,'getDate'])->name('getDate');
+Route::get('anotherFunction',[StatistikController::class,'anotherFunction'])->name('anotherFunction');
+Route::get('postTable',[StatistikController::class,'postTable'])->name('postTable');
 Route::get('get_Chart_Pemesanan',[StatistikController::class,'get_Chart_Pemesanan'])->name('get_Chart_Pemesanan');
 
 
@@ -100,4 +103,12 @@ Route::get('/sendNotifikasi/{id_log_notif}', [App\Http\Controllers\SendNotifikas
 Route::get('/detailSellByToko/{id_user}',[Report::class,'detailSellByToko'])->name('detailSellByToko');
 Route::get('/detailSellByProduk/{id_user}',[Report::class,'detailSellByProduk'])->name('detailSellByProduk');
 Route::post('/detailSellByToko/',[Report::class,'detailSellByToko'])->name('postdetailSellByToko');
+Route::get('/viewmemberkab',[StatistikController::class,'memberViewKab'])->name('memberViewKab');
+Route::get('/rajaOngkirKab/{cityId}',[StatistikController::class,'rajaOngkirKabupaten'])->name('rajaOngkirKabupaten');
+Route::get('/rajaOngkirProv/{provId}',[StatistikController::class,'rajaOngkirProvinsi'])->name('rajaOngkirProvinsi');
+Route::get('/getProvince',[StatistikController::class,'getProvince'])->name('getProvince');
+Route::get('/getKabupaten',[StatistikController::class,'getKabupaten'])->name('getKabupaten');
+Route::get('/getDetailStatistikJenisUsaha',[StatistikController::class,'getDetailStatistikJenisUsaha'])->name('getDetailStatistikJenisUsaha');
+Route::get('/getDataTransaksi',[StatistikController::class,'getDataTransaksi'])->name('getDataTransaksi');
+Route::get('/getStudents',[StatistikController::class,'getStudents'])->name('getStudents');
 
