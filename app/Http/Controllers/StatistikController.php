@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Psr\Http\Message\RequestInterface;
 use Illuminate\Support\Facades\Http;
+use Yajra\DataTables\Contracts\DataTable;
 // use Yajra\DataTables\Facades\DataTables;
 use Yajra\DataTables\DataTables;
 
@@ -169,12 +170,20 @@ class StatistikController extends Controller
     public function memberViewKab(Request $request)
     {
         $kab = DB::select("SELECT s.id_user,s.nama_toko, s.alamat_toko, s.no_hp_toko, s.prov , s.kab,k.nama_kabupaten , u.user_id, u.produk_id FROM t_setting s, t_user u ,m_kabupaten k WHERE k.id= s.kab AND s.id_user = u.id_user AND s.prov = $request->idProv");
-        echo json_encode($kab);
-        // $members = DB::select('SELECT a.nama_provinsi, sum(total) as jumlah , a.prov FROM(SELECT s.prov,s.kab,p.nama_provinsi, k.nama_kabupaten , COUNT(DISTINCT nama_toko) as total FROM `t_setting` s LEFT JOIN m_provinsi p ON s.prov = p.id LEFT JOIN m_kabupaten k ON s.kab = k.id WHERE nama_toko != "" GROUP BY 1,2,3,4) AS a GROUP BY 1;');
-
-        // return DataTables::of($kab)
-        // ->addIndexColumn()
-        // ->make(true);
+        return DataTables::of($kab)
+        ->addIndexColumn()
+        ->addColumn('getExp', function ($row, Request $request) {
+            $response = Http::withHeaders([])
+            ->get('https://wbslink.id/apiv2/user/getExpired?_key=WbsLinkV00&user_id='.$row->user_id.'&product_id='.$row->produk_id);
+            return $response->body();
+        })
+        ->rawColumns(['getExp'])
+        ->addColumn('getDataTransaksi', function ($row, Request $request) {
+            $dataTransaksi = DB::select("SELECT SUM(total) as total FROM (SELECT COUNT(*) AS total, id_user FROM t_multi_order WHERE id_user = $row->id_user UNION ALL SELECT COUNT(*) as total ,id_user FROM t_order WHERE id_user = $row->id_user) AS a;");
+            return $dataTransaksi[0]->total;
+        })
+        ->rawColumns(['getDataTransaksi'])
+        ->make(true);
 
     }
     public function rajaOngkirKabupaten($cityId)
@@ -334,13 +343,13 @@ class StatistikController extends Controller
     }
     public function statistikJenisUsaha(request $request)
     {
-        $dataJU    = DB::table('t_setting')
-            ->join('t_kategori_bisnis', 't_setting.id_kategori_bisnis', '=', 't_kategori_bisnis.id_kategori_bisnis')
-            ->select('t_setting.id_kategori_bisnis', 't_setting.id_user', 't_kategori_bisnis.kategori_bisnis')
-            ->addSelect(DB::raw('COUNT("t_setting.id_user") as total'))
-            ->groupBy(DB::raw('t_setting.id_kategori_bisnis'))
-            ->get();
-
+        // $dataJU    = DB::table('t_setting')
+        //     ->join('t_kategori_bisnis', 't_setting.id_kategori_bisnis', '=', 't_kategori_bisnis.id_kategori_bisnis')
+        //     ->select('t_setting.id_kategori_bisnis', 't_setting.id_user', 't_kategori_bisnis.kategori_bisnis')
+        //     ->addSelect(DB::raw('COUNT("t_setting.id_user") as total'))
+        //     ->groupBy('t_setting.id_user')
+        //     ->get();
+        $dataJU = DB::select("SELECT total ,kb.id_kategori_bisnis, kb.kategori_bisnis, id_user FROM (SELECT COUNT(id_user) AS total, id_kategori_bisnis , id_user FROM `t_setting` GROUP BY id_kategori_bisnis) AS a JOIN t_kategori_bisnis kb ON kb.id_kategori_bisnis = a.id_kategori_bisnis GROUP BY a.id_kategori_bisnis;");
         $namaKU = '';
         $chrtTotal = '';
 
@@ -368,8 +377,23 @@ class StatistikController extends Controller
             ->join('t_user', 't_setting.id_user', '=', 't_user.id_user')
             ->select('t_setting.id_kategori_bisnis', 't_setting.id_user', 't_user.user_id', 't_user.produk_id', 't_setting.alamat_toko', 't_setting.no_hp_toko', 't_setting.nama_toko', 't_kategori_bisnis.kategori_bisnis')
             ->where('t_setting.id_kategori_bisnis', $request->id_kategori_bisnis)
+            ->groupBy('t_user.id_user')
             ->get();
-        echo json_encode($detail);
+            return DataTables::of($detail)
+            ->addIndexColumn()
+            ->addColumn('getExp', function ($row, Request $request) {
+                $response = Http::withHeaders([])
+                ->get('https://wbslink.id/apiv2/user/getExpired?_key=WbsLinkV00&user_id='.$row->user_id.'&product_id='.$row->produk_id);
+                return $response->body();
+            })
+            ->rawColumns(['getExp'])
+            ->addColumn('getDataTransaksi', function ($row, Request $request) {
+                $dataTransaksi = DB::select("SELECT SUM(total) as total FROM (SELECT COUNT(*) AS total, id_user FROM t_multi_order WHERE id_user = $row->id_user UNION ALL SELECT COUNT(*) as total ,id_user FROM t_order WHERE id_user = $row->id_user) AS a;");
+                return $dataTransaksi[0]->total;
+            })
+            ->rawColumns(['getDataTransaksi'])
+            ->make(true);
+
     }
     public function getDataTransaksi(Request $request)
     {
@@ -423,16 +447,21 @@ class StatistikController extends Controller
         return DataTables::of($pesanan)
             ->addIndexColumn()
             ->addColumn('dikirim', function ($row, Request $request) {
-                $ttlDikirim = "0";
+                $ttlDikirim = "";
                 $dikirimm = DB::select("SELECT count(a.total) AS total ,is_created FROM ( SELECT tgl_order AS total, is_created FROM `t_multi_order` WHERE order_status = '3' AND date(is_created) BETWEEN date('$request->start') AND date('$request->end') UNION ALL SELECT is_created as total, is_created FROM `t_order` WHERE order_status = '3' AND date(is_created) BETWEEN date('$request->start') AND date('$request->end') ) AS a GROUP BY a.is_created ORDER BY a.is_created ");
+                if (!empty($dikirimm)) {
                 foreach ($dikirimm as $k) {
                     if ($k->is_created == $row->is_created) {
                         $ttlDikirim = $k->total;
                     } else {
-                        $ttlDikirim  ;
+                        $ttlDikirim = '0' ;
                     }
                 }
                 return $ttlDikirim;
+            }else if(empty($dikirimm)){
+                return 0;
+            }
+
             })
             ->rawColumns(['dikirim'])
             ->addColumn('action', function ($row, Request $request) {
@@ -449,5 +478,104 @@ class StatistikController extends Controller
             })
             ->rawColumns(['action'])
             ->make(true);
+    }
+    public function getDetailTransaksiUser(Request $request)
+    {
+        $namaToko = "";
+        $namaToko = DB::select("SELECT nama_toko FROM t_setting WHERE id_user = '$request->id_user'");
+        $str_json = json_decode(json_encode($namaToko));
+        $data = [
+            'view' => 'detail.detailTransaksiUser',
+            'data' =>
+            [
+                'label' => 'Detail Transaksi Toko '.$str_json[0]->nama_toko,
+                'detailTransaksi' => DB::select("SELECT s.nama_toko,('Multi Order') as ket , mo.order_id, mo.nama_pembeli, mo.tgl_order, mo.tgl_proses,mo.tgl_selesai,mo.totalbayar FROM t_multi_order mo ,t_setting s WHERE  mo.id_user = $request->id_user  AND s.id_user = mo.id_user UNION ALL SELECT s.nama_toko, ('Order') as ket , o.order_id, o.nama_pembeli , o.tgl_order, o.tgl_proses, o.tgl_selesai, o.totalbayar FROM t_order o ,t_setting s WHERE s.id_user = o.id_user AND o.id_user = $request->id_user;"),
+            ]
+        ];
+        return backend($request, $data);
+    }
+    public function getDetailDikirim(Request $request)
+    {
+        $dataDikirim= DB::select("SELECT s.nama_toko, mo.id_user,('Multi Order') as ket, mo.order_id, mo.nama_pembeli, mo.is_created, mo.tgl_order, mo.tgl_proses,mo.tgl_kirim , mo.tgl_selesai, mo.totalbayar FROM `t_multi_order` mo, t_setting s WHERE mo.id_user = s.id_user AND mo.order_status = '3' AND date(mo.is_created)= date('$request->is_created') UNION ALL SELECT s.nama_toko, o.id_user,('order') as ket, o.order_id, o.nama_pembeli, o.is_created, o.tgl_order, o.tgl_proses,o.tgl_kirim , o.tgl_selesai ,o.totalbayar FROM `t_order` o, t_setting s WHERE s.id_user=o.id_user AND o.order_status = '3' AND date(o.is_created)= date('$request->is_created');");
+        return DataTables::of($dataDikirim)
+            ->addIndexColumn()
+            ->make(true);
+    }
+    public function getDetailSelesai(Request $request)
+    {
+        $dataDikirim= DB::select("SELECT s.nama_toko, mo.id_user,('Multi Order') as ket, mo.order_id, mo.nama_pembeli, mo.is_created, mo.tgl_order, mo.tgl_proses,mo.tgl_kirim , mo.tgl_selesai, mo.totalbayar FROM `t_multi_order` mo, t_setting s WHERE mo.id_user = s.id_user AND mo.order_status = '4' AND date(mo.is_created)= date('$request->is_created') UNION ALL SELECT s.nama_toko, o.id_user,('order') as ket, o.order_id, o.nama_pembeli, o.is_created, o.tgl_order, o.tgl_proses,o.tgl_kirim , o.tgl_selesai ,o.totalbayar FROM `t_order` o, t_setting s WHERE s.id_user=o.id_user AND o.order_status = '4' AND date(o.is_created)= date('$request->is_created');");
+        return DataTables::of($dataDikirim)
+            ->addIndexColumn()
+            ->make(true);
+    }
+    public function getDetailPemesanan(Request $request)
+    {
+        $dataDikirim= DB::select("SELECT s.nama_toko, mo.id_user,('Multi Order') as ket, mo.order_id, mo.nama_pembeli, mo.is_created, mo.tgl_order, mo.tgl_proses,mo.tgl_kirim , mo.tgl_selesai, mo.totalbayar FROM `t_multi_order` mo, t_setting s WHERE mo.id_user = s.id_user AND  date(mo.is_created)= date('$request->is_created') UNION ALL SELECT s.nama_toko, o.id_user,('order') as ket, o.order_id, o.nama_pembeli, o.is_created, o.tgl_order, o.tgl_proses,o.tgl_kirim , o.tgl_selesai ,o.totalbayar FROM `t_order` o, t_setting s WHERE s.id_user=o.id_user AND  date(o.is_created)= date('$request->is_created');");
+        return DataTables::of($dataDikirim)
+            ->addIndexColumn()
+            ->make(true);
+    }
+    public function getDetailTotalSelesai(Request $request)
+    {
+        $data = DB::select("SELECT s.nama_toko, mo.id_user,('Multi Order') as ket, mo.order_id, mo.nama_pembeli, mo.is_created, mo.tgl_order, mo.tgl_proses,mo.tgl_kirim , mo.tgl_selesai, mo.totalbayar FROM `t_multi_order` mo , t_setting s WHERE mo.id_user = s.id_user AND mo.order_status = '4' AND date(mo.is_created) BETWEEN date('$request->start') AND date('$request->end') UNION ALL SELECT s.nama_toko , o.id_user,('order') as ket, o.order_id, o.nama_pembeli, o.is_created, o.tgl_order, o.tgl_proses,o.tgl_kirim , o.tgl_selesai , o.totalbayar FROM `t_order` o, t_setting s WHERE o.id_user = s.id_user AND o.order_status = '4' AND date(o.is_created) BETWEEN date('$request->start') AND date('$request->end');");
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->make(true);
+    }
+    public function getDetailTotalDikirim(Request $request)
+    {
+        $data = DB::select("SELECT s.nama_toko, mo.id_user,('Multi Order') as ket, mo.order_id, mo.nama_pembeli, mo.is_created, mo.tgl_order, mo.tgl_proses,mo.tgl_kirim , mo.tgl_selesai, mo.totalbayar FROM `t_multi_order` mo , t_setting s WHERE mo.id_user = s.id_user AND mo.order_status = '3' AND date(mo.is_created) BETWEEN date('$request->start') AND date('$request->end') UNION ALL SELECT s.nama_toko , o.id_user,('order') as ket, o.order_id, o.nama_pembeli, o.is_created, o.tgl_order, o.tgl_proses,o.tgl_kirim , o.tgl_selesai , o.totalbayar FROM `t_order` o, t_setting s WHERE o.id_user = s.id_user AND o.order_status = '3' AND date(o.is_created) BETWEEN date('$request->start') AND date('$request->end');");
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->make(true);
+    }
+    public function getDetailTotalPesanan(Request $request)
+    {
+        $data = DB::select("SELECT s.nama_toko, mo.id_user,('Multi Order') as ket, mo.order_id, mo.nama_pembeli, mo.is_created, mo.tgl_order, mo.tgl_proses,mo.tgl_kirim , mo.tgl_selesai, mo.totalbayar FROM `t_multi_order` mo , t_setting s WHERE mo.id_user = s.id_user AND date(mo.is_created) BETWEEN date('$request->start') AND date('$request->end') UNION ALL SELECT s.nama_toko , o.id_user,('order') as ket, o.order_id, o.nama_pembeli, o.is_created, o.tgl_order, o.tgl_proses,o.tgl_kirim , o.tgl_selesai , o.totalbayar FROM `t_order` o, t_setting s WHERE o.id_user = s.id_user AND date(o.is_created) BETWEEN date('$request->start') AND date('$request->end');");
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->make(true);
+    }
+    public function statistikPengirim(Request $request)
+    {
+        $penggiriman = DB::select("SELECT COUNT(total) AS total , expedisi FROM(SELECT expedisi AS total, expedisi FROM `t_order` WHERE expedisi !='' AND expedisi !='0' UNION ALL SELECT expedisi AS total, expedisi FROM `t_multi_order`WHERE expedisi != '' ) AS a GROUP BY expedisi");
+        $data = [
+            'view' => 'statistik.v_statistikJenisPengiriman',
+            'data' =>
+            [
+                'label' => 'Statistik Jenis Pengiriman',
+                'penggiriman' => $penggiriman,
+
+            ]
+        ];
+        return backend($request, $data);
+    }
+    public function getDetailStatistikPengirim(Request $request)
+    {
+        // $detail    = DB::table('t_setting')
+        //     ->join('t_kategori_bisnis', 't_setting.id_kategori_bisnis', '=', 't_kategori_bisnis.id_kategori_bisnis')
+        //     ->join('t_user', 't_setting.id_user', '=', 't_user.id_user')
+        //     ->select('t_setting.id_kategori_bisnis', 't_setting.id_user', 't_user.user_id', 't_user.produk_id', 't_setting.alamat_toko', 't_setting.no_hp_toko', 't_setting.nama_toko', 't_kategori_bisnis.kategori_bisnis')
+        //     ->where('t_setting.id_kategori_bisnis', $request->id_kategori_bisnis)
+        //     ->groupBy('t_user.id_user')
+        //     ->get();
+        $transaksiPengiriman =DB::select("SELECT a.nama_toko ,a.ket ,a.order_id, a.nama_pembeli, a.tgl_order, a.tgl_proses, a.tgl_selesai, a.totalbayar, u.user_id, u.produk_id ,a.expedisi FROM(SELECT s.nama_toko,('Multi Order') as ket , mo.order_id, mo.nama_pembeli, mo.tgl_order, mo.tgl_proses,mo.tgl_selesai,mo.totalbayar ,mo.id_user , mo.expedisi FROM t_multi_order mo ,t_setting s WHERE mo.expedisi = '$request->expedisi' AND s.id_user = mo.id_user UNION ALL SELECT s.nama_toko, ('Order') as ket , o.order_id, o.nama_pembeli , o.tgl_order, o.tgl_proses, o.tgl_selesai, o.totalbayar, o.id_user, o.expedisi FROM t_order o ,t_setting s WHERE s.id_user = o.id_user AND o.expedisi= '$request->expedisi') AS a JOIN t_user u on u.id_user = a.id_user;");
+
+            return DataTables::of($transaksiPengiriman)
+            ->addIndexColumn()
+            // ->addColumn('getExp', function ($row, Request $request) {
+            //     // dd($row->user_id);
+            //     $response = Http::withHeaders([])
+            //     ->get('https://wbslink.id/apiv2/user/getExpired?_key=WbsLinkV00&user_id='.$row->user_id.'&product_id='.$row->produk_id);
+            //     return $response->body();
+            // })
+            // ->rawColumns(['getExp'])
+            // ->addColumn('getDataTransaksi', function ($row, Request $request) {
+            //     $dataTransaksi = DB::select("SELECT SUM(total) as total FROM (SELECT COUNT(*) AS total, id_user FROM t_multi_order WHERE id_user = $row->id_user UNION ALL SELECT COUNT(*) as total ,id_user FROM t_order WHERE id_user = $row->id_user) AS a;");
+            //     return $dataTransaksi[0]->total;
+            // })
+            // ->rawColumns(['getDataTransaksi'])
+            ->make(true);
+
     }
 }

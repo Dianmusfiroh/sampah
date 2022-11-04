@@ -38,9 +38,9 @@
                 <div class="col-md-1 col-lg-4 col-xl-3">
                     <article class="box">
                         <p class="mb-0 text-muted">Total Transaksi:</p>
-                        <h5 class="text-success">{{$transaksi}}</h5>
+                        <h5 class="text-success"><a href="{{url('getDetailTransaksiUser')}}/{{$item->id_user}}">{{$transaksi}}</a></h5>
                         <p class="mb-0 text-muted">Total Penghailan:</p>
-                        <h5 class="text-success mb-0">@currency($totalbayar)</h5>
+                        <h5 class="text-success mb-0"><a href="{{url('getDetailTransaksiUser')}}/{{$item->id_user}}">@currency($totalbayar)</a></h5>
                     </article>
                 </div>
                 <div class="col-md-1 col-lg-4 col-xl-3">

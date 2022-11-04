@@ -13,7 +13,7 @@
             </a>
             <div class="submenu">
                 <a href="{{ url('akun') }}">List Member</a>
-                <a href="">Member Tidak perpanjang</a>
+                <a href="{{ url('akunTidakAktif') }}">Member Tidak perpanjang</a>
                 {{--  <a href="page-seller-detail.html">Laporan Member Aktif/Tidak</a>  --}}
             </div>
         </li>
@@ -36,6 +36,7 @@
                 <a href="{{ url('statistik') }}">Statistik Barang</a>
                 <a href="{{ url('statistikMember') }}">Statistik Member</a>
                 <a href="{{ url('statistikJenisUsaha') }}">Statistik Jenis Usaha</a>
+                <a href="{{ url('statistikPengirim') }}">Statistik Jasa Pengirim</a>
             </div>
         </li>
         <li class="menu-item @if(Request::segment(1) == 'user'): {{'active'}} @endif">
@@ -59,10 +60,18 @@
                 <a href="{{ url('kategori') }}">Tambah Kategori</a>
                 <a href="{{ url('tutorial') }}">Tutorial </a>
                 <a href="{{ url('fittur') }}">Fittur</a>
+                <a href="{{ url('target') }}">Target</a>
             </div>
+
         </li>
+        <hr />
+
+        <li class="menu-item @if(Request::segment(1) == 'user'): {{'active'}} @endif has-submenu ">
+            <a class="dropdown-item text-danger" href="logout"><i
+                class="material-icons md-exit_to_app"></i>Logout</a>
+        </li>
+
     </ul>
-    <hr />
     <ul class="menu-aside">
 
     </ul>

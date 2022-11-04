@@ -45,12 +45,12 @@
     <div  id="show" class="view card  card-body">
         <div class="table-responsive">
             <div class="table-responsive">
-                <table class="table  align-middle table-nowrap mb-0" id="tableDetail">
+                <table class="table  align-middle table-nowrap mb-0" id="myTable2">
                     <thead class="table-light">
                         <tr>
                             <th class="align-middle"  style="width: 4%;" hidden>No</th>
                             <th class="align-middle"  scope="col">Nama Toko</th>
-                            <th class="align-middle"  scope="col">Alamat</Kota</th>
+                            <th class="align-middle"  style="width: 40%;" scope="col">Alamat</Kota</th>
                             <th class="align-middle"  scope="col">No Hp</Kota</th>
                             <th class="align-middle"  scope="col">Tanggal Exp</th>
                             <th class="align-middle"  scope="col">Jumlah Transaksi</th>
@@ -84,54 +84,66 @@
         "autoWidth": false,
         "responsive": true
     });
+
     function fetchDataMemberViewKab(id_kategori_bisnis,id_user) {
-        $('#dataMember').html('');
-        $.ajax({
-            type: "GET",
-            url: "{{ route('getDetailStatistikJenisUsaha') }}",
-            data: {'id_kategori_bisnis': id_kategori_bisnis},
-            dataType: "json",
-            success: function (data) {
-                $('#show').show();
-                console.log(data);
+        $('#show').show();
+        if (table != null) {
+            table.clear();
+            table.destroy();
+        }
+        var table = $('#myTable2').DataTable({
+            "destroy": true,
+            "ajax": {
+                "type": "GET",
+                "url": "{{ route('getDetailStatistikJenisUsaha') }}",
+                "data": {'id_kategori_bisnis': id_kategori_bisnis},
+                "dataSrc": function(json) {
+                    return json.data;
+                }
+            },
+            "columns": [
 
-                $.each(data, function (key, item) {
-                    const settings = {
-                        "async": true,
-                        "crossDomain": true,
-                        "url": "https://wbslink.id/apiv2/user/getExpired?_key=WbsLinkV00&user_id="+item.user_id+"&product_id="+item.produk_id,
-                        "method": "GET",
-                    };
-                    $.ajax(settings).done(function (response) {
-                    var getExp = response;
-                    var getTransaksi = '';
-                        $.ajax({
-                            type: "GET",
-                            url: "{{ route('getDataTransaksi') }}",
-                            data: {'id_user': item.id_user},
-                            dataType: "json",
-                            success: function (data) {
-                                $.each(data, function (key, item) {
-                                        getTransaksi = item.total;
+                {
+                    "data": "DT_RowIndex",
+                    "name": "DT_RowIndex"
+                },
+                {
+                    "data": "nama_toko"
+                },
+                {
+                    "data": "alamat_toko"
+                },
+                {
+                    "data": "no_hp_toko"
+                },
+                {
+                    data: 'getExp',
+                    name: 'getExp',
+                    orderable: false,
+                    searchable: false,
+                },
+                {
+                    name: 'getDataTransaksi',
+                    orderable: false,
+                    searchable: false,
+                },
 
-                                });
-                                $('#dataMember').append(
-                                    `<tr id="teks">
-                                        <td hidden><span>`+key+`</span></td>
-                                        <td ><a href="{{url('akun')}}/`+item.id_user+`">`+item.nama_toko+`</a></td>
-                                        <td >`+item.alamat_toko+`</td>
-                                        <td >`+item.no_hp_toko+`</td>
-                                        <td >`+getExp+`</td>
-                                        <td >`+getTransaksi+`</td>
-                                    </tr>`
-                                );
-                            }
-                        });
-                    });
-
-                });
+            ],
+            "columnDefs": [{
+                targets: 0,
+                "visible": false
+            },
+            {
+                targets: 5,
+                "visible": true,
+                className: 'dt-body-center',
+                data: function( row, type, val, meta){
+                    return `<a href="{{url('getDetailTransaksiUser')}}/${row.id_user}">${row.getDataTransaksi}</a>`
+                }
             }
+            ]
         });
+
 
     };
 

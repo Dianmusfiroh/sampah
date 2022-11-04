@@ -17,7 +17,7 @@ use App\Http\Controllers\TutorialController;
 use App\Http\Controllers\SettingXenditController;
 use App\Http\Controllers\settingCustomController;
 use App\Http\Controllers\FitturController;
-
+use App\Http\Controllers\TargetController;
 use Illuminate\Routing\Route as RoutingRoute;
 
 /*
@@ -47,6 +47,7 @@ Route::resource('akun', AkunController::class);
 Route::resource('logUser', LoguserController::class);
 Route::resource('SendNotification', SendNotifikasiController::class);
 // Route::resource('report', Report::class);
+Route::get('statistikPengirim', [StatistikController::class,'statistikPengirim'])->name('statistikPengirim');
 Route::get('statistikMember', [StatistikController::class,'statistikMember'])->name('statistikMember');
 Route::get('statistikJenisUsaha', [StatistikController::class,'statistikJenisUsaha'])->name('statistikJenisUsaha');
 Route::resource('statistik', StatistikController::class);
@@ -61,6 +62,8 @@ Route::get('getDate',[StatistikController::class,'getDate'])->name('getDate');
 Route::get('anotherFunction',[StatistikController::class,'anotherFunction'])->name('anotherFunction');
 Route::get('postTable',[StatistikController::class,'postTable'])->name('postTable');
 Route::get('get_Chart_Pemesanan',[StatistikController::class,'get_Chart_Pemesanan'])->name('get_Chart_Pemesanan');
+Route::get('getDetailTransaksiUser/{id_user} ',[StatistikController::class,'getDetailTransaksiUser'])->name('getDetailTransaksiUser');
+Route::get('getDetailDikirim',[StatistikController::class,'getDetailDikirim'])->name('getDetailDikirim');
 
 
 Route::get('get_dataTotal',[Report::class,'get_dataTotal'])->name('get_dataTotal');
@@ -80,6 +83,7 @@ Route::resource('kategori', KategoriController::class);
 Route::resource('tutorial', TutorialController::class);
 Route::resource('settingCustom', settingCustomController::class);
 Route::resource('fittur', FitturController::class);
+Route::resource('target', TargetController::class);
 Route::get('data',[AkunController::class,'data'])->name('data');
 Route::get('detailHari',[HomeController::class,'detailDay'])->name('detailDay');
 Route::get('detailNominalTahun',[HomeController::class,'detailTahunNominal'])->name('detailTahunNominal');
@@ -111,4 +115,18 @@ Route::get('/getKabupaten',[StatistikController::class,'getKabupaten'])->name('g
 Route::get('/getDetailStatistikJenisUsaha',[StatistikController::class,'getDetailStatistikJenisUsaha'])->name('getDetailStatistikJenisUsaha');
 Route::get('/getDataTransaksi',[StatistikController::class,'getDataTransaksi'])->name('getDataTransaksi');
 Route::get('/getStudents',[StatistikController::class,'getStudents'])->name('getStudents');
+Route::get('/getDetailSelesai',[StatistikController::class,'getDetailSelesai'])->name('getDetailSelesai');
+Route::get('/getDetailPemesanan',[StatistikController::class,'getDetailPemesanan'])->name('getDetailPemesanan');
+Route::get('/getDetailTotalSelesai',[StatistikController::class,'getDetailTotalSelesai'])->name('getDetailTotalSelesai');
+Route::get('/getDetailTotalDikirim',[StatistikController::class,'getDetailTotalDikirim'])->name('getDetailTotalDikirim');
+Route::get('/getDetailTotalPesanan',[StatistikController::class,'getDetailTotalPesanan'])->name('getDetailTotalPesanan');
+Route::get('/getDataTarget',[HomeController::class,'getDataTarget'])->name('getDataTarget');
+Route::get('/getakunTidakAktif',[AkunController::class,'akunTidakAktif'])->name('akunTidakAktif');
+Route::get('/akunTidakAktif',[AkunController::class,'V_akunTidakAktif'])->name('V_akunTidakAktif');
+Route::get('/simpanDataHistoryTarget',[HomeController::class,'simpanDataHistoryTarget'])->name('simpanDataHistoryTarget');
+Route::get('/getDataTransaksiSukses',[HomeController::class,'getDataTransaksiSukses'])->name('getDataTransaksiSukses');
+Route::get('/getDataPendaftaran',[HomeController::class,'getDataPendaftaran'])->name('getDataPendaftaran');
+Route::get('/getDataNominalTransaksi',[HomeController::class,'getDataNominalTransaksi'])->name('getDataNominalTransaksi');
+Route::get('/getDetailStatistikPengirim',[StatistikController::class,'getDetailStatistikPengirim'])->name('getDetailStatistikPengirim');
+
 
