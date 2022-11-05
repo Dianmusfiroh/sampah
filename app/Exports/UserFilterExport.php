@@ -28,11 +28,13 @@ class UserFilterExport implements FromView
     public function view(): View
     {
 
-        return view('report.v_reportUserTidakAktif', [
-            'userExp' => DB::table('t_user')
+        return view('report.v_reportUserFilter', [
+            'tanggal_awal' => $this->tanggal_awal,
+            'tanggal_akhir' => $this->tanggal_akhir,
+            'user' => DB::table('t_user')
             ->join('t_setting','t_setting.id_user','=','t_user.id_user')
             ->whereBetween('t_user.tgl_expired',[$this->tanggal_awal,$this->tanggal_akhir])
-            ->whereIn('t_user.produk_id',['198','175'])
+            ->whereIn('t_user.produk_id',['175','198'])
             ->get()
         ]);
     }

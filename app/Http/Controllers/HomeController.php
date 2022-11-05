@@ -2,16 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HistoryTarget;
 use Illuminate\Http\Request;
 use App\Models\tUser;
 use App\Models\Order;
 use App\Models\Produk;
 use App\Models\Models;
+use App\Models\Target;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use PhpOffice\PhpSpreadsheet\Calculation\TextData\Format;
+
 class HomeController extends Controller
 {
     public function index(Request $request){
+
         $day = Carbon::now()->format('d');
         $year = Carbon::now()->format('Y');
         $yesterday = Carbon::yesterday()->format('Y-m-d');
@@ -32,11 +38,100 @@ class HomeController extends Controller
         foreach ($user as $item) {
             $orderUser .= $item->jumlah.',';
         }
+
+
         //endChart
+        $totalUser =  tUser::whereIn('produk_id',['198','175'])->count();
+        $userA=  DB::select(DB::raw('select count(id_user) as total,produk_id, tgl_expired, current_date() as tgl_sekarang,datediff(tgl_expired, current_date()) as selisih from t_user WHERE produk_id IN (175,198) and tgl_expired >= CURRENT_DATE()'));
+        //targetHari
+        $userToDay= DB::table('t_user')->whereDate('is_created',$now)->count('id_user');
+        $totalTransaksiHariSukses = DB::table('t_order')->where('order_status','4')->whereDate('tgl_order',$now)->count('id_order')+ DB::table('t_multi_order')->where('order_status','4')->whereDate('tgl_order',$now)->count('id_order');
+        $NominalTransaksiHariSukses = DB::table('t_order')->where('order_status','4')->whereDate('tgl_order',$now)->sum('totalbayar')+ DB::table('t_multi_order')->where('order_status','4')->whereDate('tgl_order',$now)->sum('totalbayar');
+
+
+        $target = Target::get();
+        $nowMonth = Carbon::now()->format('m');
+        $hitungHariDiBulan = cal_days_in_month(CAL_GREGORIAN,$nowMonth, date('y'));
+        $weekInMonth = $hitungHariDiBulan / 7;
+        // $hasilBulan = $target[0]->bulan /$hitungHariDiBulan ;
+        // target hariini dan kemarin
+        $targetPendaftaranTahun =0;
+        $targetTransaksiTahun =0;
+        $targetNominalTahun =0;
+        // $targetNominal = 0;
+        foreach ($target as $item ) {
+            //target tahun
+            if ($item->tahun == Carbon::now()->format('Y')) {
+                $targetPendaftaranTahun += $item->pendaftaran;
+                $targetTransaksiTahun += $item->transaksi;
+                $targetNominalTahun += $item->nominal;
+            }
+            // target bulan
+            $targetPendaftaranBulan = $item->pendaftaran;
+            $targetTransaksiBulan = $item->transaksi;
+            $targetNominalBulan = $item->nominal;
+
+
+            // target hari
+            if ($item->bulan == 'januari' && $nowMonth == '01') {
+                $targetNominal =  $item->nominal / $hitungHariDiBulan;
+                $targetPendaftaran =  $item->pendaftaran / $hitungHariDiBulan;
+                $targetTransaksi =  $item->transaksi / $hitungHariDiBulan;
+            }else if ($item->bulan == 'februari' && $nowMonth == '02') {
+                $targetNominal =  $item->nominal / $hitungHariDiBulan;
+                $targetPendaftaran =  $item->pendaftaran / $hitungHariDiBulan;
+                $targetTransaksi =  $item->transaksi / $hitungHariDiBulan;
+            }else if ($item->bulan == 'maret' && $nowMonth == '03') {
+                $targetNominal =  $item->nominal / $hitungHariDiBulan;
+                $targetPendaftaran =  $item->pendaftaran / $hitungHariDiBulan;
+                $targetTransaksi =  $item->transaksi / $hitungHariDiBulan;
+            }else if ($item->bulan == 'april' && $nowMonth == '04') {
+                $targetNominal =  $item->nominal / $hitungHariDiBulan;
+                $targetPendaftaran =  $item->pendaftaran / $hitungHariDiBulan;
+                $targetTransaksi =  $item->transaksi / $hitungHariDiBulan;
+            }else if ($item->bulan == 'mei' && $nowMonth == '05') {
+                $targetNominal =  $item->nominal / $hitungHariDiBulan;
+                $targetPendaftaran =  $item->pendaftaran / $hitungHariDiBulan;
+                $targetTransaksi =  $item->transaksi / $hitungHariDiBulan;
+            }else if ($item->bulan == 'juni' && $nowMonth == '06') {
+                $targetNominal =  $item->nominal / $hitungHariDiBulan;
+                $targetPendaftaran =  $item->pendaftaran / $hitungHariDiBulan;
+                $targetTransaksi =  $item->transaksi / $hitungHariDiBulan;
+            }else if ($item->bulan == 'juli' && $nowMonth == '07') {
+                $targetNominal =  $item->nominal / $hitungHariDiBulan;
+                $targetPendaftaran =  $item->pendaftaran / $hitungHariDiBulan;
+                $targetTransaksi =  $item->transaksi / $hitungHariDiBulan;
+            }else if ($item->bulan == 'agustus' && $nowMonth == '08') {
+                $targetNominal =  $item->nominal / $hitungHariDiBulan;
+                $targetPendaftaran =  $item->pendaftaran / $hitungHariDiBulan;
+                $targetTransaksi =  $item->transaksi / $hitungHariDiBulan;
+            }else if ($item->bulan == 'september' && $nowMonth == '09') {
+                $targetNominal =  $item->nominal / $hitungHariDiBulan;
+                $targetPendaftaran =  $item->pendaftaran / $hitungHariDiBulan;
+                $targetTransaksi =  $item->transaksi / $hitungHariDiBulan;
+            }else if ($item->bulan == 'oktober' && $nowMonth == '10') {
+                $targetNominal =  $item->nominal / $hitungHariDiBulan;
+                $targetPendaftaran =  $item->pendaftaran / $hitungHariDiBulan;
+                $targetTransaksi =  $item->transaksi / $hitungHariDiBulan;
+            }else if ($item->bulan == 'november' && $nowMonth == '11') {
+                $targetNominal =  $item->nominal / $hitungHariDiBulan;
+                $targetPendaftaran =  $item->pendaftaran / $hitungHariDiBulan;
+                $targetTransaksi =  $item->transaksi / $hitungHariDiBulan;
+            }else if ($item->bulan == 'desember' && $nowMonth == '12') {
+                $targetNominal =  $item->nominal / $hitungHariDiBulan;
+                $targetPendaftaran =  $item->pendaftaran / $hitungHariDiBulan;
+                $targetTransaksi =  $item->transaksi / $hitungHariDiBulan;
+                dd($targetNominal);
+            
+            }
+
+        }
+        // Persentse Target
         $data = [
             'view' => 'v_home2',
             'data' =>
             [
+
                 'label' => 'Dashboard',
                 'user'=>  tUser::whereIn('produk_id',['198','175']),
                 'produk'=> Produk::all(),
@@ -46,8 +141,8 @@ class HomeController extends Controller
                 //Day
                 'userToDay'=> DB::table('t_user')->whereDate('is_created',$now)->count('id_user'),
                 'totalTransaksiHari' => DB::table('t_order')->whereDate('tgl_order',$now)->count('id_order')+ DB::table('t_multi_order')->whereDate('tgl_order',$now)->count('id_order'),
-                'totalTransaksiHariSukses' => DB::table('t_order')->where('order_status','4')->whereDate('tgl_order',$now)->count('id_order')+ DB::table('t_multi_order')->where('order_status','4')->whereDate('tgl_order',$now)->count('id_order'),
-                'NominalTransaksiHariSukses' => DB::table('t_order')->where('order_status','4')->whereDate('tgl_order',$now)->sum('totalbayar')+ DB::table('t_multi_order')->where('order_status','4')->whereDate('tgl_order',$now)->sum('totalbayar'),
+                'totalTransaksiHariSukses' => $totalTransaksiHariSukses,
+                'NominalTransaksiHariSukses' => $NominalTransaksiHariSukses,
                 //Yesterday
                 'userYesterday'=> DB::table('t_user')->whereDate('is_created',$yesterday)->count('id_user'),
                 'totalTransaksiYesterday' => DB::table('t_order')->whereDate('tgl_order',$yesterday)->count('id_order')+ DB::table('t_multi_order')->whereDate('tgl_order',$yesterday)->count('id_order'),
@@ -71,35 +166,45 @@ class HomeController extends Controller
 
                 //chart
                 'chartUser' => $orderUser ,
-                'chart'=> $chrtExp
+                'chart'=> $chrtExp,
+                'targetPengguna' => $userA[0]->total / $totalUser *100,
+                // 'targetNominal' => $targetNominal,
+                // 'targetPendaftaran' => $targetPendaftaran,
+                // 'targetTransaksi' => $targetTransaksi,
+                // 'targetPendaftaranBulan' => $targetPendaftaranBulan,
+                // 'targetTransaksiBulan' => $targetTransaksiBulan,
+                // 'targetNominalBulan' => $targetNominalBulan,
+                // 'targetPendaftaranTahun' => $targetPendaftaranTahun,
+                // 'targetTransaksiTahun' =>$targetTransaksiTahun,
+                // 'targetNominalTahun' =>$targetNominalTahun,
                 ]
             ];
         return backend($request,$data);
     }
-    public function detailDay(Request $request)
-    {
-        $data = [
-            'view' => 'detail.detailDay',
-            'data' =>
-            [
-                'label' => 'Detaill Hari Ini',
-                'user'=>  tUser::whereIn('produk_id',['198','175']),
-                'produk'=> Produk::all(),
-                'bestProduk' => DB::select('SELECT p.id_user,t.id_produk ,p.nama_produk,p.gambar ,sum(total) as jumlah, pl.link from ( SELECT a.id_produk , COUNT(a.id_produk) as total FROM (SELECT k.id_user, k.id_produk FROM t_keranjang k JOIN t_multi_order mo WHERE k.kode_keranjang = mo.kode_keranjang AND mo.order_status="4") AS a GROUP BY a.id_produk UNION ALL SELECT id_produk,COUNT(id_produk) AS total FROM t_order o WHERE order_status="4" GROUP BY id_produk) AS t JOIN t_produk p JOIN t_produk_link pl WHERE pl.id_produk = t.id_produk AND p.id_produk = t.id_produk GROUP BY t.id_produk ORDER BY total DESC limit 5'),
-                'userA'=>  DB::select(DB::raw('select
-                count(id_user) as total,produk_id, tgl_expired, current_date() as tgl_sekarang,datediff(tgl_expired, current_date()) as selisih from t_user WHERE produk_id IN (175,198) and tgl_expired >= CURRENT_DATE()')),
-                //Day
-                'userToDay'=> DB::table('t_user')->whereDate('is_created',$now)->count('id_user'),
-                'totalTransaksiHari' => DB::table('t_order')->whereDate('tgl_order',$now)->count('id_order')+ DB::table('t_multi_order')->whereDate('tgl_order',$now)->count('id_order'),
-                'totalTransaksiHariSukses' => DB::table('t_order')->where('order_status','4')->whereDate('tgl_order',$now)->count('id_order')+ DB::table('t_multi_order')->where('order_status','4')->whereDate('tgl_order',$now)->count('id_order'),
-                'NominalTransaksiHariSukses' => DB::table('t_order')->where('order_status','4')->whereDate('tgl_order',$now)->sum('totalbayar')+ DB::table('t_multi_order')->where('order_status','4')->whereDate('tgl_order',$now)->sum('totalbayar'),
-                //chart
-                'chartUser' => $orderUser ,
-                'chart'=> $chrtExp
-                ]
-            ];
-        return backend($request,$data);
-    }
+    // public function detailDay(Request $request)
+    // {
+    //     $data = [
+    //         'view' => 'detail.detailDay',
+    //         'data' => 
+    //         [
+    //             'label' => 'Detaill Hari Ini',
+    //             'user'=>  tUser::whereIn('produk_id',['198','175']),
+    //             'produk'=> Produk::all(),
+    //             'bestProduk' => DB::select('SELECT p.id_user,t.id_produk ,p.nama_produk,p.gambar ,sum(total) as jumlah, pl.link from ( SELECT a.id_produk , COUNT(a.id_produk) as total FROM (SELECT k.id_user, k.id_produk FROM t_keranjang k JOIN t_multi_order mo WHERE k.kode_keranjang = mo.kode_keranjang AND mo.order_status="4") AS a GROUP BY a.id_produk UNION ALL SELECT id_produk,COUNT(id_produk) AS total FROM t_order o WHERE order_status="4" GROUP BY id_produk) AS t JOIN t_produk p JOIN t_produk_link pl WHERE pl.id_produk = t.id_produk AND p.id_produk = t.id_produk GROUP BY t.id_produk ORDER BY total DESC limit 5'),
+    //             'userA'=>  DB::select(DB::raw('select
+    //             count(id_user) as total,produk_id, tgl_expired, current_date() as tgl_sekarang,datediff(tgl_expired, current_date()) as selisih from t_user WHERE produk_id IN (175,198) and tgl_expired >= CURRENT_DATE()')),
+    //             // //Day
+    //             // 'userToDay'=> DB::table('t_user')->whereDate('is_created',$now)->count('id_user'),
+    //             // 'totalTransaksiHari' => DB::table('t_order')->whereDate('tgl_order',$now)->count('id_order')+ DB::table('t_multi_order')->whereDate('tgl_order',$now)->count('id_order'),
+    //             // 'totalTransaksiHariSukses' => DB::table('t_order')->where('order_status','4')->whereDate('tgl_order',$now)->count('id_order')+ DB::table('t_multi_order')->where('order_status','4')->whereDate('tgl_order',$now)->count('id_order'),
+    //             // 'NominalTransaksiHariSukses' => DB::table('t_order')->where('order_status','4')->whereDate('tgl_order',$now)->sum('totalbayar')+ DB::table('t_multi_order')->where('order_status','4')->whereDate('tgl_order',$now)->sum('totalbayar'),
+    //             // //chart
+    //             // 'chartUser' => $orderUser ,
+    //             // 'chart'=> $chrtExp
+    //             ]
+    //         ];
+    //     return backend($request,$data);
+    // }
     public function detailTahunNominal(Request $request)
     {
 
@@ -454,5 +559,66 @@ class HomeController extends Controller
             ]
             ];
         return backend($request,$data);
+    }
+    public function getDataTarget()
+    {
+        $target = Target::all();
+        return json_decode($target);
+    }
+    public function getDataTransaksi(Request $request)
+    {
+        $dataTransaksi = DB::select("SELECT SUM(total) as total, id_user FROM (SELECT COUNT(*) AS total, id_user FROM t_multi_order WHERE id_user = $request->id_user UNION ALL SELECT COUNT(*) as total ,id_user FROM t_order WHERE id_user = $request->id_user) AS a;");
+        echo json_encode($dataTransaksi);
+    }
+    public function simpanDataHistoryTarget(Request $request)
+    {
+        $now = \Carbon\Carbon::now()->format('y-m-d');
+        $jam = \Carbon\Carbon::now()->format('h-s');
+        $totalTransaksiHariSukses = DB::table('t_order')->where('order_status','4')->whereDate('tgl_order',$now)->count('id_order')+ DB::table('t_multi_order')->where('order_status','4')->whereDate('tgl_order',$now)->count('id_order');
+        $NominalTransaksiHariSukses = DB::table('t_order')->where('order_status','4')->whereDate('tgl_order',$now)->sum('totalbayar')+ DB::table('t_multi_order')->where('order_status','4')->whereDate('tgl_order',$now)->sum('totalbayar');
+        $totalTransaksiHari = DB::table('t_order')->whereDate('tgl_order',$now)->count('id_order')+ DB::table('t_multi_order')->whereDate('tgl_order',$now)->count('id_order');
+        if (carbon::now()->format('H:i') == '10:14') {
+            echo "Ada";
+            // $post = HistoryTarget::create([
+            //     'pendaftaran' => $totalTransaksiHariSukses,
+            //     'transaksi' => $totalTransaksiHari,
+            //     'nominal' => $NominalTransaksiHariSukses,
+
+            // ]);
+        }else {
+            echo "tidak ada";
+        }
+
+
+        // if ($post) {
+        //     return redirect()
+        //         ->route('target.index')
+        //         ->with([
+        //             'success' => 'Target Berhasil Dibuat'
+        //         ]);
+        // } else {
+        //     return redirect()
+        //         ->back()
+        //         ->withInput()
+        //         ->with([
+        //             'error' => 'Target Tidak Berhasil Dibuat'
+        //         ]);
+        // }
+    }
+    public function getDataTransaksiSukses(Request $request)
+    {
+        $transaksi= DB::select("SELECT sum(total) AS total FROM (SELECT COUNT(*) AS total FROM t_order WHERE order_status = '4' AND date(tgl_order) BETWEEN date('$request->start') AND date('$request->end') UNION all SELECT COUNT(*) AS total FROM t_multi_order WHERE order_status = '4' AND date(tgl_order) BETWEEN date('$request->start') AND date('$request->end')) AS a");
+        echo json_encode($transaksi);
+    }
+    public function getDataPendaftaran(Request $request)
+    {
+        $pendaftaran = DB::select("SELECT COUNT(*) AS total FROM t_user WHERE date(is_created) BETWEEN date('$request->start') AND date('$request->end')");
+        echo json_encode($pendaftaran);
+    }
+    public function getDataNominalTransaksi(Request $request)
+    {
+        $nominalTransaksi = DB::select("SELECT sum(total) AS total FROM (SELECT sum(totalbayar) AS total FROM t_order WHERE order_status = '4' AND date(tgl_order) BETWEEN date('$request->start') AND date('$request->end') UNION all SELECT sum(totalbayar) AS total FROM t_multi_order WHERE order_status = '4' AND date(tgl_order) BETWEEN date('$request->start') AND date('$request->end')) AS a");
+        echo json_encode($nominalTransaksi);
+
     }
 }

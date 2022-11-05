@@ -11,26 +11,31 @@
                 <span class="icon icon-sm rounded-circle bg-primary-light"><i
                         class="text-primary material-icons md-supervised_user_circle"></i></span>
                 <div class="text" href="{{ url('akun') }}">
-                    <a href="{{ url('akun') }}" >
-                    <h6 class="mb-1 card-title">User</h6>
-                    {{--  <h3>{{ $exp }}</h3>  --}}
-                    <h3>{{ $user->count() }}</h3>
-                    <span class="text-sm"> Total Jumlah User   </span></a>
+                    <a href="{{ url('akun') }}">
+                        <h6 class="mb-1 card-title">User</h6>
+                        {{--  <h3>{{ $exp }}</h3>  --}}
+                        <h3>{{ $user->count() }}</h3>
+                        <span class="text-sm"> Total Jumlah User </span>
+                    </a>
                 </div>
             </article>
         </div>
     </div>
-     <div class="col-lg-3">
+    <div class="col-lg-3">
         <div class="card card-body mb-4">
             <article class="icontext">
-                <span class="icon icon-sm rounded-circle bg-info-light"><i class="text-info material-icons md-verified_user"></i></span>
-                <div class="text"  href="{{ url('userAktif') }}">
-                    <a href="{{ url('userAktif') }}" >
-                    <h6 class="mb-1 card-title">User Aktif</h6>
-                    <h3>@foreach ($userA as $item )
-                        {{ $item->total}}
-                    @endforeach</h3>
-                    <span class="text-sm"> jumlah User Aktif  </span></a>
+                <span class="icon icon-sm rounded-circle bg-info-light"><i
+                        class="text-info material-icons md-verified_user"></i></span>
+                <div class="text" href="{{ url('userAktif') }}">
+                    <a href="{{ url('userAktif') }}">
+                        <h6 class="mb-1 card-title">User Aktif</h6>
+                        <h3>
+                            @foreach ($userA as $item)
+                                {{ $item->total }}
+                            @endforeach
+                        </h3>
+                        <span class="text-sm"> jumlah User Aktif </span>
+                    </a>
                 </div>
             </article>
         </div>
@@ -42,7 +47,7 @@
                         class="text-warning material-icons md-qr_code"></i></span>
                 <div class="text">
                     <h6 class="mb-1 card-title">Pendaftaran </h6>
-                    <span> {{$userToDay}}</span>
+                    <span> {{ $userToDay }}</span>
 
                     <span class="text-sm"> User Terdaftar Hari Ini </span>
                 </div>
@@ -71,8 +76,8 @@
                         class="text-success material-icons md-local_shipping"></i></span>
                 <div class="text">
                     <h6 class="mb-1 card-title">Total Transaksi</h6>
-                    <span>{{$totalTransaksi}}</span>
-                    <span class="text-sm"> Jumlah Order  </span>
+                    <span>{{ $totalTransaksi }}</span>
+                    <span class="text-sm"> Jumlah Order </span>
                 </div>
             </article>
         </div>
@@ -84,8 +89,8 @@
                         class="text-success material-icons md-local_shipping"></i></span>
                 <div class="text">
                     <h6 class="mb-1 card-title">Transaksi Selesai</h6>
-                    <span>{{$totalTransaksiSelesai}}</span>
-                    <span class="text-sm"> Jumlah Order  </span>
+                    <span>{{ $totalTransaksiSelesai }}</span>
+                    <span class="text-sm"> Jumlah Order </span>
                 </div>
             </article>
         </div>
@@ -101,7 +106,7 @@
                     {{--  <span class="text-sm"> Jumlah Order  </span>  --}}
                 </div>
             </article>
-    </div>
+        </div>
     </div>
     <div class="col-lg-3">
         <div class="card card-body mb-4">
@@ -128,36 +133,38 @@
             </div>
         </div>
         <div class="col-xl-4 col-lg-12">
-                <div class="card mb-4">
-                    <article class="card-body">
-                        <h5 class="card-title">Produk Terbaik Bulan Ini</h5>
-                        <div class="new-member-list">
+            <div class="card mb-4">
+                <article class="card-body">
+                    <h5 class="card-title">Produk Terbaik Bulan Ini</h5>
+                    <div class="new-member-list">
+                        <div class="table-responsive">
                             <div class="table-responsive">
-                                <div class="table-responsive">
-                                    <table class="table align-middle table-nowrap mb-0">
-                                        <thead>
+                                <table class="table align-middle table-nowrap mb-0">
+                                    <thead>
+                                        <tr>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($bestSeller as $key => $item)
                                             <tr>
+                                                <td>{{ ++$key }}</td>
+                                                <td><a
+                                                        href="{{ route('akun.show', $item->id_user) }}">{{ $item->nama_produk }}</a>
+                                                </td>
+                                                <td>{{ $item->jumlah }}</td>
                                             </tr>
-                                        </thead>
-                                        <tbody >
-                                            @foreach($bestSeller as $key => $item)
-                                            <tr>
-                                                <td>{{++$key}}</td>
-                                                <td><a href="{{ route( 'akun.show', $item->id_user) }}">{{$item->nama_produk}}</a></td>
-                                                <td>{{$item->jumlah}}</td>
-                                            </tr>
-                                            @endforeach
+                                        @endforeach
 
-                                        </tbody>
-                                    </table>
-                                </div>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                    </article>
-                </div>
+                    </div>
+                </article>
             </div>
         </div>
     </div>
+</div>
 
 </div>
 <div class="card mb-4">
@@ -180,15 +187,15 @@
                 </thead>
                 <tbody>
                     {{--  @dump($now->addMonth())  --}}
-                    @foreach ($akunA as $key => $item   )
+                    @foreach ($akunA as $key => $item)
                         <tr>
                             <td>
-                                <span> {{  ++$key }}</span>
+                                <span> {{ ++$key }}</span>
                             </td>
 
                             <td width="20%">
-                                <a href="{{ route( 'akun.show', $item->id_user) }}">
-                                {{--  <a href="http://wbslink.id/{{Str::slug($item->nama_toko)}}" target="_blank" title="{{ $item->nama_lengkap }}" alamat="{{$item->alamat}}" class="itemside">  --}}
+                                <a href="{{ route('akun.show', $item->id_user) }}">
+                                    {{--  <a href="http://wbslink.id/{{Str::slug($item->nama_toko)}}" target="_blank" title="{{ $item->nama_lengkap }}" alamat="{{$item->alamat}}" class="itemside">  --}}
                                     <div class="left">
                                     </div>
                                     <div class="info pl-3">
@@ -196,12 +203,12 @@
                                     </div>
                                 </a>
                             </td>
-                            <td>{{$item->nama_lengkap}}</td>
+                            <td>{{ $item->nama_lengkap }}</td>
                             {{--  {{$item->tgl_expired}}  --}}
                             <td>
-                                <a href="{{ route( 'akun.show', $item->id_user) }}">
+                                <a href="{{ route('akun.show', $item->id_user) }}">
 
-                                    <span class="badge rounded-pill alert-warning">{{$item->tgl_expired}}</span>
+                                    <span class="badge rounded-pill alert-warning">{{ $item->tgl_expired }}</span>
                                 </a>
                             </td>
                             <td>{{ $item->alamat }}</td>
@@ -210,57 +217,60 @@
                             <td class="text-center">
 
                                 {{--  <a href="" id="btnDetail" class="btn btn-sm btn-blue "> Detail </a>  --}}
-                                {{--  <a href="http://api.whatsapp.com/send?phone=62{{ $item->no_hp }}&text=Hallo {{ $item->nama_toko }}%20Owner%20Dari%20Booth%20{{ $item->nama_lengkap }}%20Berikut%20Tagihan%20pembayaran%20BPOS%20Anda%20Untuk%20Bulan%20{{$strBulan}}-{{$item->tahun}}%20Sebesar%20Rp.%20{{$item->jumlah_bayar}}%0A%0ASilahkan%20Lakukan%20Pembayaran%20Ke%20Rekening%20Berikut:%0A@foreach($adminBank as $admin){{$admin->nama_bank}}%20{{$admin->no_rekening}}%0A @endforeach%0A%0A%0Aa.n%20klikdigital%20indonesia%0A%0AUntuk%20Bukti%20Transaksi%20Bisa%20Dilihat%20Di%20Link%20Berikut%0A{{ route( $model.'.downloadPdf', $item->id_biodata) }}"
+                                {{--  <a href="http://api.whatsapp.com/send?phone=62{{ $item->no_hp }}&text=Hallo {{ $item->nama_toko }}%20Owner%20Dari%20Booth%20{{ $item->nama_lengkap }}%20Berikut%20Tagihan%20pembayaran%20BPOS%20Anda%20Untuk%20Bulan%20{{$strBulan}}-{{$item->tahun}}%20Sebesar%20Rp.%20{{$item->jumlah_bayar}}%0A%0ASilahkan%20Lakukan%20Pembayaran%20Ke%20Rekening%20Berikut:%0A@foreach ($adminBank as $admin){{$admin->nama_bank}}%20{{$admin->no_rekening}}%0A @endforeach%0A%0A%0Aa.n%20klikdigital%20indonesia%0A%0AUntuk%20Bukti%20Transaksi%20Bisa%20Dilihat%20Di%20Link%20Berikut%0A{{ route( $model.'.downloadPdf', $item->id_biodata) }}"
                                 target="_blank"  class="btn btn-sm btn-md">Send  --}}
 
-                            <a href="http://api.whatsapp.com/send?phone=62{{ $item->no_hp }}&text=Hallo%20{{$item->nama_lengkap}}%20Akun%20WBS-Link%20anda%20Akan%20segera%20habis%20masa%20berlakunya" target="_blank" title="{{ $item->nama_lengkap }}" alamat="{{$item->alamat}}"  ><i class=" material-icons md-send"></i></a>
+                                <a href="http://api.whatsapp.com/send?phone=62{{ $item->no_hp }}&text=Hallo%20{{ $item->nama_lengkap }}%20Akun%20WBS-Link%20anda%20Akan%20segera%20habis%20masa%20berlakunya"
+                                    target="_blank" title="{{ $item->nama_lengkap }}" alamat="{{ $item->alamat }}"><i
+                                        class=" material-icons md-send"></i></a>
                             </td>
-                            @endforeach
+                    @endforeach
 
-                        </tr>
+                    </tr>
                 </tbody>
             </table>
         </div>
         <!-- table-responsive.// -->
     </div>
-    </div>
+</div>
 </div>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-<script src="{{ asset('backend/assets/js/vendors/chart.js')}}"></script>
+<script src="{{ asset('backend/assets/js/vendors/chart.js') }}"></script>
 
 <script>
     $("#myTable").DataTable({
-                    "autoWidth": false,
-                    "responsive": true
-                });
+        "autoWidth": false,
+        "responsive": true
+    });
 </script>
 <script>
-var userExp = [@php echo $chart @endphp];
-var userActive = [@php echo $chartUser @endphp];
-console.log(userActive);
-new Chart("Chart", {
-    type: "line",
+    var userExp = [@php echo $chart @endphp];
+    var userActive = [@php echo $chartUser @endphp];
+    console.log(userActive);
+    new Chart("Chart", {
+        type: "line",
 
-    data: {
-    labels: ['Jan', 'Feb', 'Mar','Apr','Mei','Jun','Jul','Ags','Sep','Oct','Nov','Des'],
-    datasets: [{
-        label: 'User Expired',
-        tension: 0.3,
-        fill: false,
-        backgroundColor: 'rgba(255, 0, 0, 0.85)',
-        borderColor: 'rgba(255, 0, 0, 0.85)',
-        data: userExp
-    },
-    {
-        label: 'User Aktif',
-        tension: 0.3,
-        fill: false,
-        backgroundColor: 'rgba(4, 209, 130, 0.2)',
-        borderColor: 'rgb(4, 209, 130)',
-        data: userActive
-    }]
-    },
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Oct', 'Nov', 'Des'],
+            datasets: [{
+                    label: 'User Expired',
+                    tension: 0.3,
+                    fill: false,
+                    backgroundColor: 'rgba(255, 0, 0, 0.85)',
+                    borderColor: 'rgba(255, 0, 0, 0.85)',
+                    data: userExp
+                },
+                {
+                    label: 'User Aktif',
+                    tension: 0.3,
+                    fill: false,
+                    backgroundColor: 'rgba(4, 209, 130, 0.2)',
+                    borderColor: 'rgb(4, 209, 130)',
+                    data: userActive
+                }
+            ]
+        },
         options: {
             plugins: {
                 legend: {
@@ -270,9 +280,5 @@ new Chart("Chart", {
                 }
             }
         }
-});
+    });
 </script>
-
-
-
-

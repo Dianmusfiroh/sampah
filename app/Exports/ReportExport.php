@@ -2,20 +2,16 @@
 
 namespace App\Exports;
 
-use App\Models\tUser;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\FromView;
-use Illuminate\Contracts\View\View;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-class UsersExport implements  FromView
-// class UsersExport implements fromCollection, FromView
+
+class ReportExport implements FromCollection
 {
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function view(): View
+    public function collection()
     {
         $now = Carbon::now()->format('y-m-d');
 
@@ -26,7 +22,5 @@ class UsersExport implements  FromView
             ->whereIn('t_user.produk_id',['198','175'])
             ->get()
         ]);
-
     }
 }
-

@@ -1329,6 +1329,20 @@ textarea.form-control {
     margin-right: 15px;
 }
 
+.form-border {
+    border: 2px solid #3BB77E;
+}
+.form-select:focus {
+    background: transparent;
+    border-color: #3BB77E;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.form-select.select-multiple {
+    height: unset;
+    border-radius: 4px;
+}
 .icontext .icon.border {
     max-height: 28px;
 }
@@ -3372,6 +3386,17 @@ ul.row-sm {
 .mt-200 {
     margin-top: 200px !important;
 }
+/* Content header */
+.content-main .col-12 .content-header{
+    transform:translatex(4px) translatey(0px);
+   }
+
+   /* Button */
+   .main-wrap div .text-body{
+    transform:translatex(-86px) translatey(19px);
+   }
+
+
 
 .mb-5 {
     margin-bottom: 5px !important;

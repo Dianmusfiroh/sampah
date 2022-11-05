@@ -30,12 +30,6 @@ class SendNotifikasiController extends Controller
         ];
         return backend($request,$data,$modul);
     }
-    // public function saveToken(Request $request)
-    // {
-    //     $token = $request->_token;
-    //     return response()->json(['token saved successfully.']);
-    // }
-
     public function sendNotif(Request $request)
     {
 
@@ -49,11 +43,7 @@ class SendNotifikasiController extends Controller
                         "body" => $request->desc
                     ]
                 ];
-                // ,
-                //         "click_action" => $request->link,
-                //         "icon" => "{{ asset('backend/assets/imgs/theme/ICON LOGO.png')}}",
-                //         "content_available" => true,
-                //         "priority" => "high",
+
         $dataString = json_encode($data);
         $headers = [
             'Authorization: key=' . $SERVER_API_KEY,
@@ -75,8 +65,6 @@ class SendNotifikasiController extends Controller
         $response = curl_exec($ch);
 
         response()->json($response,200);
-        // return redirect('SendNotification')->with('success', 'Notifikasi Dikirim!');
-        // return response()->json(['token saved successfully.']);
 
         return redirect()
             ->route('SendNotification.index')

@@ -14,7 +14,7 @@
  .page_break { page-break-before: always; }
 </style>
 <div class="header">
-    <strong>REKAPITULASI MEMBER </strong><br>
+    <strong>REKAPITULASI MEMBER EXPIRE PADA TANGGAL {{$tanggal_awal}}/{{$tanggal_akhir}}</strong><br>
     <strong></strong>
 </div>
 <table>
@@ -36,14 +36,19 @@
             <td style="text-align: center">{{ ++$key }}</td>
             <td>{{$item->nama_lengkap}}</td>
             <td>{{$item->nama_toko}}</td>
-            {{--  <td>{{$item->no_hp}}</td>  --}}
-            <td> @if (preg_match("/08/", substr("$item->no_hp",0,2)))
-                {{substr_replace("$item->no_hp","62",0,1)}}
+            <td> @if (preg_match("/08/", substr("$item->no_hp_toko",0,2)))
+                {{substr_replace("$item->no_hp_toko","62",0,1)}}
                 @else
-                {{$item->no_hp}}
+                {{$item->no_hp_toko}}
                 @endif
             </td>
-            <td>wbslink.id/{{Str::slug($item->nama_toko)}}</td>
+            <td>
+                @if ($item->permalink != null)
+                https://wbslink.id/{{Str::slug($item->permalink)}}
+                @else
+                https://wbslink.id/{{Str::slug($item->nama_toko)}}
+                @endif
+            </td>
             <td>{{$item->is_created}}</td>
             <td>{{$item->tgl_expired}}</td>
             <td>{{$item->email}}</td>

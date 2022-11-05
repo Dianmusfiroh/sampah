@@ -16,6 +16,7 @@ class FitturController extends Controller
     }
     public function index(Request $request){
         $modul = $this->modul;
+        
         $data = [
             'view' => 'fittur.index',
             'data' =>

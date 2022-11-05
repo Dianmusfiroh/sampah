@@ -28,10 +28,6 @@ class TutorialController extends Controller
         ];
         return backend($request,$data,$modul);
     }
-    public function create()
-    {
-        # code...
-    }
     public function store(Request $request)
     {
         $this->validate($request, [
